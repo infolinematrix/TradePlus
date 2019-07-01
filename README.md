@@ -20,8 +20,8 @@ TradePlus is an Open Source Marketplace Application system, where both buyer and
 ## Installation
 git clone <#url> <#folder-name>\
 cd <#folder-name>\
-npm i
-composer install
+npm i\
+composer install\
 
 ## Documentation
 Comming Soon.
