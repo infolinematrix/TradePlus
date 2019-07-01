@@ -18,10 +18,10 @@ TradePlus is an Open Source Marketplace Application system, where both buyer and
 * Extensible ACL with users, roles and permissions
 
 ## Installation
-git clone <#url> <#folder-name>
-cd <#folder-name>
-npm i
-composer install
+git clone #url #folder-name
+cd #folder-name
+npm i\
+composer install\
 
 ## Documentation
 Comming Soon.
