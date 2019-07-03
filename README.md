@@ -20,7 +20,7 @@ Branch
 
 ## Installation
 
-git clone #url #folder-name
+git clone #url #folder-name\
 cd #folder-name\
 npm i\
 composer install
