@@ -3,7 +3,7 @@ TradePlus is an Open Source Marketplace Application system, where both buyer and
 
 ![Reactor Dashboard](https://github.com/infolinematrix/TradePlus/blob/master/application.png)
 
-Reactor He
+
  
 **Important:** TradePlus is still in alpha versions of the V3 family and is still being developed, use it at your own risk!
 
