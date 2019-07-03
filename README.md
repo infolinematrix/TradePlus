@@ -21,9 +21,9 @@ Branch
 ## Installation
 
 git clone #url #folder-name
-cd #folder-name
+cd #folder-name\
 npm i\
-composer install\
+composer install
 
 ## Documentation
 Comming Soon.
