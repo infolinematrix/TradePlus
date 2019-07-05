@@ -52,6 +52,8 @@ export default {
   */
   plugins: [
     '@/plugins/vuetify',
+    '~plugins/helpers',
+    //{ src: '~/plugins/helpers.js', mode: 'client' },
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/moment'

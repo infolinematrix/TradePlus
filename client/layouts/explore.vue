@@ -84,13 +84,15 @@
       </v-toolbar>
 
       <v-content>
-        <div id="application">
+        <div id="application" class="application">
         <nuxt></nuxt>
         </div>
       </v-content>
 
       <v-navigation-drawer right clipped app :width="300" class="inner-border">
-        <v-img height="400px" src="/banner-2.jpg" class="image" alt="lorem"/>
+        <v-img mg
+                height="200px" :src="`https://picsum.photos/300/200?random=${Math.floor(Math.random() * 100) + i}`"  alt="lorem"
+                class="image"/>
 
         <v-divider></v-divider>
         <v-container fluid grid-list-sm class="pa-2">
