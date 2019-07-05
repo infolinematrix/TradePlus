@@ -7,7 +7,10 @@
             <v-toolbar-title>Register</v-toolbar-title>
 
           </v-toolbar>
-          <v-subheader>Registration is quick and free. It allows you to personalize your profile.</v-subheader>
+          <v-flex class="font-weight-bold grey--text">
+          If you previously had a ResearcherID account or already have an account with one of the above products, please sign in with your credentials for that service to start using Publons.
+
+          </v-flex>
           <v-layout row wrap>
             <v-flex>
               <v-card-text>
