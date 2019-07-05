@@ -34,6 +34,12 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
+
+# Laravel vendors
+vendor/
+
+
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -77,8 +83,12 @@ dist
 # Serverless directories
 .serverless
 
-# IDE
+# IDE / Editor
 .idea
+.editorconfig
 
 # Service worker
 sw.*
+
+# Mac OSX
+.DS_Store
