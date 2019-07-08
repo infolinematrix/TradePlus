@@ -27,7 +27,8 @@ class NodesController extends ReactorController
      */
     public function index()
     {
-        $nodes = Node::sortable()->filteredByStatus()
+
+      $nodes = Node::sortable()->filteredByStatus()
             ->paginate();
 
         return $this->compileView('nodes.index', compact('nodes'), trans('nodes.all'));

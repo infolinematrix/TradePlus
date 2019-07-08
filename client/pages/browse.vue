@@ -17,7 +17,6 @@
         </v-breadcrumbs>
       </v-container>
 
-
       <v-alert
         v-model="infobox"
         dismissible
@@ -25,30 +24,39 @@
         class="grey--text"
       >List of trusted professionals available to help with plumbing issues. An experienced plumber can help you with garbage disposal unblocking, bathroom repair and drain replacement to keep your project running smoothly.</v-alert>
 
-      <v-tabs centered color="white" icons-and-text show-arrows class="mt-3">
-        <v-tabs-slider color="primary"></v-tabs-slider>
+      <v-tabs centered color="white" icons-and-text show-arrows class="mt-2 mb-2">
+        <v-tabs-slider color="white"></v-tabs-slider>
 
         <v-tab href="#tab-1">
-          <span class="font-weight-bold text-capitalize">Products</span>
-          <v-icon color="primary" size="40">phone</v-icon>
+          <v-sheet>
+            <v-img src="product.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Products</span>
+          </v-sheet>
         </v-tab>
 
         <v-tab href="#tab-2">
-          <span class="font-weight-bold text-capitalize">Services</span>
-          <v-icon color="green" size="40">account_box</v-icon>
+           <v-sheet>
+            <v-img src="service.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Services</span>
+          </v-sheet>
         </v-tab>
 
-        <v-tab href="#tab-3">
-          <span class="font-weight-bold text-capitalize">Coupons</span>
-          <v-icon color="green" size="40">account_box</v-icon>
+        <v-tab href="#tab-2">
+           <v-sheet>
+            <v-img src="coupon.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Coupon</span>
+          </v-sheet>
         </v-tab>
 
-        <v-tab href="#tab-3">
-          <span class="font-weight-bold text-capitalize">Sale</span>
-          <v-icon color="green" size="40">account_box</v-icon>
+
+        <v-tab href="#tab-2">
+           <v-sheet>
+            <v-img src="sale.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Coupon</span>
+          </v-sheet>
         </v-tab>
 
-        <v-tab-item v-for="i in 3" :key="i" :value="'tab-' + i">
+        <v-tab-item v-for="i in 4" :key="i" :value="'tab-' + i" class="pt-3">
           <v-card flat>
             <v-card-text>{{ text }}</v-card-text>
           </v-card>
