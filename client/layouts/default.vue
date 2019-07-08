@@ -24,15 +24,20 @@
       <nuxt/>
       </v-container>
     </v-content>
+
+    <footer></footer>
+
   </v-app>
 </template>
 
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
+import Footer from "~/components/Footer.vue";
 
 export default {
   components: {
-    ToolbarMenu
+    ToolbarMenu,
+    Footer
   },
   data() {
     return {

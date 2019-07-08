@@ -10,10 +10,9 @@ export default {
   srcDir: 'client/',
 
   env: {
-    baseUrl: process.env.API_URL || 'http://localhost:8080/api',
-    appName: process.env.APP_NAME || 'Hotel',
-    appLocale: process.env.APP_LOCALE || 'en',
-    githubAuth: !!process.env.GITHUB_CLIENT_ID
+    baseUrl: process.env.API_URL || 'http://localhost:8000/api',
+    appName: process.env.APP_NAME || 'MY APPLICATION',
+    appLocale: process.env.APP_LOCALE || 'en'
   },
   /*
   ** Headers of the page

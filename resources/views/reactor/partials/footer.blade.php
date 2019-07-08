@@ -1,12 +1,4 @@
 <!-- /.content-wrapper -->
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-        <b>Version :</b> {{ nuclear_version() }}
-    </div>
-    <strong>Copyright &copy; {{ date('Y') }} Matrix Infoline.</strong> All
-    rights
-    reserved.
-</footer>
 
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">

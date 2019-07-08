@@ -9,19 +9,59 @@
         <span class="grey--text">1254 found</span>
       </v-toolbar>
 
-      <v-container fluid grid-list-sm class="pa-0 pl-3">
+      <v-container fluid grid-list-sm class="pa-0 pl-3 border-bottom">
         <v-breadcrumbs :items="items" class="pa-0 mb-1">
           <template v-slot:divider>
             <v-icon>chevron_right</v-icon>
           </template>
         </v-breadcrumbs>
       </v-container>
+
       <v-alert
         v-model="infobox"
         dismissible
         color="default"
-        class="black--text pb-0"
+        class="grey--text"
       >List of trusted professionals available to help with plumbing issues. An experienced plumber can help you with garbage disposal unblocking, bathroom repair and drain replacement to keep your project running smoothly.</v-alert>
+
+      <v-tabs centered color="white" icons-and-text show-arrows class="mt-2 mb-2">
+        <v-tabs-slider color="white"></v-tabs-slider>
+
+        <v-tab href="#tab-1">
+          <v-sheet>
+            <v-img src="product.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Products</span>
+          </v-sheet>
+        </v-tab>
+
+        <v-tab href="#tab-2">
+           <v-sheet>
+            <v-img src="service.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Services</span>
+          </v-sheet>
+        </v-tab>
+
+        <v-tab href="#tab-2">
+           <v-sheet>
+            <v-img src="coupon.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Coupon</span>
+          </v-sheet>
+        </v-tab>
+
+
+        <v-tab href="#tab-2">
+           <v-sheet>
+            <v-img src="sale.png" contain alt="lorem"></v-img>
+            <span class="font-weight-bold text-capitalize">Coupon</span>
+          </v-sheet>
+        </v-tab>
+
+        <v-tab-item v-for="i in 4" :key="i" :value="'tab-' + i" class="pt-3">
+          <v-card flat>
+            <v-card-text>{{ text }}</v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
 
       <v-container fluid grid-list-sm class="pa-2">
         <v-layout row wrap>
@@ -101,7 +141,7 @@
                   <div class="pb-0 mb-1 grey--text caption">Sponsored</div>
                   <nuxt-link
                     to="#"
-                    class="title font-weight-medium"
+                    class="title-2 font-weight-bold"
                   >Plastic Bottle, Best price gurentee</nuxt-link>
                   <div class="font-weight-medium mt-2 grey--text">{{text}}</div>
                   <v-card-actions class="px-0">

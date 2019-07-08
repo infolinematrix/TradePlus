@@ -72,17 +72,18 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2019</span>
-    </v-footer>
+   <footer-nav></footer-nav>
   </v-app>
 </template>
 
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
+import FooterNav from "~/components/Footer.vue";
+
 export default {
   components: {
-    ToolbarMenu
+    ToolbarMenu,
+    FooterNav
   },
   data() {
     return {
