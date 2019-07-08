@@ -14,8 +14,12 @@ use Illuminate\Http\Request;
  */
 Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], function () {
 
-    //Route::get('page/{slug}', 'ApiController@getPage');
-    //Route::post('payment', 'PaymentController@checkout');
+    Route::get('/', function (Request $request) {
+        die("Welcome, REST API");
+    });
+
+    Route::get('settings', 'ApiController@getSettings');
+
 });
 
 Route::group(['namespace' => 'ReactorCMS\Http\Controllers'], function () {
@@ -50,42 +54,35 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::post('checkout', 'PaymentController@AuthPayment');
     Route::get('checkout/{provider}', 'PaymentController@checkout');
     Route::get('checkout/authorised/{provider}', 'PaymentController@handleProviderCallback');
-    
+
 });
-
-
 
 /**
  * Application Route
  */
-Route::group(['middleware' => ['api','track'], 'namespace' => 'Extension\Site\Http'], function () {
+Route::group(['middleware' => ['api', 'track'], 'namespace' => 'Extension\Site\Http'], function () {
 
-    Route::get('/', function (Request $request) {
-        die("Welcome, REST API");
-    });
-    
     //Pages
-    Route::get('pages','ApiController@getPages');
-    Route::get('page/{slug}','ApiController@getPage');
+    Route::get('pages', 'ApiController@getPages');
+    Route::get('page/{slug}', 'ApiController@getPage');
 
     //Blogs
 
-    Route::get('blogs','ApiController@getBlogs');
-    Route::get('blog/{slug}','ApiController@getBlog');
+    Route::get('blogs', 'ApiController@getBlogs');
+    Route::get('blog/{slug}', 'ApiController@getBlog');
 
-    Route::get('packages','ApiController@getPackages');
-    
+    Route::get('packages', 'ApiController@getPackages');
+
     // Contact
-    Route::post('contact','ApiController@contact');
+    Route::post('contact', 'ApiController@contact');
 
     //Settings
-    Route::get('settings','ApiController@getSettings');
+    //Route::get('settings','ApiController@getSettings');
 
     //Room type
-    Route::get('roomtypes','RoomTypeController@getRoomtype');
-    Route::get('room/{slug}','RoomTypeController@index');
-    Route::post('checkavailibulity','RoomTypeController@checkAvailibility');
-
+    Route::get('roomtypes', 'RoomTypeController@getRoomtype');
+    Route::get('room/{slug}', 'RoomTypeController@index');
+    Route::post('checkavailibulity', 'RoomTypeController@checkAvailibility');
 
     //Route::post('checkout','RoomTypeController@checkOut');
 

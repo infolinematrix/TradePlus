@@ -5,7 +5,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 export default  ({ app, store, redirect, $axios }) => {
   $axios.defaults.baseURL = process.env.baseUrl
-  console.log(process.env.baseUrl)
   if (process.server) {
     return
   }
@@ -69,6 +68,9 @@ export default  ({ app, store, redirect, $axios }) => {
         cancelButtonText: app.i18n.t('cancel')
       })
     }
+
+
+
 
     return Promise.reject(error)
   })

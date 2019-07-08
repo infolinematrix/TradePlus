@@ -42,3 +42,12 @@
     </v-footer>
   </div>
 </template>
+
+
+<script>
+export default {
+  mounted() {
+    this.$store.dispatch('fetchSettings')
+  }
+}
+</script>
