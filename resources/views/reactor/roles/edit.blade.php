@@ -24,7 +24,7 @@
                 <div class="col-md-8 border-right">
                     @include('partials.contents.form')
                 </div>
-                <div class="col-md-4">
+                <!--<div class="col-md-4">
                     <h4>OPTIONS</h4>
                     <ul class="list-unstyled">
                         <li>
@@ -32,6 +32,7 @@
                         </li>
                     </ul>
                 </div>
+                -->
             </div>
 
 

@@ -18,6 +18,15 @@ class EditBasicpageForm extends Form {
     public function buildForm()
     {
         $this->compose('Reactor\Hierarchy\Http\Forms\NodeSourceForm');
-            }
+                        $this->add('description', 'textarea', [
+            'label' => 'Description',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                    }
 
 }

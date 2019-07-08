@@ -9,6 +9,7 @@ use ReactorCMS\Http\Controllers\Traits\ModifiesPermissions;
 use ReactorCMS\Http\Controllers\Traits\UsesUserForms;
 use ReactorCMS\Entities\User;
 
+
 class UsersController extends ReactorController
 {
 
@@ -75,6 +76,8 @@ class UsersController extends ReactorController
     {
         $user = User::with('roles')->findOrFail($id);
 
+
+
         list($form, $count) = $this->getAddRoleForm($id, $user);
 
         return $this->compileView('users.roles', compact('user', 'form', 'count'), trans('roles.title'));
@@ -111,13 +114,18 @@ class UsersController extends ReactorController
      * @param int $id
      * @return Response
      */
-    public function dissociateRole(Request $request, $id)
+    public function dissociateRole(Request $request, $id, $role)
     {
+
+
+
+        
         $this->authorize('EDIT_USERS');
 
         $user = User::findOrFail($id);
 
-        $user->retractRole($request->input('role'));
+
+        $user->retractRole($role);
 
         app('reactor.viewcache')->flushReactor();
 
