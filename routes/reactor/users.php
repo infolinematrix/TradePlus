@@ -32,7 +32,8 @@ Route::group(['middleware' => 'can:ACCESS_USERS'], function () {
     Route::put('users/{id}/roles', [
         'uses' => 'UsersController@associateRole',
         'as' => 'reactor.users.roles.associate']);
-    Route::delete('users/{id}/roles', [
+
+    Route::delete('users/{id}/{role}/roles', [
         'uses' => 'UsersController@dissociateRole',
         'as' => 'reactor.users.roles.dissociate']);
 

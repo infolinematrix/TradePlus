@@ -39,8 +39,7 @@ trait UsesUserForms {
             'model' => $user
         ]);
 
-        $form->add('home', 'node');
-
+       
         return $form;
     }
 

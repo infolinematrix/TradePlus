@@ -17,12 +17,13 @@
 
                 <td>
                     {{ $role->name }}
+                    {{ $role->getKey() }}
                 </td>
 
 
                 <td class="text-right">
                     {!! delete_form(
-                     route('reactor.users.roles.dissociate', $user->getKey()),
+                     route('reactor.users.roles.dissociate', [$user->getKey(), $role->name]),
                      trans('roles.dissociate'),
                      '<input type="hidden" name="role" value="' . $role->name . '">',
                      true

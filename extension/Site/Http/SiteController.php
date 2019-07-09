@@ -23,6 +23,7 @@ use ReactorCMS\Entities\Testimonial;
 use ReactorCMS\Entities\Contacts;
 
 
+
 class SiteController extends PublicController
 {
 
@@ -38,6 +39,7 @@ class SiteController extends PublicController
 
     public function getHome()
     {
+
 
         return $this->compileView('Site::index', compact(null), 'SITE HOME');
     }

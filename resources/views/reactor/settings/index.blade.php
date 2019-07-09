@@ -141,7 +141,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12">
                             {!! form_row($form->site_mode) !!}
-                            {!! form_row($form->default_language) !!}
+
 
                             <fieldset class="scheduler-border">
                                 <legend class="scheduler-border">Google Settings</legend>

@@ -33,10 +33,6 @@
                                 <li>
                                     <a href="{!! route('reactor.users.roles',$user->getKey()) !!}">Assign Role</a>
                                 </li>
-                                <li>
-                                    <a href="{!! route('reactor.users.permissions',$user->getKey()) !!}">Assign
-                                        Permission</a>
-                                </li>
 
                                 <li>
                                     <a href="{!! route('reactor.users.password',$user->getKey()) !!}">Change

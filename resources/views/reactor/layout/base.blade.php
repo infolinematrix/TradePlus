@@ -68,6 +68,7 @@
 {!! Html::script('assets/reactor/js/tags.js') !!}
 
 {!! Html::script('assets/reactor/js/custom.js') !!}
+{!! Html::script('assets/reactor/js/backend.js') !!}
 
 @yield('scripts')
 

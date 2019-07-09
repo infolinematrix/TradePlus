@@ -1,5 +1,6 @@
 <div class="box-body">
     {!! form_start($form) !!}
+    {!! form_row($form->title) !!}
         {!! form_row($form->tag_name) !!}
     {!! form_rest($form) !!}
 </div>

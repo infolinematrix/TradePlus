@@ -92,11 +92,12 @@
                     <li><a href="{!! route('reactor.users.index') !!}"><i class="fa fa-circle-o"></i> Manage Users</a>
                     </li>
 
-                    <!--
+
                     <li class="active"><a href="{!! route('reactor.users.create') !!}"><i class="fa fa-circle-o"></i>
                             Create User</a></li>
                     <li class="active"><a href="{!! route('reactor.roles.index') !!}"><i class="fa fa-circle-o"></i>
                             Manage Roles</a></li>
+                <!--
                     <li class="active"><a href="{!! route('reactor.permissions.index') !!}"><i
                                     class="fa fa-circle-o"></i>
                             Manage Permissions</a></li>
@@ -106,7 +107,7 @@
         </ul>
 
 
-        <!-- 
+        <!--
         <ul class="sidebar-menu" data-widget="tree">
             <li class="treeview">
                 <a href="#">
@@ -122,7 +123,7 @@
                 </ul>
             </li>
         </ul>
-        
+        -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="treeview">
                 <a href="#">
@@ -138,7 +139,7 @@
                 </ul>
             </li>
         </ul>
-    -->
+
     </section>
     <!-- /.sidebar -->
 </aside>

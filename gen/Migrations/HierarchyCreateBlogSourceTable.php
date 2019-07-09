@@ -6,7 +6,11 @@ namespace gen\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+<<<<<<< HEAD
 use Nuclear\Hierarchy\Contract\Migration\MigrationContract;
+=======
+use Reactor\Hierarchy\Contract\Migration\MigrationContract;
+>>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
 
 class HierarchyCreateBlogSourceTable extends Migration implements MigrationContract {
 

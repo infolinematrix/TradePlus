@@ -17,7 +17,11 @@ class EditBlogForm extends Form {
 
     public function buildForm()
     {
+<<<<<<< HEAD
         $this->compose('Reactor\Hierarchy\Http\Forms\NodeSourceForm');
+=======
+        $this->compose('Nuclear\Hierarchy\Http\Forms\NodeSourceForm');
+>>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
                         $this->add('content', 'wysiwyg', [
             'label' => 'Content',
             'help_block' => ['text' => ''],
