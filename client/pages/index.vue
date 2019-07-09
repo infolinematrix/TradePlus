@@ -214,6 +214,7 @@ export default {
 
   data() {
     return {
+      r:'',
       text:
         'The typography of an application is just as important as its functionality. Vuetify.js uses the Material Design spec Roboto Font.',
       text2:

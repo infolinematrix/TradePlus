@@ -55,6 +55,9 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('checkout/{provider}', 'PaymentController@checkout');
     Route::get('checkout/authorised/{provider}', 'PaymentController@handleProviderCallback');
 
+
+    Route::get('categories/{parent?}','BusinessController@getCategories');
+    Route::get('locations','BusinessController@getLocations');
 });
 
 /**

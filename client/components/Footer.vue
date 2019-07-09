@@ -37,7 +37,7 @@
           </v-flex>
         </v-layout>
         <v-divider></v-divider>
-        <v-layout row wrap justify-center pa-5>Copyrights "Company Name"</v-layout>
+        <v-layout row wrap justify-center pa-5>Copyrights </v-layout>
       </v-container>
     </v-footer>
   </div>
@@ -45,9 +45,8 @@
 
 
 <script>
+
 export default {
-  mounted() {
-    this.$store.dispatch('fetchSettings')
-  }
+
 }
 </script>

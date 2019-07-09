@@ -11,14 +11,14 @@ class NsBasicpage extends NodeSourceExtension {
     /**
      * The fillable fields for the model.
      */
-    protected $fillable = [];
+    protected $fillable = ['content'];
 
     /**
      * Returns the fields for the model
      */
     public static function getSourceFields()
     {
-        return [];
+        return ['content'];
     }
 
     /**

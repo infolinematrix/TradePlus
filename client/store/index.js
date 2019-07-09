@@ -7,6 +7,12 @@ export const state = () => ({
 
 export const getters = {
   settings: state => state.settings,
+
+  setting: (state) => (str_variable) => {
+    console.log(state.settings)
+    const s = state.settings.find(s => s.variable === str_variable)
+    return s.value
+  }
 }
 
 // mutations
@@ -21,7 +27,7 @@ export const actions = {
   async fetchSettings ({ commit }) {
     try {
       const { data } = await this.$axios.get('settings')
-      console.log(data)
+
       commit('FETCH_SETTINGS', data)
     } catch (e) {
       console.log("Settings Error! Check State")

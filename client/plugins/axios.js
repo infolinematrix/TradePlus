@@ -10,6 +10,8 @@ export default  ({ app, store, redirect, $axios }) => {
   }
 
 
+
+
   // Request interceptor
   $axios.interceptors.request.use(request => {
     request.baseURL = process.env.baseUrl

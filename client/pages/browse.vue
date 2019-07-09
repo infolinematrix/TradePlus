@@ -1,8 +1,8 @@
 <template>
   <v-layout row>
     <v-flex>
-      <v-toolbar flat dense class="transparent">
-        <v-toolbar-title class>
+      <v-toolbar flat dense class="transparent" style="height:40px">
+        <v-toolbar-title class="">
           <h1 class="body-2">Cardiology Specialist in Canada</h1>
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -10,7 +10,7 @@
       </v-toolbar>
 
       <v-container fluid grid-list-sm class="pa-0 pl-3 border-bottom">
-        <v-breadcrumbs :items="items" class="pa-0 mb-1">
+        <v-breadcrumbs :items="items" class="pl-0 pt-0 mt-0">
           <template v-slot:divider>
             <v-icon>chevron_right</v-icon>
           </template>
@@ -21,7 +21,7 @@
         v-model="infobox"
         dismissible
         color="default"
-        class="grey--text"
+        class="grey--text mt-0"
       >List of trusted professionals available to help with plumbing issues. An experienced plumber can help you with garbage disposal unblocking, bathroom repair and drain replacement to keep your project running smoothly.</v-alert>
 
       <v-tabs centered color="white" icons-and-text show-arrows class="mt-2 mb-2">

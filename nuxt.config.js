@@ -52,6 +52,7 @@ export default {
   },
 
 
+
   /*
    ** Global CSS
    */
@@ -91,6 +92,7 @@ export default {
   /*
    ** Build configuration
    */
+
   build: {
     transpile: ['vuetify/lib'],
     plugins: [new VuetifyLoaderPlugin()],
@@ -99,6 +101,8 @@ export default {
         import: ['~assets/style/variables.styl']
       }
     },
+
+
     /*
      ** You can extend webpack config here
      */

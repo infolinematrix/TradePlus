@@ -21,6 +21,7 @@
     </v-toolbar>
 
     <v-sheet>
+
       <v-img class="white--text" height="500px" src="hero1.png">
         <v-container grid-list-lg fill-height class="grey--text">
           <v-layout column justify-center align-center mt-5>
@@ -78,7 +79,7 @@
 
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
-import FooterNav from "~/components/Footer.vue";
+import FooterNav from "~/components/Footer.vue"
 
 export default {
   components: {
@@ -89,6 +90,7 @@ export default {
     return {
       drawer: false,
       fixed: true,
+      r:'',
       items: [
         {
           icon: 'apps',
@@ -105,6 +107,7 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
-  }
+  },
+
 }
 </script>
