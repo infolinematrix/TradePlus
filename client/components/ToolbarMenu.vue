@@ -20,7 +20,7 @@
         </v-list-tile>
       </v-list>
     </v-menu>
-    <v-btn icon>
+    <v-btn icon  @click.stop="dialog = true">
       <v-icon>notifications</v-icon>
     </v-btn>
     <v-btn icon>
@@ -28,5 +28,45 @@
         <img src="/avatar.png" alt="Vuetify">
       </v-avatar>
     </v-btn>
+
+
+
+<v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-top-transition">
+
+
+        <v-toolbar flat color="white" class="pl-0">
+
+
+           <v-text-field
+          append-icon="mic"
+          flat
+          solo
+          prepend-inner-icon="search"
+          class="mx-3 ml-0 mr-0 toolbar-search"
+          readonly
+          v-model="search_text"
+        ></v-text-field>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+             <v-btn icon  @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+
+
+
+    </v-dialog>
   </v-layout>
 </template>
+
+
+<script>
+export default {
+  data(){
+    return {
+      dialog: false
+    }
+  }
+}
+</script>

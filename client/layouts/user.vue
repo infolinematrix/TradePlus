@@ -111,6 +111,7 @@
 </template>
 
 <script>
+
 import ToolbarMenu from '~/components/ToolbarMenu'
 export default {
 

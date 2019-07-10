@@ -1,8 +1,5 @@
-const util = {
-  getName() {
-    alert("HELLO! FUNCTION")
-  },
 
+const util = {
 
 
   text_truncate(str, length, ending) {
@@ -17,6 +14,19 @@ const util = {
     } else {
       return str;
     }
+  },
+
+
+  category_url (str, store) {
+
+    let str_location = ''
+    let location = store.getters['app/filter'].location
+
+    if (location) {
+      str_location = '/' + location.slug
+    }
+
+    return '/browse/' + str + str_location
   }
 
 }

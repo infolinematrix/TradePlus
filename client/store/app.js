@@ -1,29 +1,22 @@
 // state
 const state = () => ({
-    cart: [],
+  filter: {
+    category: {"id":100,"parent_id":null,"source_id":200,"title":"Services","slug":"services"},
+    location: {"id":101,"parent_id":null,"source_id":201,"title":"Siliguri","slug":"siliguri"},
+  },
     settings: [],
 })
 
 // getters
 const getters = {
     settings: state => state.settings,
-    carts: state => state.cart,
-    cart_counter: state => {
-        return state.cart.length
-    },
-    
+    filter: state => state.filter,
 }
 
 // mutation
 const mutations = {
     set_settings (state, payload) {
         state.settings = payload
-    },
-    append(state, payload) {
-        state.cart.push(payload)
-    },
-    delete(state, payload) {
-        state.cart.splice(state.cart.indexOf(payload), 1);
     },
 }
 
@@ -35,7 +28,7 @@ const actions = {
             console.log(response.data)
             context.commit('set_settings', response.data)
         });
-        
+
     },
     addToCart(context, params) {
         context.commit('append', params)
