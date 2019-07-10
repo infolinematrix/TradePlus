@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use ReactorCMS\Entities\Settings;
 use ReactorCMS\Http\Controllers\Traits\UseSettingsForm;
 use Intervention\Image\Facades\Image as ImageFacade;
+use Illuminate\Support\Facades\File;
 class SettingsController extends ReactorController
 {
 
@@ -21,10 +22,8 @@ class SettingsController extends ReactorController
 
     public function index()
     {
-
         $form = $this->getCreateForm();
         $site_logo = getSettings('site_logo');
-
         return $this->compileView('settings.index', compact('form','site_logo'), 'Application Settings');
     }
 
@@ -35,17 +34,16 @@ class SettingsController extends ReactorController
 
         $values = array_except($request->all(), ['_token']);
 
-
-
         $file = $request->file('site_logo');
-
 
         if($file){
 
             $filename = str_random(6).'_' . $file->getClientOriginalName();
-
             //--Save Image in Directory--//
-            $destination_path = public_path('uploads/' . $filename);
+            $img = Settings::where('variable', 'site_logo')->first();
+            File::delete(upload_path($img->value));
+
+            $destination_path = public_path('assets/' . $filename);
             ImageFacade::make($file->getRealPath())
                 ->resize(config('site.site_logo.width'), config('site.site_logo.height'))->save($destination_path);
 

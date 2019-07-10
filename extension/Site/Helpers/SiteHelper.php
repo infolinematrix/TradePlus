@@ -34,6 +34,7 @@ if (!function_exists('getMailconfig')) {
     {
 
 
+       
         $config = [
             'driver' => trim(getSettings('email_driver')),
             'host' => trim(getSettings('email_host')),

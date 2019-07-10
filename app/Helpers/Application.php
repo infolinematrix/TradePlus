@@ -20,28 +20,7 @@ use ReactorCMS\Entities\Settings;
 
 /*Get Mail Confriguration*/
 
-if (!function_exists('getMailconfig')) {
 
-    function getMailconfig()
-    {
-        $config = [
-            'driver' => getSettings('email_driver'),
-            'host' => getSettings('email_host'),
-            'port' => getSettings('email_port'),
-            'from' => [
-                'address' => getSettings('email_from_email'),
-                'name' => config('application.company.title')],
-            'encryption' => getSettings('email_encryption'),
-            'username' => getSettings('email_user'),
-            'password' => getSettings('email_password'),
-            'sendmail' => '/usr/sbin/sendmail -bs',
-            'pretend' => false,
-        ];
-
-        return $config;
-
-    }
-}
 
 /*Get Settings*/
 

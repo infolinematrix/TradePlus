@@ -64,7 +64,8 @@
                         <ul class="nav nav-pills nav-stacked">
                             <li><a href="{!! route('reactor.nodetypes.fields', $nodetype->getKey()) !!}"><i class="fa fa-ellipsis-v "></i> Fields</a></li>
                             <li><a href="{!! route('reactor.nodetypes.nodes', $nodetype->getKey()) !!}"><i class="fa fa-ellipsis-v "></i> Nodes</a></li>
-                            <li><a href="#"><i class="fa fa-ellipsis-v"></i> Delete</a></li>
+
+
                         </ul>
                     </div>
                     <!-- /.box-body -->
