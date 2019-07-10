@@ -65,7 +65,8 @@
 export default {
   data(){
     return {
-      dialog: false
+      dialog: false,
+      search_text: 'Air Conditioner maintanence'
     }
   }
 }

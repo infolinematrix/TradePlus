@@ -29,7 +29,7 @@ class LoginController extends Controller
         $data = null;
 
         $user = $request->user();
-        
+
         if ($user) {
             $data['user'] = $user;
             $data['role'] = $user->roles()->first();
@@ -38,8 +38,8 @@ class LoginController extends Controller
         return $data;
     }
 
-    
-   
+
+
     /**
      * Attempt to log the user into the application.
      *
@@ -49,7 +49,7 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
         $token = $this->guard()->attempt($this->credentials($request));
-        
+
 
         if ($token) {
             $this->guard()->setToken($token);
@@ -60,7 +60,7 @@ class LoginController extends Controller
         return false;
     }
 
- 
+
 
     protected function sendLoginResponse(Request $request)
     {
@@ -79,7 +79,7 @@ class LoginController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {
-        
+
         return ['error' => trans('auth.failed')];
     }
 
