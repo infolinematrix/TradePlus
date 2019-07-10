@@ -547,14 +547,13 @@ class BusinessController extends PublicController
         //$nodes = Node::withType('categories')->translatedIn(locale())->get();
 
         $nodes = Node::withType('categories');
+
         if($parent == 0) $nodes->where('parent_id', null);
         if($parent != 0) $nodes->where('parent_id', $parent);
 
-        $categories = $nodes->translatedIn(locale())->get();
-
+        $categories = $nodes->get();
 
         foreach ($categories as $node) {
-
             $data[] = [
                 'id' => $node->getKey(),
                 'parent_id' => $node->parent_id,

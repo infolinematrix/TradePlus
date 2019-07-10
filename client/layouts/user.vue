@@ -2,7 +2,7 @@
   <div id="application">
     <v-app>
       <v-navigation-drawer
-        width="300"
+        width="250"
         fixed
         :clipped="$vuetify.breakpoint.mdAndUp"
         app
@@ -115,7 +115,7 @@
 import ToolbarMenu from '~/components/ToolbarMenu'
 export default {
 
-  middleware: "auth",
+  //middleware: "auth",
 
   components: {
     ToolbarMenu

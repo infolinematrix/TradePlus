@@ -45,7 +45,7 @@
           <v-divider></v-divider>
 
           <v-subheader>Filter by Category</v-subheader>
-          <v-list-tile v-for="category in nodes" :key="category" class="pb-0 mb-0">
+          <v-list-tile v-for="category in this.categories" :key="category" class="pb-0 mb-0">
             <v-list-tile-content>
               <v-list-tile-title>
                 <nuxt-link :to="$helpers.category_url(category.slug, $store)">{{ category.title}}</nuxt-link>
@@ -222,7 +222,7 @@ export default {
       notifications: null,
       search_text: 'Lather Mobile Cover',
       i: 0,
-      nodes: null,
+      categories: null,
       parent: 0
     }
   },
@@ -251,11 +251,8 @@ export default {
 
   async mounted() {
     this.$axios.get('categories/' + this.parent).then(response => {
-      this.nodes = response.data
+      this.categories = response.data
     })
-
-    //this.getCategories()
-    //alert(this.parent)
   }
 }
 </script>

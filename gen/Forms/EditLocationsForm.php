@@ -24,7 +24,6 @@ class EditLocationsForm extends Form {
 
             
             
-<<<<<<< HEAD
             'choices' => ['1' => 'Yes' , '0' => 'No']
 
         ]);
@@ -46,9 +45,6 @@ class EditLocationsForm extends Form {
             
             
             
-=======
-            'choices' => ['1' => 'YES','1' => 'NO']
->>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
 
         ]);
                     }

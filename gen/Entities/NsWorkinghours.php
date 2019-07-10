@@ -11,22 +11,14 @@ class NsWorkinghours extends NodeSourceExtension {
     /**
      * The fillable fields for the model.
      */
-<<<<<<< HEAD
     protected $fillable = ['hours'];
-=======
-    protected $fillable = [];
->>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
 
     /**
      * Returns the fields for the model
      */
     public static function getSourceFields()
     {
-<<<<<<< HEAD
         return ['hours'];
-=======
-        return [];
->>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
     }
 
     /**

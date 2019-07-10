@@ -11,22 +11,14 @@ class NsLocations extends NodeSourceExtension {
     /**
      * The fillable fields for the model.
      */
-<<<<<<< HEAD
     protected $fillable = ['popular', 'lat', 'long'];
-=======
-    protected $fillable = ['popular'];
->>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
 
     /**
      * Returns the fields for the model
      */
     public static function getSourceFields()
     {
-<<<<<<< HEAD
         return ['popular', 'lat', 'long'];
-=======
-        return ['popular'];
->>>>>>> e674ff3344db0b34caa2f77e15d33931c071ddcf
     }
 
     /**
