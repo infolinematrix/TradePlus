@@ -6,7 +6,7 @@ namespace gen\Migrations;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Reactor\Hierarchy\Contract\Migration\MigrationContract;
+use Nuclear\Hierarchy\Contract\Migration\MigrationContract;
 
 class HierarchyCreateCategorySourceTable extends Migration implements MigrationContract {
 

@@ -42,6 +42,7 @@ class CreateForm extends Form
         ]);
 
 
+        /*
         $this->add('email_driver', 'select', [
             'choices' => ['SMTP' => 'SMTP', 'MAIL' => 'PHP MAIL'],
             'label' => 'Email Driver',
@@ -77,6 +78,7 @@ class CreateForm extends Form
             'label' => 'From Name',
         ]);
 
+        */
 
         $this->add('google_map_api', 'text', [
             'label' => 'Google Map Api',

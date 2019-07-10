@@ -8,6 +8,10 @@
 
 return [
 
-    
+    'site_logo' => [
+
+        'width' => 180,
+        'height' => 180
+    ],
 
 ];

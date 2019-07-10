@@ -11,14 +11,14 @@ class NsProducttype extends NodeSourceExtension {
     /**
      * The fillable fields for the model.
      */
-    protected $fillable = ['product_price', 'product_content', 'product_unit', 'product_currency', 'product_discount', 'product_show_price', 'product_moq'];
+    protected $fillable = ['product_description'];
 
     /**
      * Returns the fields for the model
      */
     public static function getSourceFields()
     {
-        return ['product_price', 'product_content', 'product_unit', 'product_currency', 'product_discount', 'product_show_price', 'product_moq'];
+        return ['product_description'];
     }
 
     /**

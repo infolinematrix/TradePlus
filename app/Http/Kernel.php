@@ -16,10 +16,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
-        \Illuminate\Session\Middleware\StartSession::class,
+
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
         \Spatie\Cors\Cors::class,
@@ -34,7 +37,7 @@ class Kernel extends HttpKernel
     protected $middlewareGroups = [
         'web' => [
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \ReactorCMS\Http\Middleware\EncryptCookies::class,
             \ReactorCMS\Http\Middleware\VerifyCsrfToken::class,

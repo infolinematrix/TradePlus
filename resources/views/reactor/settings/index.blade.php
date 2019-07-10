@@ -9,7 +9,7 @@
      if($site_logo){?>
     $('.img').ezdz({
 
-        text: '<img src="{!! asset('/'.$site_logo) !!}">',
+        text: '<img src="{!! asset('/assets/'.$site_logo) !!}">',
     });
     <?php }else{?>
 
@@ -82,47 +82,13 @@
                                         {!! form_row($form->address) !!}
                                     </div>
 
-                                    <div class="col-md-12">
-                                        {!! form_row($form->office_timing) !!}
-                                    </div>
 
 
                                 </div>
 
                             </fieldset>
 
-                            <fieldset class="scheduler-border">
-                                <legend class="scheduler-border">Email Settings</legend>
 
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        {!! form_row($form->email_driver) !!}
-                                    </div>
-                                    <div class="col-md-5">
-                                        {!! form_row($form->email_host) !!}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {!! form_row($form->email_port) !!}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {!! form_row($form->email_encryption) !!}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {!! form_row($form->email_user) !!}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {!! form_row($form->email_password) !!}
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        {!! form_row($form->email_from_email) !!}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {!! form_row($form->email_form_name) !!}
-                                    </div>
-                                </div>
-
-                            </fieldset>
 
                             <fieldset class="scheduler-border">
                                 <legend class="scheduler-border">Social Link</legend>
@@ -179,15 +145,4 @@
         {!! form_end($form,false) !!}
 
     </section>
-
-
-
-
-
-
-
-
-
-
-
 @endsection

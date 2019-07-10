@@ -18,10 +18,11 @@ class EditPagesForm extends Form {
     public function buildForm()
     {
         $this->compose('Reactor\Hierarchy\Http\Forms\NodeSourceForm');
-                        $this->add('content', 'textarea', [
+                        $this->add('content', 'wysiwyg', [
             'label' => 'Content',
             'help_block' => ['text' => ''],
 
+                        'rules' => "required",
             
             
             

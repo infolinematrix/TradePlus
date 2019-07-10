@@ -24,7 +24,27 @@ class EditLocationsForm extends Form {
 
             
             
-            'choices' => ['1' => 'YES','1' => 'NO']
+            'choices' => ['1' => 'Yes' , '0' => 'No']
+
+        ]);
+                                $this->add('lat', 'double', [
+            'label' => 'Latitude',
+            'help_block' => ['text' => ''],
+
+                        'rules' => 'required',
+            
+            
+            
+
+        ]);
+                                $this->add('long', 'double', [
+            'label' => 'Longitude',
+            'help_block' => ['text' => ''],
+
+                        'rules' => 'required',
+            
+            
+            
 
         ]);
                     }

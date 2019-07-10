@@ -11,14 +11,14 @@ class NsCategories extends NodeSourceExtension {
     /**
      * The fillable fields for the model.
      */
-    protected $fillable = ['popular', 'category_icon'];
+    protected $fillable = ['category_icon', 'popular'];
 
     /**
      * Returns the fields for the model
      */
     public static function getSourceFields()
     {
-        return ['popular', 'category_icon'];
+        return ['category_icon', 'popular'];
     }
 
     /**

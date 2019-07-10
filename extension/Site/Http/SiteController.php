@@ -40,7 +40,7 @@ class SiteController extends PublicController
     public function getHome()
     {
 
-
+       
         return $this->compileView('Site::index', compact(null), 'SITE HOME');
     }
 

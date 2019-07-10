@@ -18,22 +18,22 @@ class EditCategoriesForm extends Form {
     public function buildForm()
     {
         $this->compose('Reactor\Hierarchy\Http\Forms\NodeSourceForm');
-                        $this->add('popular', 'select', [
-            'label' => 'Make Popular',
-            'help_block' => ['text' => ''],
-
-            
-            
-            'choices' => ['0' => 'No' , '1' => 'Yes']
-
-        ]);
-                                $this->add('category_icon', 'text', [
+                        $this->add('category_icon', 'text', [
             'label' => 'Icon',
             'help_block' => ['text' => ''],
 
             
             
             
+
+        ]);
+                                $this->add('popular', 'select', [
+            'label' => 'Make Popular',
+            'help_block' => ['text' => ''],
+
+            
+            
+            'choices' => ['1' => 'Yes' ,  '0' => 'No']
 
         ]);
                     }

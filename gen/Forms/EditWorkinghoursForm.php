@@ -18,6 +18,15 @@ class EditWorkinghoursForm extends Form {
     public function buildForm()
     {
         $this->compose('Reactor\Hierarchy\Http\Forms\NodeSourceForm');
-            }
+                        $this->add('hours', 'textarea', [
+            'label' => 'Hours',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                    }
 
 }
