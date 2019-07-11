@@ -66,6 +66,12 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::post('post-business','BusinessController@postBusiness');
     Route::get('edit-business','BusinessController@editBusiness');
     Route::post('business/update','BusinessController@updateBusiness');
+
+    /*Services*/
+    Route::post('post-services','BusinessController@postServices');
+    Route::get('edit-services','BusinessController@editPost');
+    Route::post('udpate/services','BusinessController@updatePost');
+
 });
 
 /**

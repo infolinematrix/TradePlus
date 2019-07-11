@@ -81,6 +81,8 @@
 </template>
 
 <script>
+import swal from "sweetalert2";
+
 import CategoryPopup from "~/components/CategoryPopup.vue";
 
 export default {
@@ -129,13 +131,31 @@ export default {
         formData.append("category", this.form.id);
         
          this.$axios
-            .post(`post-services`, formData)
+            .post(`/udpate/services`, formData)
             .then(response => {
-            this.$root.$router.push({path: '/business/post/edit'})
+             swal.fire({
+             title: "Successfully Updated",
+             type: "success",
+             animation: true,
+             showCloseButton: true
+            })
           })
 
      }
-        
+  },
+  
+  mounted() {
+
+       this.$axios
+            .get(`edit-services`)
+            .then(response => {
+               this.form.service_title = response.data.service.title;
+               this.form.description = response.data.service.translations[0].description;
+               this.form.title = response.data.category.title;
+               this.form.id = response.data.category.id;
+            })
+
   }
+
 }
 </script>
