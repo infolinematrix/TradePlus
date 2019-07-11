@@ -160,16 +160,7 @@ export default {
             });
             } else {
             this.dialog = false;
-            swal.fire({
-            title: "Business Added Successfully",
-            type: "success",
-            animation: true,
-            showCloseButton: true
-            }).then(result => {
-              if (result.value) {
-              this.$root.$router.push({path: '/business/about'})
-              }
-            })
+            this.$root.$router.push({path: '/business/about'})
           }
           })
         }else{

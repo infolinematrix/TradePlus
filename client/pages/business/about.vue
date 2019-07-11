@@ -146,18 +146,9 @@ layout: 'user',
             animation: true,
             showCloseButton: true
             })
-             }else{
-            swal.fire({
-            title: "Business Updated Successfully",
-            type: "success",
-            animation: true,
-            showCloseButton: true
-            }).then(result => {
-              if (result.value) {
+           }else{
               this.$root.$router.push({path: '/business/credential'})
-              }
-            })
-             }
+           }
          })
         }else{
           this.dialog = false;
