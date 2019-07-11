@@ -14,4 +14,23 @@ return [
         'height' => 180
     ],
 
+    'scale' => [
+        1 => 'Small Scale',
+        2 => 'Medium Scale',
+        3 => 'Large Scale'
+    ],
+
+    'entity' => [
+        1 => 'Public Limited',
+        2 => 'Private Limited',
+        3 => 'Partnership',
+        4 => 'Proprietorship',
+        5 => 'Chartered Company',
+        6 => 'Statutory Company',
+        7 => 'Holding Company',
+        8 => 'Subsidiary Company',
+        9 => 'Non Government Organization (NGO)',
+        10 => 'Not Classified'
+    ]
+
 ];
