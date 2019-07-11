@@ -4,16 +4,16 @@
       <v-card flat>
         <v-card-title>
           <div>
-            <h3 class="headline">Update service</h3>
+            <h3 class="headline">Create Post</h3>
             <div class="text-muted">{{ text_short }}</div>
           </div>
         </v-card-title>
 
         <v-container grid-list-md class="pa-3">
           <v-tabs height="60" v-model="active" color="grey lighten-3" slider-color="yellow">
-            <v-tab ripple>Basic</v-tab>
-            <v-tab ripple>Image</v-tab>
-            <v-tab ripple>Settings</v-tab>
+            <v-tab ripple class="text-capitalize">Product</v-tab>
+            <v-tab ripple class="text-capitalize">Service</v-tab>
+            <v-tab ripple class="text-capitalize">Offer</v-tab>
 
             <v-tab-item class="pl-0 pr-0 bg-light">
               <v-img
@@ -42,17 +42,9 @@
                     </v-layout>
 
                     <v-layout row wrap>
-                      <v-flex xs12>
-                        <v-select
-                          v-model="select"
-                          :items="categories"
-                          label="Select category"
-                          outline
-                          item-text="state"
-                          item-value="abbr"
-                        ></v-select>
-                      </v-flex>
+                      <category-popup  :title="form.title" @eId="update_id" @eTitle="update_title"></category-popup>
                     </v-layout>
+
 
                     <v-layout row wrap>
                       <v-flex xs12>
@@ -60,7 +52,7 @@
                           outline
                           name="input-7-4"
                           label="Outline textarea"
-                          value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
+
                         ></v-textarea>
                       </v-flex>
                     </v-layout>
@@ -88,10 +80,17 @@
 </template>
 
 <script>
+import CategoryPopup from "~/components/CategoryPopup.vue";
+
 export default {
   layout:'user',
+  components: {
+    CategoryPopup
+  },
   data() {
     return {
+      active: true,
+      category_dialog:false,
       chkbox: true,
       select: { state: 'Florida', abbr: 'FL' },
       categories: [
@@ -101,10 +100,22 @@ export default {
         { state: 'California', abbr: 'CA' },
         { state: 'New York', abbr: 'NY' }
       ],
+      form: {
+        title:'Category from Parent',
+        id:null
+      },
       text:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
       text_short:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.'
+    }
+  },
+  methods: {
+    update_title(value){
+      this.form.title = value
+    },
+    update_id(value){
+      this.form.id = value
     }
   }
 }

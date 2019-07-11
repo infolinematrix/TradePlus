@@ -169,7 +169,7 @@ class BusinessController extends PublicController
             $this->validateCreateForm($request);
 
             list($node, $locale) = $this->createNode($request, null);
-            
+
             //save meta
             $node->setmeta('locations', $location);
             $node->save();
@@ -354,7 +354,18 @@ class BusinessController extends PublicController
         if($parent == 0) $nodes->where('parent_id', null);
         if($parent != 0) $nodes->where('parent_id', $parent);
 
+
+        if($nodes->count() == 0){
+          $node = Node::find($parent);
+          $par = $node->parent()->first();
+
+          $nodes = Node::withType('categories')->where('parent_id', $par->getKey());
+
+        }
+
         $categories = $nodes->get();
+
+
 
         foreach ($categories as $node) {
             $data[] = [
