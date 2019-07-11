@@ -95,83 +95,6 @@ class BusinessController extends PublicController
         return $data;
     }
 
-    public function postContact(Request $request, $node_id)
-    {
-
-        $pdata = [
-
-            'node_id' => $node_id,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'phone' => $request->contact_no,
-            'content' => $request->message,
-        ];
-
-        Contact::insert($pdata);
-
-        $data = [
-            'name' => $request->first_name . ' ' . $request->last_name,
-            'email' => $request->email,
-            'phone' => $request->contact_no,
-            'content' => $request->message,
-            'site_name' => getSettings('site_title'),
-            'business_email' => Node::find($node_id),
-        ];
-
-        /*Get Mail Configuration*/
-        Config::set('mail', getMailconfig());
-
-        Mail::send('Site::email.contact', $data, function ($message) use ($data) {
-            $message->from(getSettings('email_from_email'), getSettings('site_title'));
-            $message->subject('Contact us');
-            $message->to($data['business_email']->business_email);
-        });
-
-        return "SUCCESS";
-
-    }
-
-    public function postAppointment(Request $request, $node_id)
-    {
-
-        $pdata = [
-
-            'node_id' => $node_id,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'contact' => $request->contact_no,
-            'message' => $request->message,
-            'picker_date' => $request->date,
-            'picker_time' => $request->time,
-        ];
-
-        Appointment::insert($pdata);
-
-        $data = [
-            'name' => $request->first_name . ' ' . $request->last_name,
-            'email' => $request->email,
-            'phone' => $request->contact_no,
-            'content' => $request->message,
-            'site_name' => getSettings('site_title'),
-            'business_email' => Node::find($node_id),
-            'picker_date' => $request->date,
-            'picker_time' => $request->time,
-        ];
-
-        /*Get Mail Configuration*/
-        Config::set('mail', getMailconfig());
-
-        Mail::send('Site::email.appointment', $data, function ($message) use ($data) {
-            $message->from(getSettings('email_from_email'), getSettings('site_title'));
-            $message->subject('Contact us');
-            $message->to($data['business_email']->business_email);
-        });
-
-        return "SUCCESS";
-
-    }
     public function addBusiness()
     {
 
@@ -216,21 +139,23 @@ class BusinessController extends PublicController
     public function postBusiness(Request $request)
     {
 
+
         $nodeType = get_node_type('business');
         $type = $nodeType->getKey();
 
         $title = $request->input('title');
         $node_name = str_slug($title);
 
-        $categories = $request->category;
-        $cat = '';
-        foreach ($categories as $key => $value) {
+        $locations = $request->location;
+        $loc = '';
+        foreach ($locations as $key => $value) {
 
-            $cat .= $value . ',';
+            $loc .= $value . ',';
         }
-        $category = rtrim($cat, ',');
+        $location = rtrim($loc, ',');
 
         $check = Node::withType('business')->withName($node_name)->first();
+
 
         if ($check != null) {
             return 'exist';
@@ -244,9 +169,9 @@ class BusinessController extends PublicController
             $this->validateCreateForm($request);
 
             list($node, $locale) = $this->createNode($request, null);
-
+            
             //save meta
-            $node->setmeta('categories', $category);
+            $node->setmeta('locations', $location);
             $node->save();
 
             $data = [
@@ -413,129 +338,7 @@ class BusinessController extends PublicController
         return $data;
     }
 
-    public function UpdateHours(Request $request, $node_id, $source)
-    {
 
-        $input = $request->all();
-        $array = [];
-
-        for ($i = 0; $i < 7; $i++) {
-            if ($input['status'][$i] == 'false') {
-
-                $ar[] = 'false';
-
-            }
-            $array[$i] = [
-                'day' => $input['day'][$i],
-                'status' => $input['status'][$i],
-                'open' => $input['open'][$i],
-                'close' => $input['close'][$i],
-            ];
-        }
-
-        $json_data = json_encode($array);
-
-        /*Insert or Update Working Hours*/
-        $modelName = source_model_name('workinghours', true);
-        $custom_table_class = new $modelName;
-        $cModel = $modelName::where('id', $source)
-            ->where('node_id', $node_id)->first();
-
-        if (count($ar) == 7) {
-            if ($cModel) {
-                $modelName::where('id', $source)
-                    ->where('node_id', $node_id)->delete();
-            }
-            return 'Updated Successfully';
-        }
-        if ($cModel) {
-            $request->request->set('id', $source);
-            $request->request->set('node_id', $node_id);
-            $request->request->set('hours', $json_data);
-            $data = array_except($request->all(), ['status', 'open', 'close', 'day']);
-            $custom_table_class->where('id', $source)->update($data);
-
-        } else {
-            $request->request->set('id', $source);
-            $request->request->set('node_id', $node_id);
-            $request->request->set('hours', $json_data);
-            $data = array_except($request->all(), ['status', 'open', 'close', 'day']);
-            $custom_table_class->insert($data);
-
-        }
-        return 'Updated Successfully';
-
-    }
-    public function uploadImage(Request $request, $node_id)
-    {
-
-        $coverimage = $request->file('coverimage');
-        $node = Node::find($node_id);
-
-        if ($coverimage) {
-
-            $name = str_random(6);
-            $ext = $coverimage->extension();
-
-            $destinationPath = public_path('/uploads');
-
-            $coverimage->move($destinationPath, $name . '.' . $ext);
-            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->save();
-
-            $cover = $node->getImages()->where('img_type', 'cover')->first();
-
-            if ($cover) {
-                File::delete(upload_path($cover->path));
-                Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
-            }
-
-            //-- Save Image in Database--//
-            $media = new Media();
-            $media->node_id = $node->getKey();
-            $media->path = $name . '.' . $ext;
-            $media->name = $name;
-            $media->extension = $ext;
-            $media->mimetype = $coverimage->getClientMimeType();
-            $media->img_type = 'cover';
-            $media->size = 0;
-            $media->user_id = Auth::user()->id;
-            $media->save();
-        }
-
-        $profileimage = $request->file('profileimage');
-
-        if ($profileimage) {
-
-            # code...
-            $name = str_random(6);
-            $ext = $profileimage->extension();
-
-            $destinationPath = public_path('/uploads');
-            $profileimage->move($destinationPath, $name . '.' . $ext);
-            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(300, 200)->save();
-
-            $profile = $node->getImages()->where('img_type', 'profile')->first();
-
-            if ($profile) {
-                File::delete(upload_path($profile->path));
-                Media::where('node_id', $node->getKey())->where('img_type', 'profile')->delete();
-            }
-            //-- Save Image in Database--//
-            $media = new Media();
-            $media->node_id = $node->getKey();
-            $media->path = $name . '.' . $ext;
-            $media->name = $name;
-            $media->extension = $ext;
-            $media->mimetype = $profileimage->getClientMimeType();
-            $media->img_type = 'profile';
-            $media->size = 0;
-            $media->user_id = Auth::user()->id;
-            $media->save();
-        }
-
-        return "Updated";
-
-    }
     public function getCategories($parent = 0)
     {
 
@@ -544,7 +347,7 @@ class BusinessController extends PublicController
          * Omited 'meta' from node "protected $with = ['translations','meta];"
          * You can use Node::with('meta')
          */
-        //$nodes = Node::withType('categories')->translatedIn(locale())->get();
+      //  $nodes = Node::withType('categories')->translatedIn(locale())->get();
 
         $nodes = Node::withType('categories');
 
@@ -563,10 +366,16 @@ class BusinessController extends PublicController
             ];
         }
 
-        return $data;
+        if(count($data) > 0) {
+
+            return $data;
+        }else{
+
+            return 'not_found';
+        }
     }
 
-    public function getLocations()
+    public function getLocations($parent = 0)
     {
 
         $data = [];
@@ -574,9 +383,15 @@ class BusinessController extends PublicController
          * Omited 'meta' from node "protected $with = ['translations','meta];"
          * You can use Node::with('meta')
          */
-        $nodes = Node::withType('locations')->translatedIn(locale())->get();
+        $nodes = Node::withType('locations');
 
-        foreach ($nodes as $node) {
+        if($parent == 0) $nodes->where('parent_id', null);
+        if($parent != 0) $nodes->where('parent_id', $parent);
+
+        $categories = $nodes->get();
+
+
+        foreach ($categories as $node) {
 
             $data[] = [
                 'id' => $node->getKey(),
@@ -590,324 +405,14 @@ class BusinessController extends PublicController
 
         }
 
-        return $data;
+        if(count($data) > 0) {
+
+            return $data;
+        }else{
+
+            return 'not_found';
+        }
     }
 
-    public function getKeywords()
-    {
 
-        $tags = Tag::translatedIn(locale())->get();
-
-        if (count($tags) > 0) {
-            foreach ($tags as $tag) {
-
-                $data[] = $tag->title;
-            }
-        } else {
-
-            $data[] = null;
-        }
-
-        return $data;
-
-    }
-
-    public function hasBusiness(Request $request)
-    {
-        # code...
-        $user = $request->user();
-
-        $business = Node::withType('business')->where('user_id', $user->id)->first();
-
-        return $business->getTitle();
-
-    }
-
-    public function searchLocation($term, NodeRepository $nodeRepository)
-    {
-
-        $nodes = $nodeRepository->searchNodes($term, 'locations');
-
-        $data = [];
-
-        foreach ($nodes as $node) {
-
-            $data[] = [
-                'value' => $node->getName(),
-                'text' => $node->getTitle(),
-            ];
-        }
-
-        return $data;
-    }
-
-    public function searchKeyword($term)
-    {
-
-        $id = Tag::search($term, 20, true)->get();
-
-        if (count($id) != 0) {
-            foreach ($id as $row) {
-                $data[] = [
-                    'value' => $row->tag_name,
-                    'text' => $row->title,
-                ];
-            }
-        } else {
-
-            $data[] = null;
-        }
-
-        return $data;
-    }
-
-    public function postSearch(Request $request)
-    {
-
-        $keywords = $request->keyword;
-        $location = $request->location;
-
-        $data = [
-
-            'keyword' => $keywords['value'],
-            'location' => $location['value'],
-        ];
-
-        return $data;
-    }
-
-    public function search(Request $request, $params = null)
-    {
-
-        $params = explode('/', $params);
-
-        if (count($params) == 1) {
-            $loc = Node::withname($params[0])->first();
-            if ($loc) {
-
-            }
-            $tags = Tag::withName($params[0])->first();
-            $nodes = $tags->nodes()->get();
-
-        }
-
-        return $nodes;
-
-    }
-
-    public function browse($params = null)
-    {
-
-        $meta_data1 = '';
-        $meta_data2 = '';
-
-        $metas = explode('/', $params);
-
-        if (count($metas) == 1) {
-            $meta_data1 = Node::withName($metas[0])->first();
-
-            if ($meta_data1) {
-                $nodes = Node::withType('business')->findMetaValue($meta_data1->getKey());
-            } else {
-
-                $nodes = null;
-            }
-        }
-
-        if (count($metas) == 2) {
-
-            $meta_data1 = Node::withName($metas[0])->first();
-            $meta_data2 = Node::withName($metas[1])->first();
-
-            if ($meta_data1 == null || $meta_data2 == null) {
-
-                $nodes = null;
-
-            } else {
-                $loc[] = $meta_data1->getKey();
-                $cat[] = $meta_data2->getKey();
-
-                $params = array_merge($loc, $cat);
-                $nodes = Node::withType('business')->findMetaValue($params);
-            }
-
-        }
-
-        if ($nodes != null) {
-            $nodes = $nodes->Published()->whereHas('metas')->sortable('created_at', 'desc')->get();
-        } else {
-            $nodes = [];
-        }
-        $posts = [];
-        if (count($nodes) > 0) {
-            foreach ($nodes as $node) {
-
-                /*Image*/
-                $img = $node->getImages()->where('img_type', 'profile')->first();
-
-                $path = 'https://dummyimage.com/300x200/f0f0f0/fff.png&text=Profile';
-                if ($img) {
-
-                    $path = asset('uploads/' . $img->path);
-                }
-
-                /*Tags*/
-
-                $tags = $node->tags()->get();
-                if (count($tags) > 0) {
-
-                    foreach ($tags as $tag) {
-                        $keywords[] = [
-
-                            'title' => $tag->title,
-                            'slug' => $tag->tag_name,
-                        ];
-                    }
-                } else {
-
-                    $keywords = null;
-
-                }
-
-                $posts[] = $this->getBusinessData($node);
-
-            }
-        }
-
-        $data['business'] = $posts;
-        if (count($nodes) > 0) {
-            $data['meta_data'] = [
-
-                'parameter' => $meta_data1->getTitle(),
-                'type' => $meta_data1->getNodetype()->name,
-                'category' => ($meta_data2 ? $meta_data2->getTitle() : ''),
-            ];
-        } else {
-
-            $data['meta_data'] = [
-
-                'parameter' => ($meta_data1 ? $meta_data1->getTitle() : $metas[0]),
-                'type' => ($meta_data1 ? $meta_data1->getNodetype()->name : 'invalide'),
-                'category' => (count($metas) == 2 ? ($meta_data2 ? $meta_data2->getTitle() : $metas[0]) : 'invalid'),
-            ];
-        }
-
-        return $data;
-    }
-
-    private function getBusinessData($node)
-    {
-        # image...
-        $img = $node->getImages()->where('img_type', 'profile')->first();
-        $path = 'https://dummyimage.com/300x200/f0f0f0/fff.png&text=Profile';
-        if ($img) {
-            $path = asset('uploads/' . $img->path);
-        }
-
-        #Cover Image
-        $coverimage = $node->getImages()->where('img_type', 'cover')->first();
-        $coverimg = '/cover.jpg';
-        if ($coverimage) {
-            $coverimg = asset('uploads/' . $coverimage->path);
-        }
-
-        $tags = $node->tags()->get();
-        if (count($tags) > 0) {
-
-            foreach ($tags as $tag) {
-                $keywords[] = [
-
-                    'title' => $tag->title,
-                    'slug' => $tag->tag_name,
-                ];
-            }
-        } else {
-
-            $keywords = null;
-
-        }
-
-        $data = [
-
-            'id' => $node->getKey(),
-            'title' => $node->getTitle(),
-            'slug' => $node->getName(),
-            'address' => $node->business_address,
-            'location' => getBusinessLocation($node->getKey()),
-            'tags' => $keywords,
-            'zipcode' => $node->business_zipcode,
-            'phone' => $node->business_phone,
-            'email' => $node->business_email,
-            'logo' => $path,
-            'review_rate' => $node->getRating(),
-            'review_count' => $node->getReviews()->count(),
-            'coverimage' => $coverimg,
-            'about' => strip_tags($node->business_description),
-            'description' => strip_tags(str_limit($node->business_description,100)),
-
-        ];
-
-
-
-        return $data;
-
-    }
-    public function list_New($limit = 1)
-    {
-        # code...
-        //$nodes = Node::recentlyCreated(10)->withType('business')->get();
-        $nodes = Node::withType('business')->published()->recentlyCreated($limit)->get();
-
-        $data = [];
-
-        foreach ($nodes as $node) {
-
-            $data[] = $this->getBusinessData($node);
-
-            //dd($business);
-
-        }
-
-        return $data;
-
-    }
-
-    public function list_Visit($limit = 1)
-    {
-        # code...
-        //$nodes = Node::recentlyCreated(10)->withType('business')->get();
-        $nodes = Node::withType('business')->published()->recentlyVisited($limit)->get();
-
-        $data = [];
-
-        foreach ($nodes as $node) {
-
-            $data[] = $this->getBusinessData($node);
-
-            //dd($business);
-
-        }
-
-        return $data;
-    }
-
-    public function getSponsored($limit = 100)
-    {
-        # code...
-        $data = [];
-
-        $result = Promotion::where('max_clicks', '>=', \DB::raw('clicked'));
-        $result->take($limit);
-        $sponsored = $result->get();
-
-
-        foreach ($sponsored as $row) {
-
-            $node = Node::find($row->node_id);
-
-            $data[] = $this->getBusinessData($node);
-
-        };
-        return $data;
-    }
 }

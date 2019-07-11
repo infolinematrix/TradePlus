@@ -180,6 +180,15 @@ class EditBusinessForm extends Form {
             
 
         ]);
+                                $this->add('area', 'text', [
+            'label' => 'Area',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
                     }
 
 }

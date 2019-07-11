@@ -58,6 +58,12 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
+  },
+
+   mounted() {
+        //category
+        this.$store.dispatch("app/SET_CATEGORIES");
   }
+
 }
 </script>
