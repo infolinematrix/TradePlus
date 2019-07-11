@@ -39,9 +39,10 @@ trait UsesNodeHelpers {
 
 
         $node->fill([
-            $locale => array_except($request->all(), ['type','_token','_method'])
+            $locale => $request->all(),
         ]);
 
+        
         $node = $this->locateNodeInTree($id, $node);
 
         
