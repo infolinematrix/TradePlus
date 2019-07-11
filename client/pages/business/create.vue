@@ -27,8 +27,6 @@
               <v-flex xs12 md4>
                 <v-text-field label="Zip" placeholder="Zip" outline></v-text-field>
               </v-flex>
-
-
             </v-layout>
             <v-layout row wrap>
               <v-flex xs12>
