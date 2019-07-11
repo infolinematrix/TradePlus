@@ -103,30 +103,10 @@ class BusinessController extends PublicController
 
         if ($node) {
 
-            $coverimage = $node->getImages()->where('img_type', 'cover')->first();
-
-            $profileimage = $node->getImages()->where('img_type', 'profile')->first();
-
-            $coverimg = '/cover.jpg';
-
-            if ($coverimage) {
-                $coverimg = asset('uploads/' . $coverimage->path);
-            }
-
-            $profileimg = '/avatar_male.png';
-
-            if ($profileimage) {
-
-                $profileimg = asset('uploads/' . $profileimage->path);
-            }
             $data['node'] = [
                 'title' => $node->getTitle(),
-                'description' => $node->business_description,
-                'email' => $node->business_email,
                 'node_id' => $node->getKey(),
                 'source_id' => $node->translate(locale())->getKey(),
-                'coverimage' => $coverimg,
-                'profileimage' => $profileimg,
             ];
 
         } else {
@@ -140,6 +120,7 @@ class BusinessController extends PublicController
     {
 
 
+
         $nodeType = get_node_type('business');
         $type = $nodeType->getKey();
 
@@ -147,12 +128,7 @@ class BusinessController extends PublicController
         $node_name = str_slug($title);
 
         $locations = $request->location;
-        $loc = '';
-        foreach ($locations as $key => $value) {
 
-            $loc .= $value . ',';
-        }
-        $location = rtrim($loc, ',');
 
         $check = Node::withType('business')->withName($node_name)->first();
 
@@ -171,7 +147,7 @@ class BusinessController extends PublicController
             list($node, $locale) = $this->createNode($request, null);
             
             //save meta
-            $node->setmeta('locations', $location);
+            $node->setmeta('locations', $locations);
             $node->save();
 
             $data = [
@@ -183,102 +159,105 @@ class BusinessController extends PublicController
         }
     }
 
-    public function editBusiness($id, $source_id = null)
+    public function editBusiness()
     {
+        /*Scale*/
+        $scales = config('site.scale');
+        foreach ($scales  as $key => $value){
+            $s[] = [
+                'id' => $key,
+                'name' => $value
+            ];
+        }
+        $data['scales'] = $s;
 
-        $source = NodeSource::find($source_id);
-        $business = Node::withType('business')->find($id);
+        /*Entity*/
+        $entities = config('site.entity');
+        foreach ($entities  as $key => $value){
+            $e[] = [
+                'id' => $key,
+                'name' => $value
+            ];
+        }
+        $data['entities'] = $e;
 
         $user = Auth::user();
-        if ($business || $source) {
+        $business = Node::withType('business')->where('user_id', $user->id)->first();
 
-            $source = Node::withType('business')->find($source->node_id);
-            if ($user->id == $business->user_id && $user->id == $source->user_id) {
-                $data['node'] = $business;
+        if($business) {
+            $source = NodeSource::find($business->translate(locale())->getKey());
 
-                $loc_meta = $business->metas()->where('key', 'locations')->first();
-                if ($loc_meta) {
-                    $data['locations'] = explode(',', $loc_meta->value);
-                }
-                /*keywoords*/
-                $keyword = $data['node']->tags()->get();
+            $user = Auth::user();
+            if ($business || $source) {
 
-                if (count($keyword) > 0) {
-                    foreach ($keyword as $tag) {
-                        $tg[] = $tag->title;
+                $source = Node::withType('business')->find($source->node_id);
+                if ($user->id == $business->user_id && $user->id == $source->user_id) {
+                    $data['node'] = $business;
 
+                    $loc_meta = $business->metas()->where('key', 'locations')->first();
+                    if ($loc_meta) {
+                        $data['locations'] = explode(',', $loc_meta->value);
                     }
 
-                    $data['keywords'] = $tg;
+                    /*keywoords*/
+                    /*
+                    $keyword = $data['node']->tags()->get();
 
+                    if (count($keyword) > 0) {
+                        foreach ($keyword as $tag) {
+                            $tg[] = $tag->title;
+
+                        }
+
+                        $data['keywords'] = $tg;
+
+                    } else {
+
+                        $data['keywords'] = [];
+                    }
+                    */
+
+                    $data['business'] = 'EXIST';
                 } else {
-
-                    $data['keywords'] = [];
+                    $data['business'] = 'NOT EXIST';
                 }
-
-                $data['business'] = 'EXIST';
             } else {
                 $data['business'] = 'NOT EXIST';
             }
-        } else {
-            $data['business'] = 'NOT EXIST';
-        }
 
-        /*Working Hours*/
-        $modelName = source_model_name('workinghours', true);
-        $hours = $modelName::where('id', $source_id)
-            ->where('node_id', $id)->first();
+            /*Working Hours*/
+            /*  $modelName = source_model_name('workinghours', true);
+              $hours = $modelName::where('id', $source_id)
+                  ->where('node_id', $id)->first();
 
-        if ($hours) {
+              if ($hours) {
 
-            $data['working_hours'] = json_decode($hours->hours);
-        } else {
+                  $data['working_hours'] = json_decode($hours->hours);
+              } else {
 
-            $data['working_hours'] = null;
-        }
+                  $data['working_hours'] = null;
+              }
 
-        /*Payment Accept*/
-        $payment_accept = $business->payment_accept;
+              /*Payment Accept*/
 
-        if($payment_accept){
-
-
-
-            foreach(config('site.payment_accept') as $key => $value){
-
-                $payment = json_decode($payment_accept, true);
-                if($payment != null) {
-                    $data['payment_accept'][] = (in_array($key, $payment));
-                }else{
-
-                    $data['payment_accept'][] = null;
-                }
-            }
-
+            return $data;
         }else{
 
-            $data['payment_accept'][] = null;
-
+            return null;
         }
-
-
-
-
-        return $data;
 
     }
 
-    public function updateBusiness(Request $request, $id, $source)
+    public function updateBusiness(Request $request)
     {
 
 
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+        $source = $node->translate(locale())->getKey();
 
-        list($node, $locale, $source) = $this->authorizeAndFindNode($id, $source);
+        list($node, $locale, $source) = $this->authorizeAndFindNode($node->getKey(), $source);
 
-        /*Payment Accept*/
-        if($request->accept_payment){
-        $request->request->set('payment_accept', json_encode($request->payment));
-        }
         //--Update Node
         $node->update([
             $locale => array_except($request->all(), ['_token', '_method']),
@@ -286,24 +265,18 @@ class BusinessController extends PublicController
 
         //save meta Locations
         $locations = $request->location;
+        
         if ($locations) {
-            $loc = '';
-            foreach ($locations as $key => $value) {
 
-                if ($value != 'NaN') {
-                    $loc .= $value . ',';
-                }
-            }
 
-            $location = rtrim($loc, ',');
-
-            $node->setmeta('locations', $location);
+            $node->setmeta('locations', $locations);
             $node->save();
         }
 
         //--Keywords
         $p_tags = $node->tags()->get();
 
+        /*
         $keywords = $request->input('added_keywords');
 
         if ($keywords) {
@@ -328,7 +301,7 @@ class BusinessController extends PublicController
                     $node->detachTag($pt->id);
                 }
             }
-        }
+        }*/
 
         $data = [
             'node_id' => $node->getKey(),

@@ -4,7 +4,7 @@
       <v-card flat>
         <v-card-title>
           <div>
-            <h3 class="headline">Register your Business</h3>
+            <h3 class="headline">Update your Business</h3>
             <div class="text-muted">{{ text_short }}</div>
           </div>
         </v-card-title>
@@ -60,8 +60,9 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-           <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>
-    <div class="text-xs-center">
+            <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>
+
+<div class="text-xs-center">
         <v-dialog
           v-model="dialog"
           hide-overlay
@@ -84,7 +85,7 @@
     </v-dialog>
   </div>
             <v-card-actions class="pa-0">
-              <v-btn type="submit" large depressed color="orange">Create</v-btn>
+              <v-btn type="submit" large depressed color="orange">Update</v-btn>
             </v-card-actions>
             </v-form>
         </v-container>
@@ -98,33 +99,43 @@ import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
 import Location from "~/components/Location.vue";
-
 export default {
-  async asyncData({redirect, $axios }) {
+   async asyncData({redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
       if (res) {
-      if(res.data.node != null) {
-           redirect("/business/edit");         
-      }
+      if(res.data.node == null) {
+          swal.fire({
+            title: "Please add business first",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            }).then(result => {
+              if (result.value) {
+              redirect("/business/create")
+              }
+            });  
+            redirect("/business/create")
+        }
       }
     });
   },
   components: {
     Location
   },
-  layout: 'user',
+layout: 'user',
   data() {
     
     return {
- dialog: false,
+    dialog: false,
     parent_locations: [],
     locations: [],
       agree: true,
       title: null,
       address: null,
       area: null,
-      zipcode: null
-}
+      zipcode: null,
+      email: null
+    }
   },
 
   methods: {
@@ -132,14 +143,10 @@ export default {
       onClickChild (value) {
       this.locations = value;
       },
-      async business() {
-
-       //this.dialog = true;
-
+    async business() {
         let formData = new FormData();
         formData.append("title", this.title);
         formData.append("location", this.locations);
-        
         formData.append("business_address", this.address);
         formData.append("area", this.area);
         formData.append("business_zipcode", this.zipcode);
@@ -148,20 +155,19 @@ export default {
         this.$validator.validateAll().then(result => {
         if (result) {
          this.$axios
-            .post(`post-business`, formData)
+            .post(`business/update`, formData)
             .then(response => {
-            if (response.data == "exist") {
             this.dialog = false;
+            if(this.email != null){
             swal.fire({
-            title: "Already Exist!",
-            type: "warning",
+            title: "Business Updated Successfully",
+            type: "success",
             animation: true,
             showCloseButton: true
-            });
-            } else {
-            this.dialog = false;
+            })
+             }else{
             swal.fire({
-            title: "Business Added Successfully",
+            title: "Business Updated Successfully",
             type: "success",
             animation: true,
             showCloseButton: true
@@ -170,8 +176,8 @@ export default {
               this.$root.$router.push({path: '/business/about'})
               }
             })
-          }
-          })
+             }
+         })
         }else{
           this.dialog = false;
         }
@@ -185,6 +191,20 @@ export default {
        .then(response => {
          this.parent_locations = response.data;
         })
+
+        this.$axios.get('edit-business')
+       .then(response => {
+         this.title = response.data.node.title;
+         this.address = response.data.node.translations[0].business_address;
+         this.area = response.data.node.translations[0].area;
+         this.zipcode = response.data.node.translations[0].business_zipcode;
+         this.email =  response.data.node.translations[0].business_email;
+
+        /*Location*/
+
+        })
+
+      
   }
 
 }

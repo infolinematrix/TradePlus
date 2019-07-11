@@ -26,16 +26,17 @@
           <v-subheader>Business</v-subheader>
           <v-container class="pt-0">
             <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Profile</nuxt-link>
+              <nuxt-link to="/business/edit">Profile</nuxt-link>
+            </v-flex>
+          
+            <v-flex class="mb-2">
+              <nuxt-link to="/business/about">About</nuxt-link>
             </v-flex>
             <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">About</nuxt-link>
+              <nuxt-link to="/business/credential">Credential</nuxt-link>
             </v-flex>
             <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Location</nuxt-link>
-            </v-flex>
-            <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Working Hours</nuxt-link>
+              <nuxt-link to="/business/social">Social</nuxt-link>
             </v-flex>
           </v-container>
           <v-divider></v-divider>
