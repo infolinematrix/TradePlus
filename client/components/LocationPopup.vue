@@ -7,7 +7,13 @@
         placeholder="Choose location"
         outline
         v-model="title"
+        v-validate="'required'"
+        :error-messages="errors.collect('Location')"
+        data-vv-name="Location"
+        required
       ></v-text-field>
+        
+
     </v-flex>
 
     <v-dialog
@@ -20,7 +26,7 @@
     >
       <v-card>
         <v-toolbar dense flat>
-          <v-toolbar-title class="title-2">Select Location</v-toolbar-title>
+          <v-toolbar-title class="title-2">Select Location: <span class="text-muted caption">{{ this.node_title }}</span></v-toolbar-title>
           <v-spacer></v-spacer>
 
           <v-btn flat icon @click="dialog = false">
@@ -28,13 +34,28 @@
           </v-btn>
         </v-toolbar>
 
-        <v-container grid-list-md>
-          <v-layout wrap>
+        <v-container grid-list-md class="pt-1">
+          <v-layout row wrap class="mb-2">
+            <v-flex xs12 v-if="this.parent != null">
+              <v-breadcrumbs :items="this.breadcrumb" class="pa-0">
+                <template v-slot:divider>
+                  <v-icon>forward</v-icon>
+                </template>
+
+                <template v-slot:item="props">
+                  <a
+                    @click="selectLocation(props.item.id, props.item.title)"
+                    href="#"
+                    :class="[props.item.disabled && 'disabled']"
+                  >{{ props.item.title }}</a>
+                </template>
+              </v-breadcrumbs>
+            </v-flex>
+          </v-layout>
+
+          <v-layout row wrap>
             <v-flex xs4 sm3 md3 v-for="location in this.locations" :key="location">
-              <div
-                ref="dataInfo"
-                @click="selectLocation(location.id, location.title)"
-              >{{ location.title}}</div>
+              <a href="#" @click="getLocations(location.id, location.title)">{{ location.title}}</a>
             </v-flex>
           </v-layout>
         </v-container>
@@ -48,32 +69,71 @@
 </template>
 
 <script>
+import VeeValidate from "vee-validate";
+
 export default {
   props: ['title'],
+	
 
   data() {
     return {
       dialog: false,
-      node_title:null,
-      node_id:null,
+      node_title: null,
+      node_id: null,
+      location: null,
+      breadcrumb: [],
       locations: null,
-      parent: null
+      parent: null,
 
+      items: [
+        {
+          text: 'India',
+          href: 'breadcrumbs_dashboard'
+        },
+        {
+          text: 'West Bengal',
+          href: 'breadcrumbs_link_1'
+        },
+        {
+          text: 'Siliguri',
+          disabled: true,
+          href: 'breadcrumbs_link_2'
+        }
+      ],
+      heroes: [
+        { name: 'Batman', franchise: 'DC' },
+        { name: 'Ironman', franchise: 'Marvel' },
+        { name: 'Thor', franchise: 'Marvel' },
+        { name: 'Superman', franchise: 'DC' }
+      ]
     }
   },
 
+  
   methods: {
+    
     selectLocation(cid, ctitle) {
+      
       this.getLocations(cid)
-      this.node_title = ctitle
-      this.node_id = cid
+
+      //this.node_title = ctitle
+      // this.node_id = cid
+
+      //this.parent = this.categories[0].parent_id
+      //this.breadcrumb = this.categories[0].breadcrumb
     },
 
-    getLocations(parent) {
+    getLocations(parent, ctitle) {
       this.parent = parent
+
+      this.node_title = ctitle
+      this.node_id = this.parent
+
       this.$axios.get('locations/' + this.parent).then(response => {
         this.locations = response.data
+        this.breadcrumb = this.locations[0].breadcrumb
       })
+      this.$emit('eTitle', this.title)
     },
 
     setLocation(cid, ctitle) {
@@ -81,6 +141,7 @@ export default {
       this.$emit('eId', cid)
       this.dialog = false
     },
+    
   },
   mounted() {
     this.getLocations()

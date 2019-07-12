@@ -60,11 +60,11 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-          <!-- <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>-->
-
-              <location-popup  :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
+        
+              <location-popup  :title="title" @eId="update_id" @eTitle="update_title"
+              ></location-popup>
                     
-    <div class="text-xs-center">
+        <div class="text-xs-center">
         <v-dialog
           v-model="dialog"
           hide-overlay
@@ -100,7 +100,6 @@
 import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
-import Location from "~/components/Location.vue";
 import LocationPopup from "~/components/LocationPopup.vue";
 
 export default {
@@ -114,7 +113,6 @@ export default {
     });
   },
   components: {
-    Location,
     LocationPopup
   },
   layout: 'user',
@@ -131,24 +129,20 @@ export default {
       address: null,
       area: null,
       zipcode: null,
-      title:'Location from Parent',
+      title: null,
       id:null
 }
   },
 
   methods: {
-/*
-      onClickChild (value) {
-      this.locations = value;
-      },
-      */
 
      update_title(value){
       this.title = value
-    },
-    update_id(value){
+     },
+     
+     update_id(value){
       this.id = value
-    },
+     },
       async business() {
 
        //this.dialog = true;
@@ -161,7 +155,7 @@ export default {
         formData.append("area", this.area);
         formData.append("business_zipcode", this.zipcode);
 
-
+        
         this.$validator.validateAll().then(result => {
         if (result) {
          this.$axios

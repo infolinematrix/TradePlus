@@ -60,8 +60,7 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-           <!-- <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>
-           -->
+           
              <location-popup  :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
 
 <div class="text-xs-center">
@@ -101,7 +100,6 @@ import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
 import LocationPopup from "~/components/LocationPopup.vue";
-import Location from "~/components/Location.vue";
 export default {
    async asyncData({redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
