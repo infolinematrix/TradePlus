@@ -20,6 +20,8 @@ use ReactorCMS\Http\Controllers\Traits\UsesTranslations;
 use Reactor\Hierarchy\Node;
 use Reactor\Hierarchy\NodeRepository;
 use Reactor\Hierarchy\NodeSource;
+use Illuminate\Support\Facades\DB;
+use function GuzzleHttp\json_encode;
 
 class BusinessController extends PublicController
 {
@@ -475,6 +477,20 @@ class BusinessController extends PublicController
          * You can use Node::with('meta')
          */
         //  $nodes = Node::withType('categories')->translatedIn(locale())->get();
+
+        /*
+        for($i=0; $i < 10; $i ++){
+          $data = [
+            'node_id' => null,
+            'sender_id' => null,
+            'sender_info' => json_encode(['name' => 'Subha', 'email' => 'subhadas.gamil.com']),
+            'message_content'=> 'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.',
+          ];
+
+          DB::table('messages')->insert($data);
+        }
+*/
+
 
         $nodes = Node::withType('categories');
 
