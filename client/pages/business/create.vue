@@ -1,16 +1,23 @@
 <template>
-  <v-layout align-start justify-left row fill-height>
-    <v-flex xs12 md6>
+  <v-layout row>
       <v-card flat>
         <v-card-title>
           <div>
-            <h3 class="headline">Register your Business</h3>
+            <h3 class="headline">My Profile</h3>
             <div class="text-muted">{{ text_short }}</div>
           </div>
         </v-card-title>
-
+        
+        <v-container grid-list-md class="pa-3" >
+          <v-tabs height="60" v-model="active" color="grey lighten-3" slider-color="yellow">
+            <v-tab ripple class="text-capitalize">All</v-tab>
+            <v-tab-item class="pl-0 pr-0 bg-light">
+                <v-layout align-start justify-left row fill-height>
+    <v-flex xs12 md12>
+      <v-card flat>
+        
         <v-container grid-list-lg>
-            <v-form @submit.prevent="business">
+                          <v-form @submit.prevent="business">
             <v-layout row wrap>
               <v-flex xs12>
                 <v-text-field 
@@ -60,11 +67,10 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-        
-              <location-popup  :title="title" @eId="update_id" @eTitle="update_title"
-              ></location-popup>
-                    
-        <div class="text-xs-center">
+           
+             <location-popup  :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
+
+<div class="text-xs-center">
         <v-dialog
           v-model="dialog"
           hide-overlay
@@ -94,6 +100,13 @@
       </v-card>
     </v-flex>
   </v-layout>
+            </v-tab-item>
+        
+          </v-tabs>
+        </v-container>
+      </v-card>
+
+  </v-layout>
 </template>
 
 <script>
@@ -101,7 +114,6 @@ import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
 import LocationPopup from "~/components/LocationPopup.vue";
-
 export default {
   async asyncData({redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
@@ -115,39 +127,42 @@ export default {
   components: {
     LocationPopup
   },
-  layout: 'user',
+layout: 'user',
   data() {
     
     return {
     dialog: false,
-    parent_locations: [],
     active: true,
     category_dialog:false,
-    locations: [],
+    
+      locations: [],
       agree: true,
       business_title: null,
       address: null,
       area: null,
       zipcode: null,
+      email: null,
       title: null,
-      id:null
-}
+      id:null,
+     
+
+      text:
+        'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
+      text_short:
+        'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.'
+    }
   },
 
   methods: {
 
-     update_title(value){
+    update_title(value){
       this.title = value
-     },
-     
-     update_id(value){
+    },
+    update_id(value){
       this.id = value
-     },
-      async business() {
-
-       //this.dialog = true;
-
-        let formData = new FormData();
+    },
+    async business() {
+       let formData = new FormData();
         formData.append("title", this.business_title);
         //formData.append("location", this.locations);
         formData.append("location", this.id);
@@ -171,23 +186,20 @@ export default {
             });
             } else {
             this.dialog = false;
-            this.$root.$router.push({path: '/business/about'})
+            this.$root.$router.push({path: '/business/edit'})
           }
           })
         }else{
           this.dialog = false;
         }
       });
-      }
+      },
+
+
+     
   },
 
-  mounted() {
-    /*Parent Categories*/
-      this.$axios.get('locations/'+this.selectedParent)
-       .then(response => {
-         this.parent_locations = response.data;
-        })
-  }
+  
 
 }
 </script>

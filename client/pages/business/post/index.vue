@@ -1,6 +1,5 @@
 <template>
   <v-layout row>
-
       <v-card flat>
         <v-card-title>
           <div>
@@ -72,8 +71,6 @@
           </v-tabs>
         </v-container>
       </v-card>
-
-
 
   </v-layout>
 </template>

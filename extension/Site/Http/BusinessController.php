@@ -112,6 +112,8 @@ class BusinessController extends PublicController
     }
     public function postBusiness(Request $request)
     {
+
+
         $nodeType = get_node_type('business');
         $type = $nodeType->getKey();
 
@@ -121,15 +123,17 @@ class BusinessController extends PublicController
 
         /*Location Meta*/
         $loc = $request->location;
-        $locations = Node::find($loc);
-        $nodes = $locations->getAncestors();
-        if(count($nodes) > 0) {
-            $l = '';
-            foreach ($nodes as $n) {
-                $l .= $n->getKey().','.$request->location.',';
+        if($loc) {
+            $locations = Node::find($loc);
+            $nodes = $locations->getAncestors();
+            if (count($nodes) > 0) {
+                $l = '';
+                foreach ($nodes as $n) {
+                    $l .= $n->getKey() . ',' . $request->location . ',';
+                }
+                $location = rtrim($l, ',');
+                $ll[] = $location;
             }
-            $location = rtrim($l, ',');
-            $ll[]  = $location;
         }
         /*Location Meta*/
 
@@ -152,12 +156,14 @@ class BusinessController extends PublicController
 
             //save meta
             /*Location Meta*/
-            if(count($nodes) > 0) {
-                $node->setmeta('locations', $ll);
-            }else{
-                $node->setmeta('locations', $loc);
+            if($loc) {
+                if (count($nodes) > 0) {
+                    $node->setmeta('locations', $ll);
+                } else {
+                    $node->setmeta('locations', $loc);
+                }
+                $node->save();
             }
-            $node->save();
             /*Location Meta*/
 
             $data = [

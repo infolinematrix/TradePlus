@@ -30,16 +30,6 @@
             </v-flex>
 
             <v-flex class="mb-2">
-              <nuxt-link to="/business/about">About</nuxt-link>
-            </v-flex>
-            <v-flex class="mb-2">
-              <nuxt-link to="/business/credential">Credential</nuxt-link>
-            </v-flex>
-            <v-flex class="mb-2">
-              <nuxt-link to="/business/social">Social</nuxt-link>
-            </v-flex>
-
-            <v-flex class="mb-2">
               <nuxt-link to="/business/post">Posts</nuxt-link>
             </v-flex>
           </v-container>
