@@ -20,7 +20,7 @@
     >
       <v-card>
         <v-toolbar dense flat>
-          <v-toolbar-title class="title-2">Select Category</v-toolbar-title>
+          <v-toolbar-title class="title-2">Select Category: <span class="text-muted caption">{{ this.node_title }}</span></v-toolbar-title>
           <v-spacer></v-spacer>
 
           <v-btn flat icon @click="dialog = false">
@@ -29,18 +29,14 @@
         </v-toolbar>
 
         <v-container grid-list-md class="pt-1">
-
           <v-layout row wrap class="mb-2">
-            <v-flex xs12  v-if="this.parent != null">
-
+            <v-flex xs12 v-if="this.parent != null">
               <v-breadcrumbs :items="this.breadcrumb" class="pa-0">
-
                 <template v-slot:divider>
                   <v-icon>forward</v-icon>
                 </template>
 
                 <template v-slot:item="props">
-
                   <a
                     @click="selectCategory(props.item.id, props.item.title)"
                     href="#"
@@ -52,16 +48,9 @@
           </v-layout>
 
           <v-layout row wrap>
-
-
             <v-flex xs4 sm3 md3 v-for="category in this.categories" :key="category">
-              <a href="#"
-                @click="getCategories(category.id)"
-              >{{ category.title}}</a>
-
-
+              <a href="#" @click="getCategories(category.id, category.title)">{{ category.title}}</a>
             </v-flex>
-
           </v-layout>
         </v-container>
         <v-card-actions>
@@ -112,29 +101,29 @@ export default {
   },
 
   methods: {
-
     selectCategory(cid, ctitle) {
       this.getCategories(cid)
-      this.node_title = ctitle
-      this.node_id = cid
+
+      //this.node_title = ctitle
+      // this.node_id = cid
 
       //this.parent = this.categories[0].parent_id
       //this.breadcrumb = this.categories[0].breadcrumb
-
     },
 
-    getCategories(parent) {
-
+    getCategories(parent, ctitle) {
       this.parent = parent
+
+      this.node_title = ctitle
+      this.node_id = this.parent
+
       this.$axios.get('categories/' + this.parent).then(response => {
         this.categories = response.data
-        console.log(response.data)
         this.breadcrumb = this.categories[0].breadcrumb
       })
     },
 
     setCategory(cid, ctitle) {
-
       this.$emit('eTitle', ctitle)
       this.$emit('eId', cid)
       this.dialog = false
