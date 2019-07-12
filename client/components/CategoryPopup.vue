@@ -28,14 +28,39 @@
           </v-btn>
         </v-toolbar>
 
-        <v-container grid-list-md>
-          <v-layout wrap>
-            <v-flex xs4 sm3 md3 v-for="category in this.categories" :key="category">
-              <div
-                ref="dataInfo"
-                @click="selectCategory(category.id, category.title)"
-              >{{ category.title}}</div>
+        <v-container grid-list-md class="pt-1">
+          <v-layout row wrap>
+            <v-flex xs12>
+
+              <v-breadcrumbs :items="this.breadcrumb" class="pa-0 mb-2">
+
+                <template v-slot:divider>
+                  <v-icon>forward</v-icon>
+                </template>
+
+                <template v-slot:item="props">
+
+                  <a
+                    @click="selectCategory(props.item.id, props.item.title)"
+                    href="#"
+                    :class="[props.item.disabled && 'disabled']"
+                  >{{ props.item.title }}</a>
+                </template>
+              </v-breadcrumbs>
             </v-flex>
+          </v-layout>
+
+          <v-layout row wrap>
+
+
+            <v-flex xs4 sm3 md3 v-for="category in this.categories" :key="category">
+              <a href="#"
+                @click="getCategories(category.id)"
+              >{{ category.title}}</a>
+
+
+            </v-flex>
+
           </v-layout>
         </v-container>
         <v-card-actions>
@@ -54,29 +79,61 @@ export default {
   data() {
     return {
       dialog: false,
-      node_title:null,
-      node_id:null,
+      node_title: null,
+      node_id: null,
+      category: null,
+      breadcrumb: [],
       categories: null,
-      parent: null
+      parent: null,
 
+      items: [
+        {
+          text: 'India',
+          href: 'breadcrumbs_dashboard'
+        },
+        {
+          text: 'West Bengal',
+          href: 'breadcrumbs_link_1'
+        },
+        {
+          text: 'Siliguri',
+          disabled: true,
+          href: 'breadcrumbs_link_2'
+        }
+      ],
+      heroes: [
+        { name: 'Batman', franchise: 'DC' },
+        { name: 'Ironman', franchise: 'Marvel' },
+        { name: 'Thor', franchise: 'Marvel' },
+        { name: 'Superman', franchise: 'DC' }
+      ]
     }
   },
 
   methods: {
+
     selectCategory(cid, ctitle) {
       this.getCategories(cid)
       this.node_title = ctitle
       this.node_id = cid
+
+      //this.parent = this.categories[0].parent_id
+      //this.breadcrumb = this.categories[0].breadcrumb
+
     },
 
     getCategories(parent) {
+
       this.parent = parent
       this.$axios.get('categories/' + this.parent).then(response => {
         this.categories = response.data
+        console.log(response.data)
+        this.breadcrumb = this.categories[0].breadcrumb
       })
     },
 
     setCategory(cid, ctitle) {
+
       this.$emit('eTitle', ctitle)
       this.$emit('eId', cid)
       this.dialog = false
