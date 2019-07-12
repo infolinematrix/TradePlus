@@ -28,7 +28,7 @@
             <v-flex class="mb-2">
               <nuxt-link to="/business/edit">Profile</nuxt-link>
             </v-flex>
-          
+
             <v-flex class="mb-2">
               <nuxt-link to="/business/about">About</nuxt-link>
             </v-flex>
@@ -37,6 +37,10 @@
             </v-flex>
             <v-flex class="mb-2">
               <nuxt-link to="/business/social">Social</nuxt-link>
+            </v-flex>
+
+            <v-flex class="mb-2">
+              <nuxt-link to="/business/post">Posts</nuxt-link>
             </v-flex>
           </v-container>
           <v-divider></v-divider>
@@ -75,7 +79,6 @@
           </v-container>
           <v-divider></v-divider>
         </v-flex>
-
       </v-navigation-drawer>
 
       <v-toolbar
@@ -105,17 +108,48 @@
       </v-toolbar>
 
       <v-content>
-        <nuxt></nuxt>
+        <v-layout row wrap>
+          <v-flex xs12 md8 sm8>
+            <nuxt></nuxt>
+          </v-flex>
+          <v-flex xs12 md4 sm4>
+             <v-card flat>
+        <v-toolbar flat>
+          <v-toolbar-title class="title">Message</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+        </v-toolbar>
+
+        <div>
+          <v-list two-line>
+            <div v-for="i in 10" :key="i" class="mb-3">
+              <v-list-tile avatar ripple>
+                <v-list-tile-content>
+                  <v-list-tile-sub-title class="caption">23 days ago, Administrator</v-list-tile-sub-title>
+                  <v-list-tile-title class="body-2">
+                    <nuxt-link to="#">{{text_short }}</nuxt-link>
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title class="text--muted">{{text_short }}</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-icon size="40" color="grey lighten-3">question_answer</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+              <v-divider></v-divider>
+            </div>
+          </v-list>
+        </div>
+      </v-card>
+          </v-flex>
+        </v-layout>
       </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
-
 import ToolbarMenu from '~/components/ToolbarMenu'
 export default {
-
   //middleware: "auth",
 
   components: {
@@ -126,6 +160,10 @@ export default {
       drawer: true,
       notifications: null,
       search_text: 'Lather Mobile Cover',
+      text:
+        'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
+      text_short:
+        'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.',
 
       right: true,
       rightDrawer: true,
