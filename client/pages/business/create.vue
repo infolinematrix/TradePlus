@@ -10,7 +10,7 @@
         </v-card-title>
 
         <v-container grid-list-lg>
-                          <v-form @submit.prevent="business">
+            <v-form @submit.prevent="business">
             <v-layout row wrap>
               <v-flex xs12>
                 <v-text-field 
@@ -116,7 +116,7 @@ export default {
   data() {
     
     return {
- dialog: false,
+  dialog: false,
     parent_locations: [],
     locations: [],
       agree: true,
@@ -160,16 +160,7 @@ export default {
             });
             } else {
             this.dialog = false;
-            swal.fire({
-            title: "Business Added Successfully",
-            type: "success",
-            animation: true,
-            showCloseButton: true
-            }).then(result => {
-              if (result.value) {
-              this.$root.$router.push({path: '/business/about'})
-              }
-            })
+            this.$root.$router.push({path: '/business/about'})
           }
           })
         }else{

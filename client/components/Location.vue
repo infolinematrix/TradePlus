@@ -6,14 +6,14 @@
           item-text = title
           item-value = id
           :items="parent_locations"
-                label="Select Location"
-                v-validate="'required'"
-                :error-messages="errors.collect('Location')"
-                data-vv-name="Location"
-                required
-                @change="selectParent"
-                outline
-             ></v-select>
+          label="Select Location"
+          v-validate="'required'"
+          :error-messages="errors.collect('Location')"
+          data-vv-name="Location"
+          required
+          @change="selectParent"
+          outline
+          ></v-select>
            
              <v-select
               v-model="selectedChild" 

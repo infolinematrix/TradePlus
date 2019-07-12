@@ -8,8 +8,7 @@
 
 namespace extension\Site\Http;
 
-use Extension\Site\Entities\Appointment;
-use Extension\Site\Entities\Contact;
+
 use extension\Site\Helpers\UseAppHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -159,6 +158,73 @@ class BusinessController extends PublicController
         }
     }
 
+
+    public function postServices(Request $request){
+
+        $nodeType = get_node_type('servicetype');
+        $type = $nodeType->getKey();
+
+        $title = $request->input('title');
+        $node_name = str_slug($title);
+
+        $category = $request->category;
+
+
+        $request->request->set('title', $title);
+        $request->request->set('node_name', $node_name);
+        $request->request->set('locale', 'en');
+        $request->request->set('type', $type);
+
+        $this->validateCreateForm($request);
+
+        list($node, $locale) = $this->createNode($request, null);
+
+
+        $node->setmeta('categories', $category);
+        $node->save();
+
+        return "data saved";
+
+
+    }
+
+    public function editPost(){
+        $user = Auth::user();
+        $data['service'] = Node::withType('servicetype')->where('user_id', $user->id)->first();
+
+        $meta = $data['service']->metas()->where('key', 'categories')->first();
+
+        $data['category'] = Node::find($meta->value);
+
+        return $data;
+
+    }
+
+    public function updatePost(Request $request){
+
+
+        $user = Auth::user();
+        $node = Node::withType('servicetype')->where('user_id', $user->id)->first();
+        $source = $node->translate(locale())->getKey();
+
+        list($node, $locale, $source) = $this->authorizeAndFindNode($node->getKey(), $source);
+
+        //--Update Node
+        $node->update([
+            $locale => array_except($request->all(), ['_token', '_method']),
+        ]);
+
+        //save meta Locations
+        $category = $request->category;
+
+        if ($category) {
+            $node->setmeta('categories', $category);
+            $node->save();
+        }
+
+        return "DATA UPDATED";
+
+    }
     public function editBusiness()
     {
         /*Scale*/
