@@ -29,10 +29,11 @@
         </v-toolbar>
 
         <v-container grid-list-md class="pt-1">
-          <v-layout row wrap>
-            <v-flex xs12>
 
-              <v-breadcrumbs :items="this.breadcrumb" class="pa-0 mb-2">
+          <v-layout row wrap class="mb-2">
+            <v-flex xs12  v-if="this.parent != null">
+
+              <v-breadcrumbs :items="this.breadcrumb" class="pa-0">
 
                 <template v-slot:divider>
                   <v-icon>forward</v-icon>
