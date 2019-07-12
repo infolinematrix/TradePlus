@@ -265,7 +265,7 @@ class BusinessController extends PublicController
 
         //save meta Locations
         $locations = $request->location;
-        
+
         if ($locations) {
 
 
@@ -341,17 +341,36 @@ class BusinessController extends PublicController
 
 
         foreach ($categories as $node) {
+
+          $anc = $node->ancestors;
+          //$anc = $node->whereAncestorOrSelf($node->getKey())->get();
+          $brc[] = [
+            'id' => null,
+              'title' => 'All'
+          ];
+
+          $b = [];
+
+          foreach($anc as $a){
+            $b[] =[
+              'id' => $a->getKey(),
+              'title' => $a->getTitle()
+            ];
+          }
+
+          $breadcrumb = array_merge($brc, $b);
+
             $data[] = [
                 'id' => $node->getKey(),
                 'parent_id' => $node->parent_id,
                 'source_id' => $node->translate(locale())->getKey(),
                 'title' => trim($node->getTitle()),
-                'slug' => trim($node->getName())
+                'slug' => trim($node->getName()),
+                'breadcrumb' => $breadcrumb
             ];
         }
 
         if(count($data) > 0) {
-
             return $data;
         }else{
 
