@@ -14,7 +14,7 @@
             <v-layout row wrap>
               <v-flex xs12>
                 <v-text-field 
-                v-model="title"
+                v-model="business_title"
                 label="Title" 
                 placeholder="Business title" 
                 v-validate="'required'"
@@ -60,7 +60,10 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-           <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>
+          <!-- <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>-->
+
+              <location-popup  :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
+                    
     <div class="text-xs-center">
         <v-dialog
           v-model="dialog"
@@ -98,6 +101,7 @@ import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
 import Location from "~/components/Location.vue";
+import LocationPopup from "~/components/LocationPopup.vue";
 
 export default {
   async asyncData({redirect, $axios }) {
@@ -110,36 +114,49 @@ export default {
     });
   },
   components: {
-    Location
+    Location,
+    LocationPopup
   },
   layout: 'user',
   data() {
     
     return {
-  dialog: false,
+    dialog: false,
     parent_locations: [],
+    active: true,
+    category_dialog:false,
     locations: [],
       agree: true,
-      title: null,
+      business_title: null,
       address: null,
       area: null,
-      zipcode: null
+      zipcode: null,
+      title:'Location from Parent',
+      id:null
 }
   },
 
   methods: {
-
+/*
       onClickChild (value) {
       this.locations = value;
       },
+      */
+
+     update_title(value){
+      this.title = value
+    },
+    update_id(value){
+      this.id = value
+    },
       async business() {
 
        //this.dialog = true;
 
         let formData = new FormData();
-        formData.append("title", this.title);
-        formData.append("location", this.locations);
-        
+        formData.append("title", this.business_title);
+        //formData.append("location", this.locations);
+        formData.append("location", this.id);
         formData.append("business_address", this.address);
         formData.append("area", this.area);
         formData.append("business_zipcode", this.zipcode);

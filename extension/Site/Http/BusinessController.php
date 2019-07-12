@@ -126,7 +126,20 @@ class BusinessController extends PublicController
         $title = $request->input('title');
         $node_name = str_slug($title);
 
-        $locations = $request->location;
+
+        /*Location Meta*/
+        $loc = $request->location;
+        $locations = Node::find($loc);
+        $nodes = $locations->getAncestors();
+        if(count($nodes) > 0) {
+            $l = '';
+            foreach ($nodes as $n) {
+                $l .= $n->getKey().','.$request->location.',';
+            }
+            $location = rtrim($l, ',');
+            $ll[]  = $location;
+        }
+        /*Location Meta*/
 
 
         $check = Node::withType('business')->withName($node_name)->first();
@@ -146,8 +159,14 @@ class BusinessController extends PublicController
             list($node, $locale) = $this->createNode($request, null);
 
             //save meta
-            $node->setmeta('locations', $locations);
+            /*Location Meta*/
+            if(count($nodes) > 0) {
+                $node->setmeta('locations', $ll);
+            }else{
+                $node->setmeta('locations', $loc);
+            }
             $node->save();
+            /*Location Meta*/
 
             $data = [
                 'node_id' => $node->getKey(),
@@ -167,8 +186,19 @@ class BusinessController extends PublicController
         $title = $request->input('title');
         $node_name = str_slug($title);
 
-        $category = $request->category;
-
+        /*Category Meta*/
+        $cat = $request->category;
+        $categories = Node::find($cat);
+        $nodes = $categories->getAncestors();
+        if(count($nodes) > 0) {
+            $c = '';
+            foreach ($nodes as $n) {
+                $c .= $n->getKey().','.$request->category.',';
+            }
+            $category = rtrim($c, ',');
+            $cc[]  = $category;
+        }
+        /*Category Meta*/
 
         $request->request->set('title', $title);
         $request->request->set('node_name', $node_name);
@@ -179,48 +209,90 @@ class BusinessController extends PublicController
 
         list($node, $locale) = $this->createNode($request, null);
 
+        /*Category Meta*/
+            if(count($nodes) > 0) {
+            $node->setmeta('categories', $cc);
+            }else{
+            $node->setmeta('categories', $cat);
+            }
+            $node->save();
+        /*Category Meta*/
 
-        $node->setmeta('categories', $category);
-        $node->save();
+        $data = [
+            'node_id' => $node->getKey(),
+            'source_id' => $node->translate($locale)->getKey(),
+        ];
 
-        return "data saved";
+        return $data;
 
 
     }
 
-    public function editPost(){
+    public function editPost($id, $source_id = null){
+
+        $source = NodeSource::find($source_id);
+        $business = Node::withType('servicetype')->find($id);
+
         $user = Auth::user();
-        $data['service'] = Node::withType('servicetype')->where('user_id', $user->id)->first();
+        if ($business || $source) {
 
-        $meta = $data['service']->metas()->where('key', 'categories')->first();
+            $source = Node::withType('servicetype')->find($source->node_id);
+            if ($user->id == $business->user_id && $user->id == $source->user_id) {
+                $data['node'] = $business;
 
-        $data['category'] = Node::find($meta->value);
+                $cat_meta = $business->metas()->where('key', 'categories')->first();
+                if ($cat_meta) {
+                    $categories = explode(',', $cat_meta->value);
+                    $category = Node::find(max($categories));
+                    $data['category'] = [
+
+                        'id' => $category->getKey(),
+                        'title' => $category->getTitle()
+                    ];
+
+                }
+
+            }
+        }
 
         return $data;
 
     }
 
-    public function updatePost(Request $request){
+    public function updatePost(Request $request, $node_id, $source){
 
 
-        $user = Auth::user();
-        $node = Node::withType('servicetype')->where('user_id', $user->id)->first();
-        $source = $node->translate(locale())->getKey();
 
-        list($node, $locale, $source) = $this->authorizeAndFindNode($node->getKey(), $source);
+        list($node, $locale, $source) = $this->authorizeAndFindNode($node_id, $source);
 
         //--Update Node
         $node->update([
             $locale => array_except($request->all(), ['_token', '_method']),
         ]);
 
-        //save meta Locations
-        $category = $request->category;
 
-        if ($category) {
-            $node->setmeta('categories', $category);
-            $node->save();
+        /*Category Meta*/
+        $cat = $request->category;
+        $categories = Node::find($cat);
+        $nodes = $categories->getAncestors();
+        if(count($nodes) > 0) {
+            $c = '';
+            foreach ($nodes as $n) {
+                $c .= $n->getKey().','.$request->category.',';
+            }
+            $category = rtrim($c, ',');
+            $cc[]  = $category;
         }
+        /*Category Meta*/
+
+        /*Category Meta*/
+        if(count($nodes) > 0) {
+            $node->setmeta('categories', $cc);
+        }else{
+            $node->setmeta('categories', $cat);
+        }
+        $node->save();
+        /*Category Meta*/
 
         return "DATA UPDATED";
 
@@ -262,7 +334,13 @@ class BusinessController extends PublicController
 
                     $loc_meta = $business->metas()->where('key', 'locations')->first();
                     if ($loc_meta) {
-                        $data['locations'] = explode(',', $loc_meta->value);
+                        $locations = explode(',', $loc_meta->value);
+                        $location = Node::find(max($locations));
+                        $data['location'] = [
+
+                            'id' => $location->getKey(),
+                            'title' => $location->getTitle()
+                        ];
                     }
 
                     /*keywoords*/
@@ -330,12 +408,27 @@ class BusinessController extends PublicController
         ]);
 
         //save meta Locations
-        $locations = $request->location;
-        
-        if ($locations) {
+        /*Location Meta*/
+        $loc = $request->location;
+        if($loc) {
+            $locations = Node::find($loc);
+            $nodes = $locations->getAncestors();
+            if (count($nodes) > 0) {
+                $l = '';
+                foreach ($nodes as $n) {
+                    $l .= $n->getKey() . ',' . $request->location . ',';
+                }
+                $location = rtrim($l, ',');
+                $ll[] = $location;
+            }
+            /*Location Meta*/
 
-
-            $node->setmeta('locations', $locations);
+            /*Location Meta*/
+            if (count($nodes) > 0) {
+                $node->setmeta('locations', $ll);
+            } else {
+                $node->setmeta('locations', $loc);
+            }
             $node->save();
         }
 
@@ -397,9 +490,7 @@ class BusinessController extends PublicController
         if($nodes->count() == 0){
           $node = Node::find($parent);
           $par = $node->parent()->first();
-
           $nodes = Node::withType('categories')->where('parent_id', $par->getKey());
-
         }
 
         $categories = $nodes->get();
@@ -438,10 +529,15 @@ class BusinessController extends PublicController
         if($parent == 0) $nodes->where('parent_id', null);
         if($parent != 0) $nodes->where('parent_id', $parent);
 
-        $categories = $nodes->get();
+        if($nodes->count() == 0){
+            $node = Node::find($parent);
+            $par = $node->parent()->first();
+            $nodes = Node::withType('locations')->where('parent_id', $par->getKey());
+        }
 
+        $locations = $nodes->get();
 
-        foreach ($categories as $node) {
+        foreach ($locations as $node) {
 
             $data[] = [
                 'id' => $node->getKey(),

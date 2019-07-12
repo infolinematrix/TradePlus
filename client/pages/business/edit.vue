@@ -14,7 +14,7 @@
             <v-layout row wrap>
               <v-flex xs12>
                 <v-text-field 
-                v-model="title"
+                v-model="business_title"
                 label="Title" 
                 placeholder="Business title" 
                 v-validate="'required'"
@@ -60,7 +60,9 @@
                 </v-text-field>
               </v-flex>
             </v-layout>
-            <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>
+           <!-- <Location :parent_locations='parent_locations' @clicked="onClickChild"></Location>
+           -->
+             <location-popup  :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
 
 <div class="text-xs-center">
         <v-dialog
@@ -98,6 +100,7 @@
 import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
+import LocationPopup from "~/components/LocationPopup.vue";
 import Location from "~/components/Location.vue";
 export default {
    async asyncData({redirect, $axios }) {
@@ -120,33 +123,47 @@ export default {
     });
   },
   components: {
-    Location
+    Location,
+    LocationPopup
   },
 layout: 'user',
   data() {
     
     return {
     dialog: false,
+    active: true,
+    category_dialog:false,
+    
     parent_locations: [],
     locations: [],
       agree: true,
-      title: null,
+      business_title: null,
       address: null,
       area: null,
       zipcode: null,
-      email: null
+      email: null,
+      title:'Location from Parent',
+      id:null
     }
   },
 
   methods: {
 
-      onClickChild (value) {
+     /* onClickChild (value) {
       this.locations = value;
-      },
+      },*/
+
+       update_title(value){
+      this.title = value
+    },
+    update_id(value){
+      this.id = value
+    },
     async business() {
         let formData = new FormData();
-        formData.append("title", this.title);
-        formData.append("location", this.locations);
+        formData.append("title", this.business_title);
+        //formData.append("location", this.locations);
+        formData.append("location", this.id);
         formData.append("business_address", this.address);
         formData.append("area", this.area);
         formData.append("business_zipcode", this.zipcode);
@@ -194,11 +211,13 @@ layout: 'user',
 
         this.$axios.get('edit-business')
        .then(response => {
-         this.title = response.data.node.title;
+         this.business_title = response.data.node.title;
          this.address = response.data.node.translations[0].business_address;
          this.area = response.data.node.translations[0].area;
          this.zipcode = response.data.node.translations[0].business_zipcode;
          this.email =  response.data.node.translations[0].business_email;
+         this.title = response.data.location.title;
+         this.id = response.data.location.id;
 
         /*Location*/
 

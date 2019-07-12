@@ -131,9 +131,9 @@ export default {
          this.$axios
             .post(`post-services`, formData)
             .then(response => {
-            this.$root.$router.push({path: '/business/post/edit'})
+            let service = response.data;  
+            this.$root.$router.push({path: '/business/post/'+service.node_id+'/edit/'+service.source_id})
           })
-
      }
         
   }
