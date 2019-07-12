@@ -142,7 +142,7 @@ layout: 'user',
       area: null,
       zipcode: null,
       email: null,
-      title:'Location from Parent',
+      title: null,
       id:null,
      
 
