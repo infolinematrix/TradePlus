@@ -49,7 +49,7 @@
           <v-subheader>Products/Services</v-subheader>
           <v-container class="pt-0">
             <v-flex class="mb-2">
-              <nuxt-link to="/business/post/create">Profile</nuxt-link>
+              <nuxt-link to="/business/post/service/create">Create</nuxt-link>
             </v-flex>
             <v-flex class="mb-2">
               <nuxt-link to="business-profile#">About</nuxt-link>
