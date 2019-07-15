@@ -42,7 +42,7 @@
                   <v-list-tile-action>
                     <v-icon size="26" color="red light-3">business_center</v-icon>
                   </v-list-tile-action>
-                  <v-list-tile-title> <nuxt-link to="DFF">Service</nuxt-link></v-list-tile-title>
+                  <v-list-tile-title> <nuxt-link to="/business/service/create">Service</nuxt-link></v-list-tile-title>
 
                 </v-list-tile>
 
