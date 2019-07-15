@@ -41,7 +41,7 @@
 
               <v-card-text>
                   Forgot your Password? &nbsp;
-                  <nuxt-link to="auth/forgot_password">Click here</nuxt-link>
+                  <nuxt-link to="/auth/forgot-password">Click here</nuxt-link>
               </v-card-text>
             </v-flex>
 
@@ -49,7 +49,7 @@
               <v-card-text>
                 <div class="title font-weight-normal mb-1">Don't have account?</div>
                 <div class="grey--text">
-                  <nuxt-link to="auth/register">Click here to Register</nuxt-link>
+                  <nuxt-link to="/auth/register">Click here to Register</nuxt-link>
                 </div>
               </v-card-text>
               <v-divider></v-divider>

@@ -67,8 +67,11 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+    
+
 
     public function register(Request $request){
+
 
         /*Check User EXIST*/
         $check_user = User::where('email', trim($request->email))->first();
@@ -86,6 +89,8 @@ class RegisterController extends Controller
                 'last_name' => $request->last_name,
                 'email' => $request->email,
                 'password' => $request->password,
+                'country_code' => $request->code,
+                'phone' => $request->phone,
                 'status' => 1
             ];
 

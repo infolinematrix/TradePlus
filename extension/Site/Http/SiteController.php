@@ -40,7 +40,24 @@ class SiteController extends PublicController
     public function getHome()
     {
 
-       
+        $data = [
+
+            'site_name' => 'sad'
+
+         ];
+
+        \Config::set('mail', getMailconfig());
+
+        Mail::send('mail.register', $data, function ($message) use ($data) {
+            $message->from(getSettings('email_from_email'), getSettings('site_title'));
+            $message->subject('Verify Your Account');
+            $message->to('help.matrixinfoline@gmail.com');
+
+        });
+
+
+        dd("SAd");
+
         return $this->compileView('Site::index', compact(null), 'SITE HOME');
     }
 
