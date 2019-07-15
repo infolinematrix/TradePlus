@@ -92,7 +92,7 @@
                       <div
                         class="title-2 lh1 font-weight-medium  line-1 text-no-wrap"
                       >Top western road trips Top western road trips</div>
-                      <span class="grey--text">1,000 miles of wonder</span>
+                      <span class="grey--text">1,000 views in this month</span>
 
                   </v-card-title>
 

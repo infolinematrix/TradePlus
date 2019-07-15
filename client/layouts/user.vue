@@ -140,7 +140,7 @@
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
 export default {
-  //middleware: "auth",
+  middleware: "auth",
 
   components: {
     ToolbarMenu
