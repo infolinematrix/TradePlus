@@ -82,7 +82,7 @@
                       </v-flex>
                     </v-layout>
 
-                    <v-subheader class="pl-0">Other Information {{ business.title }}</v-subheader>
+                    <v-subheader class="pl-0">Other Information</v-subheader>
 
                     <v-layout row wrap>
                       <v-flex xs8>
@@ -273,7 +273,7 @@
                         </v-menu>
                       </v-flex>
                     </v-layout>
-
+<v-subheader class="pl-0">Social Links</v-subheader>
                     <v-layout row wrap>
                       <v-flex xs12 md6>
                         <v-text-field
@@ -440,10 +440,12 @@ export default {
           redirect('/business/create')
         }
       }
+       if (res.data.node != null) {
       return {
        profilemageUrl: res.data.node.profileImage,
        
       };
+       }
 
     });
 

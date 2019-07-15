@@ -77,7 +77,7 @@
                       </v-flex>
                     </v-layout>
 
-                    <v-subheader class="pl-0">Other Information {{ business.title }}</v-subheader>
+                    <v-subheader class="pl-0">Other Information</v-subheader>
 
                     <v-layout row wrap>
                       <v-flex xs8>
@@ -226,7 +226,7 @@ layout: 'user',
       zipcode: null,
       email: null,
       phone: null,
-      website: null,
+      website: '',
       business_type: null,
       profileName: "",
       profileimageFile: "",
