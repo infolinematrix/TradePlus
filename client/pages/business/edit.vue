@@ -41,8 +41,7 @@
                     <v-layout row wrap>
                       <v-flex xs12 md4>
                         <v-card flat>
-
-                           <v-img :src="profilemageUrl" width="200px">
+                           <v-img :src="profilemageUrl" height="170" >
                           <v-layout column fill-height>
                         <v-card-title>
               <v-btn dark icon>

@@ -202,7 +202,7 @@ class BusinessController extends PublicController
 
                 $destinationPath = public_path('/uploads');
                 $profileimage->move($destinationPath, $name . '.' . $ext);
-                ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(200, 150)->save();
+                ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(200, 170)->save();
 
                 //-- Save Image in Database--//
                 $media = new Media();
@@ -378,7 +378,7 @@ class BusinessController extends PublicController
 
             $destinationPath = public_path('/uploads');
             $profileimage->move($destinationPath, $name . '.' . $ext);
-            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(200, 150)->save();
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(200, 170)->save();
 
             $profile = $node->getImages()->where('img_type', 'profile')->first();
 
