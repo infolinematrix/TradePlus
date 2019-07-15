@@ -1,113 +1,192 @@
 <template>
   <v-layout row>
-      <v-card flat>
-        <v-card-title>
-          <div>
-            <h3 class="headline">My Profile</h3>
-            <div class="text-muted">{{ text_short }}</div>
-          </div>
-        </v-card-title>
-        
-        <v-container grid-list-md class="pa-3" >
-          <v-tabs height="60" v-model="active" color="grey lighten-3" slider-color="yellow">
-            <v-tab ripple class="text-capitalize">All</v-tab>
-            <v-tab-item class="pl-0 pr-0 bg-light">
-                <v-layout align-start justify-left row fill-height>
-    <v-flex xs12 md12>
-      <v-card flat>
-        
-        <v-container grid-list-lg>
-                          <v-form @submit.prevent="business">
-            <v-layout row wrap>
-              <v-flex xs12>
-                <v-text-field 
-                v-model="business_title"
-                label="Title" 
-                placeholder="Business title" 
-                v-validate="'required'"
-                :error-messages="errors.collect('Business Title')"
-                data-vv-name="Business Title"
-                required
-                outline
-                ></v-text-field>
-              </v-flex>
-            </v-layout>
 
-            <v-layout row wrap>
-              <v-flex xs12>
-                <v-text-field 
-                v-model="address"
-                label="Address" 
-                placeholder="Street, locality" 
-                v-validate="'required'"
-                :error-messages="errors.collect('Address')"
-                data-vv-name="Address"
-                required
-                outline>
-                </v-text-field>
-              </v-flex>
-              <v-flex xs12 md8>
-                <v-text-field 
-                v-model="area"
-                label="Locality" 
-                placeholder="Area" 
-                outline>
-                </v-text-field>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-text-field 
-                v-model="zipcode"
-                label="Zip" 
-                placeholder="Zip" 
-                v-validate="'required'"
-                :error-messages="errors.collect('Zip')"
-                data-vv-name="Zip"
-                required
-                outline>
-                </v-text-field>
-              </v-flex>
-            </v-layout>
-           
-             <location-popup  :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
+    <v-card flat>
 
-<div class="text-xs-center">
-        <v-dialog
-          v-model="dialog"
-          hide-overlay
-          persistent
-          width="300"
-        >
-      <v-card
-        color="primary"
-        dark
-      >
-      <v-card-text>
-          Please stand by
-          <v-progress-linear
-            indeterminate
-            color="white"
-            class="mb-0"
-          ></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </div>
-            <v-card-actions class="pa-0">
-              <v-btn type="submit" large depressed color="orange">Create</v-btn>
-            </v-card-actions>
-            </v-form>
-        </v-container>
-      </v-card>
-    </v-flex>
-  </v-layout>
-            </v-tab-item>
+      <v-card-title>
+        <div>
+          <h3 class="headline">My Business</h3>
+          <div class="text-muted mb-1">{{ text_short }}</div>
+        </div>
+
+
+      </v-card-title>
+      <v-img
+          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+          aspect-ratio="2.75"
+        ></v-img>
+
+<v-layout row wrap>
+
+<v-flex xs12>
+
+
+
+
+      <v-tabs grow  icons-and-text show-arrows slider-color="primary">
+        <v-tab ripple class="text-capitalize">Profile <v-icon color="primary">work_outline</v-icon> </v-tab>
         
-          </v-tabs>
-        </v-container>
-      </v-card>
+        <v-tab-item class="pl-0 pr-0">
+          <v-layout align-start justify-left row fill-height>
+            <v-flex xs12 md12>
+              <v-card flat>
 
+
+
+                <v-container grid-list-lg>
+                  <v-form @submit.prevent="business" enctype="multipart/form-data">
+                    <v-layout row wrap>
+                      <v-flex xs12 md4>
+                        <v-card flat>
+
+                           <v-img :src="profilemageUrl" width="200px">
+                          <v-layout column fill-height>
+                        <v-card-title>
+              <v-btn dark icon>
+                <span>
+                      <input
+                        type="file"
+                        ref="profile_file"
+                        style="display: none"
+                        @change="onProfileFile"
+                      >
+                      <v-icon color="purple" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
+                    </span>
+              </v-btn>
+            </v-card-title>
+
+
+                  </v-layout>
+                </v-img>  
+                        </v-card>
+                      </v-flex>
+                      <v-flex xs12 md8>
+                        <v-text-field
+                          v-model="form.business_title"
+                          label="Title"
+                          placeholder="Business title"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Business Title')"
+                          data-vv-name="Business Title"
+                          required
+                          outline
+                          counter="80"
+                        ></v-text-field>
+
+                        <location-popup :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
+                      </v-flex>
+                    </v-layout>
+
+                    <v-subheader class="pl-0">Other Information {{ business.title }}</v-subheader>
+
+                    <v-layout row wrap>
+                      <v-flex xs8>
+                        <v-text-field
+                          v-model="form.address"
+                          label="Address"
+                          placeholder="Street, locality"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Address')"
+                          data-vv-name="Address"
+                          required
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 md4>
+                        <v-text-field
+                          v-model="form.zipcode"
+                          label="Zip"
+                          placeholder="Zip"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Zip')"
+                          data-vv-name="Zip"
+                          required
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
+
+                     <v-layout row wrap>
+                      <v-flex xs8>
+                        <v-text-field
+                          v-model="form.email"
+                          label="Email"
+                          placeholder="Email"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Email')"
+                          data-vv-name="Email"
+                          required
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 md4>
+                        <v-text-field
+                          v-model="form.phone"
+                          label="Phone"
+                          placeholder="Phone"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Phone')"
+                          data-vv-name="Phone"
+                          required
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
+
+                    <v-layout row wrap>
+                      <v-flex xs12 md6>
+                        <v-text-field
+                          v-model="form.website"
+                          label="Website (optional)"
+                          placeholder="Website"
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 md6>
+                        <v-select
+                          v-model="form.business_type"
+                          item-text="name"
+                          item-value="id"
+                          :items="entities"
+                          label="Business Type"
+                           v-validate="'required'"
+                          :error-messages="errors.collect('Business Type')"
+                          data-vv-name="Business Type"
+                          required
+                          outline
+                        ></v-select>
+                      </v-flex>
+                    </v-layout>
+
+                    <div class="text-xs-center">
+                      <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                        <v-card color="primary">
+                          <v-card-text>
+                            Please stand by
+                            <v-progress-linear indeterminate color="blue" class="mb-0"></v-progress-linear>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                    </div>
+                    <v-card-actions class="pa-0">
+                      <v-btn type="submit" large depressed color="orange">Submit</v-btn>
+                    </v-card-actions>
+                  </v-form>
+                </v-container>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-tab-item>
+
+        
+        
+      </v-tabs>
+</v-flex>
+      </v-layout>
+    </v-card>
   </v-layout>
 </template>
+
 
 <script>
 import Form from "vform";
@@ -122,6 +201,10 @@ export default {
            redirect("/business/edit");         
       }
       }
+      return {
+       entities: res.data.entities,
+       
+      };
     });
   },
   components: {
@@ -133,17 +216,21 @@ layout: 'user',
     return {
     dialog: false,
     active: true,
-    category_dialog:false,
-    
-      locations: [],
-      agree: true,
+    title: null,
+    id:null,
+    profilemageUrl: 'https://cdn.vuetifyjs.com/images/cards/docks.jpg',
+    entities: [],
+    form: new Form({
       business_title: null,
       address: null,
-      area: null,
       zipcode: null,
       email: null,
-      title: null,
-      id:null,
+      phone: null,
+      website: null,
+      business_type: null,
+      profileName: "",
+      profileimageFile: "",
+      }),
      
 
       text:
@@ -155,6 +242,31 @@ layout: 'user',
 
   methods: {
 
+//Profile Image
+    profileFile() {
+      this.$refs.profile_file.click();
+    },
+    onProfileFile(e) {
+      const files = e.target.files;
+      if (files[0] !== undefined) {
+        this.form.profileName = files[0].name;
+        if (this.form.profileName.lastIndexOf(".") <= 0) {
+          return;
+        }
+        const fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener("load", () => {
+          this.profilemageUrl = fr.result;
+          this.form.profileimageFile = files[0];
+        });
+      } else {
+        this.form.profileName = "";
+        this.form.profileimageFile = "";
+        this.profilemageUrl = "";
+      }
+
+
+    },
     update_title(value){
       this.title = value
     },
@@ -162,14 +274,19 @@ layout: 'user',
       this.id = value
     },
     async business() {
-       let formData = new FormData();
-        formData.append("title", this.business_title);
-        //formData.append("location", this.locations);
-        formData.append("location", this.id);
-        formData.append("business_address", this.address);
-        formData.append("area", this.area);
-        formData.append("business_zipcode", this.zipcode);
-
+      this.dialog = true;
+      let formData = new FormData();
+      formData.append('title', this.form.business_title)
+      formData.append('location', this.id)
+      formData.append('business_address', this.form.address)
+      formData.append('business_zipcode', this.form.zipcode)
+      formData.append('business_email', this.form.email)
+      formData.append('business_phone', this.form.phone)
+      formData.append('business_website', this.form.website)
+      formData.append('business_entity', this.form.business_type)
+      if(this.form.profileName.length != 0){
+      formData.append("profileimage", this.form.profileimageFile);
+      }
         
         this.$validator.validateAll().then(result => {
         if (result) {

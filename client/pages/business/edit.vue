@@ -26,8 +26,7 @@
       <v-tabs grow  icons-and-text show-arrows slider-color="primary">
         <v-tab ripple class="text-capitalize">Profile <v-icon color="primary">work_outline</v-icon> </v-tab>
         <v-tab ripple class="text-capitalize">About <v-icon color="green">filter_frames</v-icon></v-tab>
-        <v-tab ripple class="text-capitalize">Credential <v-icon color="grey">toggle_off</v-icon></v-tab>
-        <v-tab ripple class="text-capitalize">Social  <v-icon color="orange">share</v-icon></v-tab>
+        <v-tab ripple class="text-capitalize">Others <v-icon color="grey">toggle_off</v-icon></v-tab>
         <v-tab ripple class="text-capitalize">Settings  <v-icon color="megenta">toggle_off</v-icon></v-tab>
 
         <v-tab-item class="pl-0 pr-0">
@@ -38,30 +37,38 @@
 
 
                 <v-container grid-list-lg>
-                  <v-form @submit.prevent="business">
+                  <v-form @submit.prevent="business" enctype="multipart/form-data">
                     <v-layout row wrap>
                       <v-flex xs12 md4>
                         <v-card flat>
-                          <v-img
-                          cover
-                            width="240px"
-                            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-                          >
-                            <v-container fill-height fluid>
-                              <v-layout fill-height>
-                                <v-flex xs12 align-end flexbox>
-                                  <v-btn icon>
-                                    <v-icon color="white">camera_alt</v-icon>
-                                  </v-btn>
-                                </v-flex>
-                              </v-layout>
-                            </v-container>
-                          </v-img>
+
+                           <v-img :src="profilemageUrl" width="200px">
+                          <v-layout column fill-height>
+                        <v-card-title>
+              <v-btn dark icon>
+                <span>
+                      <input
+                        type="file"
+                        ref="profile_file"
+                        style="display: none"
+                        @change="onProfileFile"
+                      >
+                      <v-icon color="blue" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
+                    </span>
+              </v-btn>
+            </v-card-title>
+
+
+                  </v-layout>
+                </v-img>  
+        
+
+
                         </v-card>
                       </v-flex>
                       <v-flex xs12 md8>
                         <v-text-field
-                          v-model="business_title"
+                          v-model="form.business_title"
                           label="Title"
                           placeholder="Business title"
                           v-validate="'required'"
@@ -76,28 +83,12 @@
                       </v-flex>
                     </v-layout>
 
-                    <v-subheader class="pl-0">Other Information</v-subheader>
+                    <v-subheader class="pl-0">Other Information {{ business.title }}</v-subheader>
 
                     <v-layout row wrap>
-                      <v-flex xs12 md12>
+                      <v-flex xs8>
                         <v-text-field
-                          v-model="business_title"
-                          label="Title"
-                          placeholder="Business title"
-                          v-validate="'required'"
-                          :error-messages="errors.collect('Business Title')"
-                          data-vv-name="Business Title"
-                          required
-                          outline
-                          counter="80"
-                        ></v-text-field>
-                      </v-flex>
-                    </v-layout>
-
-                    <v-layout row wrap>
-                      <v-flex xs12>
-                        <v-text-field
-                          v-model="address"
+                          v-model="form.address"
                           label="Address"
                           placeholder="Street, locality"
                           v-validate="'required'"
@@ -107,12 +98,9 @@
                           outline
                         ></v-text-field>
                       </v-flex>
-                      <v-flex xs12 md8>
-                        <location-popup :title="title" @eId="update_id" @eTitle="update_title"></location-popup>
-                      </v-flex>
                       <v-flex xs12 md4>
                         <v-text-field
-                          v-model="zipcode"
+                          v-model="form.zipcode"
                           label="Zip"
                           placeholder="Zip"
                           v-validate="'required'"
@@ -124,10 +112,37 @@
                       </v-flex>
                     </v-layout>
 
+                     <v-layout row wrap>
+                      <v-flex xs8>
+                        <v-text-field
+                          v-model="form.email"
+                          label="Email"
+                          placeholder="Email"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Email')"
+                          data-vv-name="Email"
+                          required
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 md4>
+                        <v-text-field
+                          v-model="form.phone"
+                          label="Phone"
+                          placeholder="Phone"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Phone')"
+                          data-vv-name="Phone"
+                          required
+                          outline
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
+
                     <v-layout row wrap>
                       <v-flex xs12 md6>
                         <v-text-field
-                          v-model="website"
+                          v-model="form.website"
                           label="Website (optional)"
                           placeholder="Website"
                           outline
@@ -135,11 +150,15 @@
                       </v-flex>
                       <v-flex xs12 md6>
                         <v-select
-                          v-model="entity"
+                          v-model="form.business_type"
                           item-text="name"
                           item-value="id"
                           :items="entities"
                           label="Business Type"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Business Type')"
+                          data-vv-name="Business Type"
+                          required
                           outline
                         ></v-select>
                       </v-flex>
@@ -147,10 +166,10 @@
 
                     <div class="text-xs-center">
                       <v-dialog v-model="dialog" hide-overlay persistent width="300">
-                        <v-card color="primary" dark>
+                        <v-card color="primary">
                           <v-card-text>
                             Please stand by
-                            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                            <v-progress-linear indeterminate color="blue" class="mb-0"></v-progress-linear>
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -170,48 +189,17 @@
             <v-flex xs12 md12>
               <v-card flat>
                 <v-container grid-list-lg>
-                  <v-form @submit.prevent="about">
-                    <v-layout row wrap>
-                      <v-flex xs12>
-                        <v-text-field
-                          v-model="email"
-                          label="Email"
-                          placeholder="Email"
-                          v-validate="'required'"
-                          :error-messages="errors.collect('Email')"
-                          data-vv-name="Email"
-                          required
-                          outline
-                        ></v-text-field>
-                      </v-flex>
-                    </v-layout>
-
-                    <v-layout row wrap>
-                      <v-flex xs12 md6>
-                        <v-text-field
-                          v-model="phone"
-                          label="Phone"
-                          placeholder="Phone"
-                          v-validate="'required'"
-                          :error-messages="errors.collect('Phone')"
-                          data-vv-name="Phone"
-                          required
-                          outline
-                        ></v-text-field>
-                      </v-flex>
-                      <v-flex xs12 md6></v-flex>
-                    </v-layout>
-
+                  <v-form @submit.prevent="about('form-2')" data-vv-scope="form-2">
                     <v-layout row wrap>
                       <v-flex xs12>
                         <v-text-field
                           textarea
                           rows="10"
-                          v-model="description"
+                          v-model="form2.description"
                           label="Description"
                           placeholder="Description"
                           v-validate="'required'"
-                          :error-messages="errors.collect('Description')"
+                          :error-messages="errors.collect('form-2.Description')"
                           data-vv-name="Description"
                           required
                           outline
@@ -234,12 +222,12 @@
             <v-flex xs12 md12>
               <v-card flat>
                 <v-container grid-list-lg>
-                  <v-form @submit.prevent="credential">
+                  <v-form @submit.prevent="others('form-3')" data-vv-scope="form-3">
                     <v-layout row wrap>
                       <v-flex xs12 md6>
                         <v-text-field
                           type="number"
-                          v-model="employee"
+                          v-model="form3.employee"
                           label="Employee"
                           placeholder="No of employee"
                           outline
@@ -247,7 +235,7 @@
                       </v-flex>
                       <v-flex xs12 md6>
                         <v-select
-                          v-model="scale"
+                          v-model="form3.scale"
                           item-text="name"
                           item-value="id"
                           :items="scales"
@@ -257,17 +245,6 @@
                       </v-flex>
                     </v-layout>
                     <v-layout row wrap>
-                      <v-flex xs12 md6>
-                        <v-select
-                          v-model="entity"
-                          item-text="name"
-                          item-value="id"
-                          :items="entities"
-                          label="Select Entity"
-                          outline
-                        ></v-select>
-                      </v-flex>
-
                       <v-flex xs12 md6>
                         <v-menu
                           ref="menu"
@@ -282,14 +259,14 @@
                         >
                           <template v-slot:activator="{ on }">
                             <v-text-field
-                              v-model="established"
+                              v-model="form3.established"
                               label="Established (year/month)"
                               readonly
                               outline
                               v-on="on"
                             ></v-text-field>
                           </template>
-                          <v-date-picker v-model="established" type="month" no-title scrollable>
+                          <v-date-picker v-model="form3.established" type="month" no-title scrollable>
                             <v-spacer></v-spacer>
                             <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                             <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -298,27 +275,11 @@
                       </v-flex>
                     </v-layout>
 
-                    <v-card-actions class="pa-0">
-                      <v-btn type="submit" large depressed color="orange">Update</v-btn>
-                    </v-card-actions>
-                  </v-form>
-                </v-container>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-tab-item>
-
-        <v-tab-item class="pl-0 pr-0">
-          <v-layout align-start justify-left row fill-height>
-            <v-flex xs12 md12>
-              <v-card flat>
-                <v-container grid-list-lg>
-                  <v-form @submit.prevent="social">
                     <v-layout row wrap>
                       <v-flex xs12 md6>
                         <v-text-field
                           type="text"
-                          v-model="facebook"
+                          v-model="form3.facebook"
                           label="Facebook"
                           placeholder="Facebook"
                           outline
@@ -327,7 +288,7 @@
                       <v-flex xs12 md6>
                         <v-text-field
                           type="text"
-                          v-model="twitter"
+                          v-model="form3.twitter"
                           label="Twitter"
                           placeholder="Twitter"
                           outline
@@ -338,7 +299,7 @@
                       <v-flex xs12 md6>
                         <v-text-field
                           type="text"
-                          v-model="linkedin"
+                          v-model="form3.linkedin"
                           label="Linkedin"
                           placeholder="Linkedin"
                           outline
@@ -348,7 +309,7 @@
                       <v-flex xs12 md6>
                         <v-text-field
                           type="text"
-                          v-model="youtube"
+                          v-model="form3.youtube"
                           label="Youtube"
                           placeholder="Youtube"
                           outline
@@ -358,7 +319,7 @@
                       <v-flex xs12 md6>
                         <v-text-field
                           type="text"
-                          v-model="google"
+                          v-model="form3.google"
                           label="Google"
                           placeholder="Google"
                           outline
@@ -375,6 +336,8 @@
             </v-flex>
           </v-layout>
         </v-tab-item>
+
+       
 
         <v-tab-item class="pl-0 pr-0">
           <v-list two-line subheader>
@@ -430,6 +393,16 @@
             </v-list-tile>
           </v-list>
 
+ <div class="text-xs-center">
+                      <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                        <v-card color="primary">
+                          <v-card-text>
+                            Please stand by
+                            <v-progress-linear indeterminate color="blue" class="mb-0"></v-progress-linear>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                    </div>
           <v-flex class="pl-2 mt-5">
                       <v-btn type="submit" large depressed color="primary">Update</v-btn>
                     </v-flex>
@@ -448,6 +421,7 @@ import swal from 'sweetalert2'
 import VeeValidate from 'vee-validate'
 import LocationPopup from '~/components/LocationPopup.vue'
 export default {
+  
   async asyncData({ redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
       if (res) {
@@ -467,7 +441,14 @@ export default {
           redirect('/business/create')
         }
       }
-    })
+      return {
+       profilemageUrl: res.data.node.profileImage,
+       
+      };
+
+    });
+
+   
   },
   components: {
     LocationPopup
@@ -477,36 +458,38 @@ export default {
     return {
       dialog: false,
       active: true,
-      category_dialog: false,
-
-      parent_locations: [],
-      locations: [],
-      agree: true,
+      title: 'Choose Location',
+      id: null,
+      scales: [],
+      entities: [],
+      form: new Form({
       business_title: null,
-      business_type: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       address: null,
       zipcode: null,
       email: null,
-      title: 'Location from Parent',
-      id: null,
-
-      email: null,
       phone: null,
-      webiste: null,
+      website: '',
+      business_type: null,
+      profileName: "",
+      profileimageFile: "",
+      }),
+      agree: true,
+
+     form2: new Form({
       description: null,
+      }),
 
+     form3: new Form({
       employee: 0,
-      entity: null,
       scale: null,
-      established: null,
-      scales: [],
-      entities: [],
-      facebook: null,
-      twitter: null,
-      linkedin: null,
-      youtube: null,
-      google: null,
-
+      established: '',
+      facebook: '',
+      twitter: '',
+      linkedin: '',
+      youtube: '',
+      google: '',
+     }),
+    
       text:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
       text_short:
@@ -515,6 +498,32 @@ export default {
   },
 
   methods: {
+    //Profile Image
+    profileFile() {
+      this.$refs.profile_file.click();
+    },
+    onProfileFile(e) {
+      const files = e.target.files;
+      if (files[0] !== undefined) {
+        this.form.profileName = files[0].name;
+        if (this.form.profileName.lastIndexOf(".") <= 0) {
+          return;
+        }
+        const fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener("load", () => {
+          this.profilemageUrl = fr.result;
+          this.form.profileimageFile = files[0];
+        });
+      } else {
+        this.form.profileName = "";
+        this.form.profileimageFile = "";
+        this.profilemageUrl = "";
+      }
+
+
+    },
+
     update_title(value) {
       this.title = value
     },
@@ -522,16 +531,24 @@ export default {
       this.id = value
     },
     async business() {
+      this.dialog = true;
       let formData = new FormData()
-      formData.append('title', this.business_title)
-      //formData.append("location", this.locations);
+      formData.append('title', this.form.business_title)
       formData.append('location', this.id)
-      formData.append('business_address', this.address)
-      formData.append('business_zipcode', this.zipcode)
+      formData.append('business_address', this.form.address)
+      formData.append('business_zipcode', this.form.zipcode)
+      formData.append('business_email', this.form.email)
+      formData.append('business_phone', this.form.phone)
+      formData.append('business_website', this.form.website)
+      formData.append('business_entity', this.form.business_type)
+      if(this.form.profileName.length != 0){
+      formData.append("profileimage", this.form.profileimageFile);
+      }
 
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$axios.post(`business/update`, formData).then(response => {
+
             this.dialog = false
             swal.fire({
               title: 'Business Updated Successfully',
@@ -547,14 +564,11 @@ export default {
     },
 
     /*About*/
-    async about() {
+    async about(scope) {
       let formData = new FormData()
-      formData.append('business_email', this.email)
-      formData.append('business_phone', this.phone)
-      formData.append('business_website', this.website)
-      formData.append('business_description', this.description)
+      formData.append('business_description', this.form2.description)
 
-      this.$validator.validateAll().then(result => {
+      this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.$axios.post(`business/update`, formData).then(response => {
             this.dialog = false
@@ -573,21 +587,25 @@ export default {
 
     /*Credential*/
 
-    async credential() {
+    async others(scope) {
       //this.dialog = true;
 
       let formData = new FormData()
-      formData.append('business_employee', this.employee)
-      formData.append('business_scale', this.scale)
-      formData.append('business_entity', this.entity)
-      formData.append('business_established', this.established)
+      formData.append('business_employee', this.form3.employee)
+      formData.append('business_scale', this.form3.scale)
+      formData.append('business_established', this.form3.established)
+      formData.append('business_facebook', this.form3.facebook)
+      formData.append('business_twitter', this.form3.twitter)
+      formData.append('business_linkedin', this.form3.linkedin)
+      formData.append('business_youtube', this.form3.youtube)
+      formData.append('business_google', this.form3.google)
 
-      this.$validator.validateAll().then(result => {
+      this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.$axios.post(`business/update`, formData).then(response => {
             this.dialog = false
             swal.fire({
-              title: 'Credential Updated Successfully',
+              title: 'Business Updated Successfully',
               type: 'success',
               animation: true,
               showCloseButton: true
@@ -599,85 +617,58 @@ export default {
       })
     },
 
-    /*Social*/
-
-    async social() {
-      let formData = new FormData()
-      formData.append('business_facebook', this.facebook)
-      formData.append('business_twitter', this.twitter)
-      formData.append('business_linkedin', this.linkedin)
-      formData.append('business_youtube', this.youtube)
-      formData.append('business_google', this.google)
-
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          this.$axios.post(`business/update`, formData).then(response => {
-            this.dialog = false
-            swal.fire({
-              title: 'Social Updated Successfully',
-              type: 'success',
-              animation: true,
-              showCloseButton: true
-            })
-          })
-        } else {
-          this.dialog = false
-        }
-      })
-    }
+   
   },
 
   mounted() {
     this.$axios.get('edit-business').then(response => {
-      this.business_title = response.data.node.title
-      this.address = response.data.node.translations[0].business_address
-      this.zipcode = response.data.node.translations[0].business_zipcode
-      this.email = response.data.node.translations[0].business_email
+      this.form.business_title = response.data.node.title
+      this.form.address = response.data.node.address
+      this.form.zipcode = response.data.node.zipcode
       this.title = response.data.location.title
       this.id = response.data.location.id
-
-      /*About*/
-      this.email = response.data.node.translations[0].business_email
-      this.phone = response.data.node.translations[0].business_phone
-      this.website = response.data.node.translations[0].business_website
-      this.description = response.data.node.translations[0].business_description
-
-      /*Credential*/
-
+      this.form.website = response.data.node.website
       this.entities = response.data.entities
-      this.scales = response.data.scales
-      if (response.data.node.translations[0].business_employee != null) {
-        this.employee = response.data.node.translations[0].business_employee
+      if (response.data.node.business_type != null) {
+        this.form.business_type = Number(response.data.node.business_type)
       }
-      if (response.data.node.translations[0].business_employee != null) {
-        this.scale = Number(response.data.node.translations[0].business_scale)
+      this.form.email = response.data.node.email
+      this.form.phone = response.data.node.phone
+     
+     
+      /*About*/
+      this.form2.description = response.data.node.description
+
+      /*Others*/
+
+      
+      this.scales = response.data.scales
+      if (response.data.node.employee != null) {
+        this.form3.employee = response.data.node.employee
+      }
+      if (response.data.node.scale != null) {
+        this.form3.scale = Number(response.data.node.scale)
       }
 
-      if (response.data.node.translations[0].business_entity != null) {
-        this.entity = Number(response.data.node.translations[0].business_entity)
-      }
-      if (response.data.node.translations[0].business_established != null) {
-        this.established =
-          response.data.node.translations[0].business_established
+      if (response.data.node.estabished != null) {
+        this.form3.established = response.data.node.estabished
       }
 
       /*Social*/
-
-      if (response.data.node.translations[0].business_facebook != null) {
-        this.facebook = response.data.node.translations[0].business_facebook
+      if (response.data.node.facebook != null) {
+        this.form3.facebook = response.data.node.facebook
       }
-      if (response.data.node.translations[0].business_twitter != null) {
-        this.twitter = response.data.node.translations[0].business_twitter
+      if (response.data.node.twitter != null) {
+        this.form3.twitter = response.data.node.twitter
       }
-
-      if (response.data.node.translations[0].business_linkedin != null) {
-        this.linkedin = response.data.node.translations[0].business_linkedin
+      if (response.data.node.linkedin != null) {
+        this.form3.linkedin = response.data.node.linkedin
       }
-      if (response.data.node.translations[0].business_youtube != null) {
-        this.youtube = response.data.node.translations[0].business_youtube
+      if (response.data.node.youtube != null) {
+        this.form3.youtube = response.data.node.youtube
       }
-      if (response.data.node.translations[0].business_google != null) {
-        this.google = response.data.node.translations[0].business_google
+      if (response.data.node.google != null) {
+        this.form3.google = response.data.node.google
       }
     })
   }

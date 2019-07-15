@@ -22,6 +22,9 @@ use Reactor\Hierarchy\NodeRepository;
 use Reactor\Hierarchy\NodeSource;
 use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\json_encode;
+use Intervention\Image\Facades\Image as ImageFacade;
+use Illuminate\Support\Facades\File;
+use Reactor\Documents\Media\Media;
 
 class BusinessController extends PublicController
 {
@@ -95,12 +98,31 @@ class BusinessController extends PublicController
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
 
-        if ($node) {
+        /*Entity*/
+        $entities = config('site.entity');
+        foreach ($entities  as $key => $value){
+            $e[] = [
+                'id' => $key,
+                'name' => $value
+            ];
+        }
+        $data['entities'] = $e;
 
+
+        if ($node) {
+            /*Profile Image*/
+            $profileimage = $node->getImages()->where('img_type', 'profile')->first();
+            $profileimg = 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
+
+            if ($profileimage) {
+
+                $profileimg = asset('uploads/' . $profileimage->path);
+            }
             $data['node'] = [
                 'title' => $node->getTitle(),
                 'node_id' => $node->getKey(),
                 'source_id' => $node->translate(locale())->getKey(),
+                'profileImage' => $profileimg,
             ];
 
         } else {
@@ -138,6 +160,7 @@ class BusinessController extends PublicController
         /*Location Meta*/
 
 
+
         $check = Node::withType('business')->withName($node_name)->first();
 
 
@@ -165,6 +188,35 @@ class BusinessController extends PublicController
                 $node->save();
             }
             /*Location Meta*/
+
+
+            /*Profile Image*/
+
+            $profileimage = $request->file('profileimage');
+
+            if ($profileimage) {
+
+                # code...
+                $name = str_random(6);
+                $ext = $profileimage->extension();
+
+                $destinationPath = public_path('/uploads');
+                $profileimage->move($destinationPath, $name . '.' . $ext);
+                ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(200, 150)->save();
+
+                //-- Save Image in Database--//
+                $media = new Media();
+                $media->node_id = $node->getKey();
+                $media->path = $name . '.' . $ext;
+                $media->name = $name;
+                $media->extension = $ext;
+                $media->mimetype = $profileimage->getClientMimeType();
+                $media->img_type = 'profile';
+                $media->size = 0;
+                $media->user_id = Auth::user()->id;
+                $media->save();
+            }
+
 
             $data = [
                 'node_id' => $node->getKey(),
@@ -201,6 +253,8 @@ class BusinessController extends PublicController
         $user = Auth::user();
         $business = Node::withType('business')->where('user_id', $user->id)->first();
 
+
+
         if($business) {
             $source = NodeSource::find($business->translate(locale())->getKey());
 
@@ -209,7 +263,33 @@ class BusinessController extends PublicController
 
                 $source = Node::withType('business')->find($source->node_id);
                 if ($user->id == $business->user_id && $user->id == $source->user_id) {
-                    $data['node'] = $business;
+                    $node = $business;
+
+                    $data['node'] = [
+
+                        'title' => $node->getTitle(),
+                        'address' => $node->business_address,
+                        'email' => $node->business_email,
+                        'website' => $node->business_website,
+                        'phone' => $node->business_phone,
+                        'zipcode' => $node->business_zipcode,
+                        'description' => $node->business_description,
+                        'facebook' => $node->business_facebook,
+                        'twitter' => $node->business_twitter,
+                        'linkedin' => $node->business_linkedin,
+                        'youtube' => $node->business_youtube,
+                        'google' => $node->business_google,
+                        'employee' => $node->business_employee,
+                        'scale' => $node->business_scale,
+                        'business_type' => $node->business_entity,
+                        'estabished' => $node->business_established,
+
+                    ];
+
+
+
+
+
 
                     $loc_meta = $business->metas()->where('key', 'locations')->first();
                     if ($loc_meta) {
@@ -222,23 +302,6 @@ class BusinessController extends PublicController
                         ];
                     }
 
-                    /*keywoords*/
-                    /*
-                    $keyword = $data['node']->tags()->get();
-
-                    if (count($keyword) > 0) {
-                        foreach ($keyword as $tag) {
-                            $tg[] = $tag->title;
-
-                        }
-
-                        $data['keywords'] = $tg;
-
-                    } else {
-
-                        $data['keywords'] = [];
-                    }
-                    */
 
                     $data['business'] = 'EXIST';
                 } else {
@@ -248,18 +311,6 @@ class BusinessController extends PublicController
                 $data['business'] = 'NOT EXIST';
             }
 
-            /*Working Hours*/
-            /*  $modelName = source_model_name('workinghours', true);
-              $hours = $modelName::where('id', $source_id)
-                  ->where('node_id', $id)->first();
-
-              if ($hours) {
-
-                  $data['working_hours'] = json_decode($hours->hours);
-              } else {
-
-                  $data['working_hours'] = null;
-              }
 
               /*Payment Accept*/
 
@@ -275,6 +326,8 @@ class BusinessController extends PublicController
     {
 
 
+
+
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         $source = $node->translate(locale())->getKey();
@@ -285,6 +338,8 @@ class BusinessController extends PublicController
         $node->update([
             $locale => array_except($request->all(), ['_token', '_method']),
         ]);
+
+
 
         //save meta Locations
         /*Location Meta*/
@@ -311,35 +366,38 @@ class BusinessController extends PublicController
             $node->save();
         }
 
-        //--Keywords
-        $p_tags = $node->tags()->get();
+       /*Profile Image*/
 
-        /*
-        $keywords = $request->input('added_keywords');
+        $profileimage = $request->file('profileimage');
 
-        if ($keywords) {
+        if ($profileimage) {
 
-            if (count($p_tags) > 0) {
-                foreach ($p_tags as $pt) {
-                    $node->detachTag($pt->id);
-                }
+            # code...
+            $name = str_random(6);
+            $ext = $profileimage->extension();
+
+            $destinationPath = public_path('/uploads');
+            $profileimage->move($destinationPath, $name . '.' . $ext);
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(200, 150)->save();
+
+            $profile = $node->getImages()->where('img_type', 'profile')->first();
+
+            if ($profile) {
+                File::delete(upload_path($profile->path));
+                Media::where('node_id', $node->getKey())->where('img_type', 'profile')->delete();
             }
-
-            $tags = explode(",", $keywords);
-
-            foreach ($tags as $keyword) {
-                $tag = Tag::firstByTitleOrCreate($keyword);
-                $node->attachTag($tag->getKey());
-            }
+            //-- Save Image in Database--//
+            $media = new Media();
+            $media->node_id = $node->getKey();
+            $media->path = $name . '.' . $ext;
+            $media->name = $name;
+            $media->extension = $ext;
+            $media->mimetype = $profileimage->getClientMimeType();
+            $media->img_type = 'profile';
+            $media->size = 0;
+            $media->user_id = Auth::user()->id;
+            $media->save();
         }
-        if ($request->input('set_tags')) {
-            if (count($p_tags) > 0) {
-
-                foreach ($p_tags as $pt) {
-                    $node->detachTag($pt->id);
-                }
-            }
-        }*/
 
         $data = [
             'node_id' => $node->getKey(),
