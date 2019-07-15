@@ -12,7 +12,7 @@ class User extends \Reactor\Users\User implements JWTSubject
     //
     protected $softDelete = true;
     protected $table = 'users';
-    protected $fillable = ['email', 'password', 'first_name', 'last_name', 'type', 'status'];
+    protected $fillable = ['email', 'password', 'first_name', 'last_name', 'type', 'status','country_code','phone'];
 
     public function isAdmin()
     {
