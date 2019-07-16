@@ -56,7 +56,7 @@
           </v-layout>
         </v-img>
 
-    
+
 
 <v-layout row wrap>
 
@@ -101,8 +101,8 @@
 
 
                   </v-layout>
-                </v-img>  
-        
+                </v-img>
+
 
 
                         </v-card>
@@ -378,7 +378,7 @@
           </v-layout>
         </v-tab-item>
 
-       
+
 
         <v-tab-item class="pl-0 pr-0">
          <v-form @submit.prevent="settings('form-4')" data-vv-scope="form-4">
@@ -424,10 +424,10 @@
               <v-flex class="pl-3 mt-2">
                 <v-layout row wrap>
                   <v-flex xs12 sm4 md4>
-                    <v-checkbox 
-                    v-model="cash" 
-                    label="Cash" 
-                    color="red" 
+                    <v-checkbox
+                    v-model="cash"
+                    label="Cash"
+                    color="red"
                     hide-details>
                     </v-checkbox>
                    <v-checkbox
@@ -444,7 +444,7 @@
                       color="indigo"
                       hide-details
                     ></v-checkbox>
-                    
+
                   </v-flex>
                   <v-flex xs12 sm4 md4>
                    <v-checkbox
@@ -453,7 +453,7 @@
                       color="red darken-3"
                       hide-details
                     ></v-checkbox>
-                   
+
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -487,7 +487,7 @@ import swal from 'sweetalert2'
 import VeeValidate from 'vee-validate'
 import LocationPopup from '~/components/LocationPopup.vue'
 export default {
-  
+
   async asyncData({ redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
       if (res) {
@@ -516,7 +516,7 @@ export default {
 
     });
 
-   
+
   },
   components: {
     LocationPopup
@@ -524,26 +524,26 @@ export default {
   layout: 'user',
   data() {
     return {
-      
+
       dialog: false,
       active: true,
       title: 'Choose Location',
       id: null,
       scales: [],
       entities: [],
-      
+
       coverName: "",
       coverimageFile: "",
-      
+
       status: false,
       enquiry: false,
       message: false,
-     
+
       cash: false,
       cheque: false,
       credit_card: false,
       transfer: false,
-     
+
       form: new Form({
       business_title: null,
       address: null,
@@ -649,7 +649,7 @@ export default {
       if(this.coverName.length != 0){
       formData.append("coverimage", this.coverimageFile);
       }
-      
+
       this.$axios.post(`business/update`, formData).then(response => {
 
             this.dialog = false
@@ -797,7 +797,7 @@ export default {
       })
     },
 
-   
+
   },
 
   mounted() {
@@ -814,14 +814,14 @@ export default {
       }
       this.form.email = response.data.node.email
       this.form.phone = response.data.node.phone
-     
-     
+
+
       /*About*/
       this.form2.description = response.data.node.description
 
       /*Others*/
 
-      
+
       this.scales = response.data.scales
       if (response.data.node.employee != null) {
         this.form3.employee = response.data.node.employee
