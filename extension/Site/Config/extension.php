@@ -31,6 +31,15 @@ return [
         8 => 'Subsidiary Company',
         9 => 'Non Government Organization (NGO)',
         10 => 'Not Classified'
-    ]
+    ],
+
+    'payment_accept' => [
+
+        1 => __('Cash'),
+        2 => __('Transfer (NEFT)'),
+        3 => __('Credit Card'),
+        4 => __('Cheque'),
+
+    ],
 
 ];
