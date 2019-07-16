@@ -7,7 +7,7 @@
           <div class="text-muted mb-1">{{ text_short }}</div>
         </div>
       </v-card-title>
-      <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+      <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.50"></v-img>
 
       <v-layout row wrap>
         <v-flex xs12>
@@ -276,6 +276,8 @@
                           </v-flex>
                         </v-layout>
 
+                        <v-divider></v-divider>
+                        <v-subheader class="pl-0">Social link</v-subheader>
                         <v-layout row wrap>
                           <v-flex xs12 md6>
                             <v-text-field
@@ -349,7 +351,7 @@
                   </v-list-tile-content>
 
                   <v-list-tile-action>
-                    <v-switch  input-value="true"></v-switch>
+                    <v-switch input-value="true"></v-switch>
                   </v-list-tile-action>
                 </v-list-tile>
 
@@ -370,31 +372,53 @@
 
               <v-divider></v-divider>
 
-              <v-list subheader two-line>
-                <v-subheader>Visibility</v-subheader>
-
-                <v-list-tile>
-                  <v-list-tile-action>
-                    <v-checkbox v-model="show_email"></v-checkbox>
-                  </v-list-tile-action>
-
-                  <v-list-tile-content>
-                    <v-list-tile-title>Show email</v-list-tile-title>
-                    <v-list-tile-sub-title>Show my email publicly</v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-
-                <v-list-tile>
-                  <v-list-tile-action>
-                    <v-checkbox v-model="show_phone"></v-checkbox>
-                  </v-list-tile-action>
-
-                  <v-list-tile-content>
-                    <v-list-tile-title>Show phone</v-list-tile-title>
-                    <v-list-tile-sub-title>Show my phone publicly</v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-              </v-list>
+              <v-subheader>Accept Payment</v-subheader>
+              <v-flex class="pl-3 mt-2">
+                <v-layout row wrap>
+                  <v-flex xs12 sm4 md4>
+                    <v-checkbox v-model="ex4" label="red" color="red" value="red" hide-details></v-checkbox>
+                    <v-checkbox
+                      v-model="ex4"
+                      label="red darken-3"
+                      color="red darken-3"
+                      value="red darken-3"
+                      hide-details
+                    ></v-checkbox>
+                  </v-flex>
+                  <v-flex xs12 sm4 md4>
+                    <v-checkbox
+                      v-model="ex4"
+                      label="indigo"
+                      color="indigo"
+                      value="indigo"
+                      hide-details
+                    ></v-checkbox>
+                    <v-checkbox
+                      v-model="ex4"
+                      label="indigo darken-3"
+                      color="indigo darken-3"
+                      value="indigo darken-3"
+                      hide-details
+                    ></v-checkbox>
+                  </v-flex>
+                  <v-flex xs12 sm4 md4>
+                    <v-checkbox
+                      v-model="ex4"
+                      label="orange"
+                      color="orange"
+                      value="orange"
+                      hide-details
+                    ></v-checkbox>
+                    <v-checkbox
+                      v-model="ex4"
+                      label="orange darken-3"
+                      color="orange darken-3"
+                      value="orange darken-3"
+                      hide-details
+                    ></v-checkbox>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
 
               <div class="text-xs-center">
                 <v-dialog v-model="dialog" hide-overlay persistent width="300">
@@ -406,6 +430,7 @@
                   </v-card>
                 </v-dialog>
               </div>
+
               <v-flex class="pl-2 mt-5">
                 <v-btn type="submit" large depressed color="primary">Update</v-btn>
               </v-flex>
