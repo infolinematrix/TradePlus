@@ -118,11 +118,20 @@ class BusinessController extends PublicController
 
                 $profileimg = asset('uploads/' . $profileimage->path);
             }
+
+            /*Cover Image*/
+            $coverimage = $node->getImages()->where('img_type', 'cover')->first();
+            $coverimg = '/cover.jpg';
+            if ($coverimage) {
+
+                $coverimg = asset('uploads/' . $coverimage->path);
+            }
             $data['node'] = [
                 'title' => $node->getTitle(),
                 'node_id' => $node->getKey(),
                 'source_id' => $node->translate(locale())->getKey(),
                 'profileImage' => $profileimg,
+                'coverImage' => $coverimg
             ];
 
         } else {
@@ -216,7 +225,30 @@ class BusinessController extends PublicController
                 $media->user_id = Auth::user()->id;
                 $media->save();
             }
+            /*Cover Image*/
+            $coverimage = $request->file('coverimage');
+            if ($coverimage) {
 
+                # code...
+                $name = str_random(6);
+                $ext = $coverimage->extension();
+
+                $destinationPath = public_path('/uploads');
+                $coverimage->move($destinationPath, $name . '.' . $ext);
+                ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+
+                //-- Save Image in Database--//
+                $media = new Media();
+                $media->node_id = $node->getKey();
+                $media->path = $name . '.' . $ext;
+                $media->name = $name;
+                $media->extension = $ext;
+                $media->mimetype = $coverimage->getClientMimeType();
+                $media->img_type = 'cover';
+                $media->size = 0;
+                $media->user_id = Auth::user()->id;
+                $media->save();
+            }
 
             $data = [
                 'node_id' => $node->getKey(),
@@ -398,6 +430,39 @@ class BusinessController extends PublicController
             $media->user_id = Auth::user()->id;
             $media->save();
         }
+
+
+        /*Cover Image*/
+        $coverimage = $request->file('coverimage');
+        if ($coverimage) {
+
+            # code...
+            $name = str_random(6);
+            $ext = $coverimage->extension();
+
+            $destinationPath = public_path('/uploads');
+            $coverimage->move($destinationPath, $name . '.' . $ext);
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+
+            $cover = $node->getImages()->where('img_type', 'cover')->first();
+
+            if ($cover) {
+                File::delete(upload_path($cover->path));
+                Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
+            }
+            //-- Save Image in Database--//
+            $media = new Media();
+            $media->node_id = $node->getKey();
+            $media->path = $name . '.' . $ext;
+            $media->name = $name;
+            $media->extension = $ext;
+            $media->mimetype = $coverimage->getClientMimeType();
+            $media->img_type = 'cover';
+            $media->size = 0;
+            $media->user_id = Auth::user()->id;
+            $media->save();
+        }
+
 
         $data = [
             'node_id' => $node->getKey(),

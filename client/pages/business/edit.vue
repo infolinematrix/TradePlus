@@ -11,10 +11,52 @@
 
 
       </v-card-title>
-      <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-          aspect-ratio="2.75"
-        ></v-img>
+
+
+      <v-img :src="coverimageUrl"
+          aspect-ratio="2.75">
+          <v-layout column fill-height>
+            <v-card-title>
+              <v-form @submit.prevent="update_image()" enctype="multipart/form-data">
+              <v-btn dark icon>
+                <span>
+                      <input
+                        type="file"
+                        ref="cover_file"
+                        style="display: none"
+                        @change="onCoverFile"
+                      >
+                      <v-icon dark @click="coverFile" v-model="coverName">camera_alt</v-icon>
+                    </span>
+              </v-btn>
+
+              <div class="text-xs-center">
+                <v-dialog
+                  v-model="dialog"
+                  hide-overlay
+                  persistent
+                  width="300"
+                >
+              <v-card
+              color="primary"
+              >
+            <v-card-text>
+                Please stand by
+                <v-progress-linear
+                  indeterminate
+                  color="blue"
+                  class="mb-0"
+              ></v-progress-linear>
+            </v-card-text>
+            </v-card>
+            </v-dialog>
+            </div>
+            </v-form>
+            </v-card-title>
+          </v-layout>
+        </v-img>
+
+    
 
 <v-layout row wrap>
 
@@ -443,7 +485,7 @@ export default {
        if (res.data.node != null) {
       return {
        profilemageUrl: res.data.node.profileImage,
-       
+       coverimageUrl: res.data.node.coverImage
       };
        }
 
@@ -463,6 +505,10 @@ export default {
       id: null,
       scales: [],
       entities: [],
+      
+      coverName: "",
+      coverimageFile: "",
+      
       form: new Form({
       business_title: null,
       address: null,
@@ -499,6 +545,34 @@ export default {
   },
 
   methods: {
+
+    //Cover Image
+    coverFile() {
+      this.$refs.cover_file.click();
+    },
+    onCoverFile(e) {
+      const files = e.target.files;
+      if (files[0] !== undefined) {
+        this.coverName = files[0].name;
+        if (this.coverName.lastIndexOf(".") <= 0) {
+          return;
+        }
+        const fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener("load", () => {
+          this.coverimageUrl = fr.result;
+          this.coverimageFile = files[0];
+          this.update_image(this.coverimageFile);
+
+        });
+      } else {
+        this.coverName = "";
+        this.coverimageFile = "";
+        this.coverimageUrl = "";
+      }
+    },
+
+
     //Profile Image
     profileFile() {
       this.$refs.profile_file.click();
@@ -531,6 +605,29 @@ export default {
     update_id(value) {
       this.id = value
     },
+
+
+     async update_image() {
+
+      this.dialog = true;
+      let formData = new FormData();
+      if(this.coverName.length != 0){
+      formData.append("coverimage", this.coverimageFile);
+      }
+      
+      this.$axios.post(`business/update`, formData).then(response => {
+
+            this.dialog = false
+            swal.fire({
+              title: 'Cover image updated successfully',
+              type: 'success',
+              animation: true,
+              showCloseButton: true
+            })
+          })
+    },
+
+
     async business() {
       this.dialog = true;
       let formData = new FormData()
