@@ -861,13 +861,13 @@ export default {
 
       if(response.data.node.email_enquiry == 'false') {
         this.enquiry = false
-        }else{
+        }if(response.data.node.email_enquiry == 'true') {
         this.enquiry = true
         }
 
         if(response.data.node.phone_message == 'false') {
         this.message = false
-        }else{
+        }if(response.data.node.phone_message == 'true') {
         this.message = true
         }
 
