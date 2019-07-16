@@ -124,7 +124,7 @@
                       </v-flex>
                     </v-layout>
 
-                    <v-subheader class="pl-0">Other Information</v-subheader>
+                    <v-subheader class="pl-0">Others Information</v-subheader>
 
                     <v-layout row wrap>
                       <v-flex xs8>
