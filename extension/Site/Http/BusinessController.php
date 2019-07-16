@@ -566,7 +566,6 @@ class BusinessController extends PublicController
 
             /*Cover Image*/
             $coverimage = $request->file('coverimage');
-            return $coverimage;
             if ($coverimage) {
 
                 # code...

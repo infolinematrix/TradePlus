@@ -258,7 +258,7 @@ export default {
          this.$axios
             .post(`post-services`, formData)
             .then(response => {
-            if (response.data == "exist") {
+            if(response.data == "exist") {
             this.dialog = false;
             swal.fire({
             title: "Already Exist!",
@@ -268,6 +268,7 @@ export default {
             });
             } else {   
             let service = response.data;  
+           
             this.$root.$router.push({path: '/business/post/service/'+service.node_id+'/edit/'+service.source_id})
             }
           })
