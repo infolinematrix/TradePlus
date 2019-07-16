@@ -7,7 +7,7 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"/>
+            <v-list-tile-title v-text="item.title" />
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -21,46 +21,46 @@
     </v-toolbar>
 
     <v-sheet>
-
       <v-img class="white--text" height="500px" src="hero1.png">
         <v-container grid-list-lg fill-height class="grey--text">
           <v-layout column justify-center align-center mt-5>
-            <div class="display-2 font-weight-thin mb-4">Discover business in your area</div>
-            <v-toolbar dense floating class="py-2" style="width:500px">
-              <v-btn icon>
-                <v-icon>subject</v-icon>
-              </v-btn>
-              <v-spacer></v-spacer>
+            <div class="display-2 font-weight-thin mb-4 hidden-xs-only">Discover business in your area</div>
+            <v-toolbar dense floating class="py-2" >
+
+              <v-layout row wrap>
+
               <v-text-field
                 hide-details
                 prepend-icon="search"
-                label="Outline"
+                label="Keywords"
                 placeholder="What are you looking for?"
                 single-line
                 full-width
-                style="width:375px"
               ></v-text-field>
+
+
 
               <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn icon>
                   <v-icon>my_location</v-icon>
                 </v-btn>
               </v-toolbar-items>
+              </v-layout>
             </v-toolbar>
 
-            <div class="mt-5">
-              <v-btn depressed color="primary" large nuxt to="browse">Explore</v-btn>
-            </div>
+
+    <div class="black--text font-weight-bold">Siliguri</div>
+
+
+
           </v-layout>
         </v-container>
       </v-img>
     </v-sheet>
 
-
-
     <v-content>
       <v-container grid-list-lg>
-        <nuxt/>
+        <nuxt />
       </v-container>
     </v-content>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
@@ -73,13 +73,13 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-   <footer-nav></footer-nav>
+    <footer-nav></footer-nav>
   </v-app>
 </template>
 
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
-import FooterNav from "~/components/Footer.vue"
+import FooterNav from '~/components/Footer.vue'
 
 export default {
   components: {
@@ -90,7 +90,7 @@ export default {
     return {
       drawer: false,
       fixed: true,
-      r:'',
+      r: '',
       items: [
         {
           icon: 'apps',
@@ -105,9 +105,9 @@ export default {
       ],
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Vuetify.js',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
-  },
-
+  }
 }
 </script>
