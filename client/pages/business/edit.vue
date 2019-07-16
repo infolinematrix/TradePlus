@@ -160,6 +160,7 @@
                           </v-flex>
                         </v-layout>
 
+<<<<<<< HEAD
                         <v-layout row wrap>
                           <v-flex xs12 md6>
                             <v-text-field
@@ -331,6 +332,28 @@
                               outline
                             ></v-text-field>
                           </v-flex>
+=======
+                <v-container grid-list-lg>
+                  <v-form @submit.prevent="business" enctype="multipart/form-data">
+                    <v-layout row wrap>
+                      <v-flex xs12 md4>
+                        <v-card flat>
+                           <v-img :src="profilemageUrl" height="170" >
+                          <v-layout column fill-height>
+                        <v-card-title>
+              <v-btn dark icon>
+                <span>
+                      <input
+                        type="file"
+                        ref="profile_file"
+                        style="display: none"
+                        @change="onProfileFile"
+                      >
+                      <v-icon color="grey" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
+                    </span>
+              </v-btn>
+            </v-card-title>
+>>>>>>> fec07abb3d08f7cc37d66be2f41bcc821af1e3a3
 
                           <v-flex xs12 md6>
                             <v-text-field
