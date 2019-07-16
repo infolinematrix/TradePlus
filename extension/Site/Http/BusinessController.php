@@ -517,6 +517,39 @@ class BusinessController extends PublicController
         $node->save();
         /*Category Meta*/
 
+
+        /*Cover Image*/
+        $coverimage = $request->file('coverimage');
+        if ($coverimage) {
+
+            # code...
+            $name = str_random(6);
+            $ext = $coverimage->extension();
+
+            $destinationPath = public_path('/uploads');
+            $coverimage->move($destinationPath, $name . '.' . $ext);
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+
+            $cover = $node->getImages()->where('img_type', 'cover')->first();
+
+            if ($cover) {
+                File::delete(upload_path($cover->path));
+                Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
+            }
+            //-- Save Image in Database--//
+            $media = new Media();
+            $media->node_id = $node->getKey();
+            $media->path = $name . '.' . $ext;
+            $media->name = $name;
+            $media->extension = $ext;
+            $media->mimetype = $coverimage->getClientMimeType();
+            $media->img_type = 'cover';
+            $media->size = 0;
+            $media->user_id = Auth::user()->id;
+            $media->save();
+        }
+
+
         $data = [
             'node_id' => $node->getKey(),
             'source_id' => $node->translate($locale)->getKey(),
@@ -532,12 +565,21 @@ class BusinessController extends PublicController
         $source = NodeSource::find($source_id);
         $business = Node::withType('servicetype')->find($id);
 
+        /*Cover Image*/
+        $coverimage = $business->getImages()->where('img_type', 'cover')->first();
+        $coverimg = '/cover.jpg';
+        if ($coverimage) {
+
+            $coverimg = asset('uploads/' . $coverimage->path);
+        }
+
         $user = Auth::user();
         if ($business || $source) {
 
             $source = Node::withType('servicetype')->find($source->node_id);
             if ($user->id == $business->user_id && $user->id == $source->user_id) {
                 $data['node'] = $business;
+                $data['coverimage'] = $coverimg;
 
                 $cat_meta = $business->metas()->where('key', 'categories')->first();
                 if ($cat_meta) {
@@ -562,6 +604,7 @@ class BusinessController extends PublicController
 
 
 
+
         list($node, $locale, $source) = $this->authorizeAndFindNode($node_id, $source);
 
         //--Update Node
@@ -572,17 +615,20 @@ class BusinessController extends PublicController
 
         /*Category Meta*/
         $cat = $request->category;
-        $categories = Node::find($cat);
-        $nodes = $categories->getAncestors();
-        if(count($nodes) > 0) {
-            $c = '';
-            foreach ($nodes as $n) {
-                $c .= $n->getKey().','.$request->category.',';
+        if($cat) {
+            $categories = Node::find($cat);
+            $nodes = $categories->getAncestors();
+            if (count($nodes) > 0) {
+                $c = '';
+                foreach ($nodes as $n) {
+                    $c .= $n->getKey() . ',' . $request->category . ',';
+                }
+                $category = rtrim($c, ',');
+                $cc[] = $category;
             }
-            $category = rtrim($c, ',');
-            $cc[]  = $category;
-        }
+
         /*Category Meta*/
+
 
         /*Category Meta*/
         if(count($nodes) > 0) {
@@ -591,7 +637,40 @@ class BusinessController extends PublicController
             $node->setmeta('categories', $cat);
         }
         $node->save();
+        }
         /*Category Meta*/
+
+        /*Cover Image*/
+        $coverimage = $request->file('coverimage');
+        if ($coverimage) {
+
+            # code...
+            $name = str_random(6);
+            $ext = $coverimage->extension();
+
+            $destinationPath = public_path('/uploads');
+            $coverimage->move($destinationPath, $name . '.' . $ext);
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+
+            $cover = $node->getImages()->where('img_type', 'cover')->first();
+
+            if ($cover) {
+                File::delete(upload_path($cover->path));
+                Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
+            }
+            //-- Save Image in Database--//
+            $media = new Media();
+            $media->node_id = $node->getKey();
+            $media->path = $name . '.' . $ext;
+            $media->name = $name;
+            $media->extension = $ext;
+            $media->mimetype = $coverimage->getClientMimeType();
+            $media->img_type = 'cover';
+            $media->size = 0;
+            $media->user_id = Auth::user()->id;
+            $media->save();
+        }
+
 
         return "DATA UPDATED";
 
