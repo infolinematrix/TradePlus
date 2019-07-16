@@ -381,58 +381,82 @@
        
 
         <v-tab-item class="pl-0 pr-0">
+         <v-form @submit.prevent="settings('form-4')" data-vv-scope="form-4">
           <v-list two-line subheader>
-            <v-subheader>General</v-subheader>
+                <v-subheader>General</v-subheader>
 
-            <v-list-tile avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>Profile</v-list-tile-title>
-                <v-list-tile-sub-title>People can't find inactive profile</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                <v-list-tile avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>Profile</v-list-tile-title>
+                    <v-list-tile-sub-title>People can't find inactive profile</v-list-tile-sub-title>
+                  </v-list-tile-content>
 
-            <v-list-tile avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>Email </v-list-tile-title>
-                <v-list-tile-sub-title>Allow email enquiry  </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                  <v-list-tile-action>
+                    <v-switch v-model="status"></v-switch>
+                  </v-list-tile-action>
+                </v-list-tile>
 
-             <v-list-tile avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>Phone/SMS </v-list-tile-title>
-                <v-list-tile-sub-title>Allow mobile message  </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
+                <v-list-tile avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>Email</v-list-tile-title>
+                    <v-list-tile-sub-title>Allow email enquiry</v-list-tile-sub-title>
+                  </v-list-tile-content>
 
-          <v-divider></v-divider>
+                   <v-list-tile-action>
+                    <v-switch v-model="enquiry"></v-switch>
+                  </v-list-tile-action>
+                </v-list-tile>
 
-          <v-list subheader two-line>
-            <v-subheader>Visibility</v-subheader>
+                <v-list-tile avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>Phone/SMS</v-list-tile-title>
+                    <v-list-tile-sub-title>Allow mobile message</v-list-tile-sub-title>
+                  </v-list-tile-content>
+                   <v-list-tile-action>
+                    <v-switch v-model="message"></v-switch>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list>
 
-            <v-list-tile>
-              <v-list-tile-action>
-                <v-checkbox v-model="show_email"></v-checkbox>
-              </v-list-tile-action>
+            <v-divider></v-divider>
 
-              <v-list-tile-content>
-                <v-list-tile-title>Show email</v-list-tile-title>
-                <v-list-tile-sub-title>Show my email publicly</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-            <v-list-tile>
-              <v-list-tile-action>
-                <v-checkbox v-model="show_phone"></v-checkbox>
-              </v-list-tile-action>
-
-              <v-list-tile-content>
-                <v-list-tile-title>Show phone</v-list-tile-title>
-                <v-list-tile-sub-title>Show my phone publicly</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
+          <v-subheader>Accept Payment</v-subheader>
+              <v-flex class="pl-3 mt-2">
+                <v-layout row wrap>
+                  <v-flex xs12 sm4 md4>
+                    <v-checkbox 
+                    v-model="cash" 
+                    label="Cash" 
+                    color="red" 
+                    hide-details>
+                    </v-checkbox>
+                   <v-checkbox
+                      v-model="transfer"
+                      label="Transfer (NEFT)"
+                      color="indigo darken-3"
+                      hide-details
+                    ></v-checkbox>
+                  </v-flex>
+                  <v-flex xs12 sm4 md4>
+                    <v-checkbox
+                      v-model="credit_card"
+                      label="Credit Card"
+                      color="indigo"
+                      hide-details
+                    ></v-checkbox>
+                    
+                  </v-flex>
+                  <v-flex xs12 sm4 md4>
+                   <v-checkbox
+                      v-model="cheque"
+                      label="Cheque"
+                      color="red darken-3"
+                      hide-details
+                    ></v-checkbox>
+                   
+                  </v-flex>
+                </v-layout>
+              </v-flex>
 
  <div class="text-xs-center">
                       <v-dialog v-model="dialog" hide-overlay persistent width="300">
@@ -447,6 +471,7 @@
           <v-flex class="pl-2 mt-5">
                       <v-btn type="submit" large depressed color="primary">Update</v-btn>
                     </v-flex>
+         </v-form>
 
         </v-tab-item>
       </v-tabs>
@@ -499,6 +524,7 @@ export default {
   layout: 'user',
   data() {
     return {
+      
       dialog: false,
       active: true,
       title: 'Choose Location',
@@ -509,6 +535,15 @@ export default {
       coverName: "",
       coverimageFile: "",
       
+      status: false,
+      enquiry: false,
+      message: false,
+     
+      cash: false,
+      cheque: false,
+      credit_card: false,
+      transfer: false,
+     
       form: new Form({
       business_title: null,
       address: null,
@@ -536,7 +571,7 @@ export default {
       youtube: '',
       google: '',
      }),
-    
+
       text:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
       text_short:
@@ -715,6 +750,53 @@ export default {
       })
     },
 
+    /*Settings*/
+
+      async settings(scope) {
+      //this.dialog = true;
+
+      let formData = new FormData()
+      if(this.status == false){
+       formData.append("status", 'unpublish');
+      }else{
+       formData.append("status", 'publish');
+      }
+
+       formData.append("emailenquiry", this.enquiry);
+       formData.append("phonemessage", this.message);
+
+       formData.append("accept_payment", true);
+        if(this.cash == true){
+        formData.append("payment[]", 1);
+        }
+        if(this.transfer == true){
+        formData.append("payment[]", 2);
+        }
+        if(this.credit_card == true){
+        formData.append("payment[]", 3);
+        }
+        if(this.cheque == true){
+        formData.append("payment[]", 4);
+        }
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          this.$axios.post(`business/update`, formData).then(response => {
+
+            console.log(response.data);
+            this.dialog = false
+            swal.fire({
+              title: 'Settings Updated Successfully',
+              type: 'success',
+              animation: true,
+              showCloseButton: true
+            })
+          })
+        } else {
+          this.dialog = false
+        }
+      })
+    },
+
    
   },
 
@@ -768,6 +850,41 @@ export default {
       if (response.data.node.google != null) {
         this.form3.google = response.data.node.google
       }
+
+      /*Settings*/
+
+        if(response.data.node.status == 'publish') {
+        this.status = true
+        }else{
+        this.status = false
+        }
+
+      if(response.data.node.email_enquiry == 'false') {
+        this.enquiry = false
+        }else{
+        this.enquiry = true
+        }
+
+        if(response.data.node.phone_message == 'false') {
+        this.message = false
+        }else{
+        this.message = true
+        }
+
+       if(response.data.payment_accept[0] == true){
+        this.cash = true;
+        }
+        if(response.data.payment_accept[1] == true){
+        this.transfer = true;
+        }
+        if(response.data.payment_accept[2] == true){
+        this.credit_card = true;
+        }
+        if(response.data.payment_accept[3] == true){
+        this.cheque = true;
+        }
+
+
     })
   }
 }

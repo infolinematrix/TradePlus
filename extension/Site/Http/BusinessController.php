@@ -298,7 +298,6 @@ class BusinessController extends PublicController
                     $node = $business;
 
                     $data['node'] = [
-
                         'title' => $node->getTitle(),
                         'address' => $node->business_address,
                         'email' => $node->business_email,
@@ -315,7 +314,9 @@ class BusinessController extends PublicController
                         'scale' => $node->business_scale,
                         'business_type' => $node->business_entity,
                         'estabished' => $node->business_established,
-
+                        'status' => $node->isPublished() ? 'publish' : 'unpublish',
+                        'email_enquiry' => $node->emailenquiry,
+                        'phone_message' => $node->phonemessage
                     ];
 
 
@@ -343,6 +344,29 @@ class BusinessController extends PublicController
                 $data['business'] = 'NOT EXIST';
             }
 
+            /*Payment Accept*/
+            $payment_accept = $business->payment_accept;
+
+            if($payment_accept){
+
+
+
+                foreach(config('site.payment_accept') as $key => $value){
+
+                    $payment = json_decode($payment_accept, true);
+                    if($payment != null) {
+                        $data['payment_accept'][] = (in_array($key, $payment));
+                    }else{
+
+                        $data['payment_accept'][] = null;
+                    }
+                }
+
+            }else{
+
+                $data['payment_accept'][] = null;
+
+            }
 
               /*Payment Accept*/
 
@@ -360,18 +384,28 @@ class BusinessController extends PublicController
 
 
 
+
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         $source = $node->translate(locale())->getKey();
 
         list($node, $locale, $source) = $this->authorizeAndFindNode($node->getKey(), $source);
 
+        /*Payment Accept*/
+        if($request->accept_payment){
+            $request->request->set('payment_accept', json_encode($request->payment));
+        }
+
         //--Update Node
         $node->update([
-            $locale => array_except($request->all(), ['_token', '_method']),
+            $locale => array_except($request->all(), ['_token', '_method','status']),
         ]);
 
+        if($request->status) {
+            $status = $request->status;
 
+            $node->{$status}()->save();
+        }
 
         //save meta Locations
         /*Location Meta*/
@@ -397,6 +431,7 @@ class BusinessController extends PublicController
             }
             $node->save();
         }
+
 
        /*Profile Image*/
 

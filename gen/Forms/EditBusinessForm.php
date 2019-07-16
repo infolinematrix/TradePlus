@@ -189,6 +189,24 @@ class EditBusinessForm extends Form {
             
 
         ]);
+                                $this->add('emailenquiry', 'text', [
+            'label' => 'Email Enquiry',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('phonemessage', 'text', [
+            'label' => 'Phone/SMS Message',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
                     }
 
 }
