@@ -1,22 +1,17 @@
 <template>
-  <v-layout  row >
-    <v-flex xs12 md12>
-      <v-card flat>
-        <v-card-title>
-          <div>
-            <h3 class="headline">Create Post</h3>
-            <div class="text-muted">{{ text_short }}</div>
-          </div>
-        </v-card-title>
+  <v-layout row>
 
-        <v-container grid-list-md class="pa-3">
-          <v-tabs height="60" v-model="active" color="grey lighten-3" slider-color="yellow">
-            <v-tab ripple class="text-capitalize">Product</v-tab>
-            <v-tab ripple class="text-capitalize">Service</v-tab>
-            <v-tab ripple class="text-capitalize">Offer</v-tab>
+    <v-card flat>
 
-            <v-tab-item class="pl-0 pr-0 bg-light">
-              <v-img :src="coverimageUrl"
+      <v-card-title>
+        <div>
+          <h3 class="headline">Create Service</h3>
+          <div class="text-muted mb-1">{{ text_short }}</div>
+        </div>
+
+
+      </v-card-title>
+      <v-img :src="coverimageUrl"
           aspect-ratio="2.75">
           <v-layout column fill-height>
             <v-card-title>
@@ -57,15 +52,28 @@
           </v-layout>
         </v-img>
 
-             
+<v-layout row wrap>
+
+<v-flex xs12>
+
+
+
+
+      <v-tabs grow  icons-and-text show-arrows slider-color="primary">
+        <v-tab ripple class="text-capitalize">Basic <v-icon color="primary">work_outline</v-icon> </v-tab>
+        
+        <v-tab-item class="pl-0 pr-0">
+          <v-layout align-start justify-left row fill-height>
+            <v-flex xs12 md12>
               <v-card flat>
-                <v-card-text>
-                  <div class="text-muted">{{ text_short }}</div>
-                </v-card-text>
-                <v-card-text>
+
+
+
+                <v-container grid-list-lg>
                   <v-form @submit.prevent="services" enctype="multipart/form-data">
                     <v-layout row wrap>
-                      <v-flex xs12>
+                     
+                      <v-flex xs12 md12>
                         <v-text-field 
                         v-model="form.service_title" 
                         label="Title" 
@@ -76,21 +84,18 @@
                         required
                         outline>
                         </v-text-field>
-                      </v-flex>
+
+                         <category-popup  :title="form.title" @eId="update_id" @eTitle="update_title"></category-popup>
+                    </v-flex>
                     </v-layout>
 
-                    <v-layout row wrap>
-                      <category-popup  :title="form.title" @eId="update_id" @eTitle="update_title"></category-popup>
-                    </v-layout>
-
-
-                    <v-layout row wrap>
+                   <v-layout row wrap>
                       <v-flex xs12>
                         <v-textarea
                           v-model="form.description"
                           outline
                           name="input-7-4"
-                          label="Outline textarea"
+                          label="Description"
                           v-validate="'required'"
                           :error-messages="errors.collect('Descritpion')"
                           data-vv-name="Descritpion"
@@ -98,6 +103,7 @@
                         ></v-textarea>
                       </v-flex>
                     </v-layout>
+ <v-layout row wrap>
                     <v-flex xs12>
                       <v-checkbox 
                       v-model="chkbox" 
@@ -109,25 +115,37 @@
                       >
                       </v-checkbox>
                     </v-flex>
+                    </v-layout>
 
+                    <div class="text-xs-center">
+                      <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                        <v-card color="primary">
+                          <v-card-text>
+                            Please stand by
+                            <v-progress-linear indeterminate color="blue" class="mb-0"></v-progress-linear>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                    </div>
                     <v-card-actions class="pa-0">
-                      <v-btn type="submit" large depressed color="primary">Update</v-btn>
+                      <v-btn type="submit" large depressed color="orange">Submit</v-btn>
                     </v-card-actions>
                   </v-form>
-                </v-card-text>
+                </v-container>
               </v-card>
-            </v-tab-item>
-            <v-tab-item class="pl-0 pr-0">
-              <v-card flat>
-                <v-card-text>{{ text_short }}</v-card-text>
-              </v-card>
-            </v-tab-item>
-          </v-tabs>
-        </v-container>
-      </v-card>
-    </v-flex>
+            </v-flex>
+          </v-layout>
+        </v-tab-item>
+
+        
+        
+      </v-tabs>
+</v-flex>
+      </v-layout>
+    </v-card>
   </v-layout>
 </template>
+
 
 <script>
 import swal from "sweetalert2";
@@ -172,7 +190,9 @@ export default {
       categories: [],
 
       coverimageUrl: '/cover.jpg',
-
+    coverName: "",
+    coverimageFile: "",
+     
       form: {
         service_title: null,
         description: null,
@@ -203,7 +223,7 @@ export default {
         fr.addEventListener("load", () => {
           this.coverimageUrl = fr.result;
           this.coverimageFile = files[0];
-          this.update_image(this.coverimageFile);
+          
 
         });
       } else {
@@ -221,6 +241,7 @@ export default {
     },
 
      async services() {
+       
         if(this.chkbox == false){
             this.chkbox = null;
         }
@@ -237,8 +258,18 @@ export default {
          this.$axios
             .post(`post-services`, formData)
             .then(response => {
+            if (response.data == "exist") {
+            this.dialog = false;
+            swal.fire({
+            title: "Already Exist!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            });
+            } else {   
             let service = response.data;  
             this.$root.$router.push({path: '/business/post/service/'+service.node_id+'/edit/'+service.source_id})
+            }
           })
         }
       });

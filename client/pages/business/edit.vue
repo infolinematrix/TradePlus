@@ -94,7 +94,7 @@
                         style="display: none"
                         @change="onProfileFile"
                       >
-                      <v-icon color="blue" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
+                      <v-icon color="grey" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
                     </span>
               </v-btn>
             </v-card-title>

@@ -11,14 +11,14 @@ class NsServicetype extends NodeSourceExtension {
     /**
      * The fillable fields for the model.
      */
-    protected $fillable = ['description'];
+    protected $fillable = ['description', 'emailenquiry', 'phonemessage'];
 
     /**
      * Returns the fields for the model
      */
     public static function getSourceFields()
     {
-        return ['description'];
+        return ['description', 'emailenquiry', 'phonemessage'];
     }
 
     /**

@@ -112,7 +112,7 @@ class BusinessController extends PublicController
         if ($node) {
             /*Profile Image*/
             $profileimage = $node->getImages()->where('img_type', 'profile')->first();
-            $profileimg = 'https://cdn.vuetifyjs.com/images/cards/docks.jpg';
+            $profileimg = '/avatar_male.png';
 
             if ($profileimage) {
 
@@ -174,7 +174,8 @@ class BusinessController extends PublicController
 
 
         if ($check != null) {
-            return 'exist';
+
+            $data = 'exist';
         } else {
 
             $request->request->set('title', $title);
@@ -255,8 +256,9 @@ class BusinessController extends PublicController
                 'source_id' => $node->translate($locale)->getKey(),
             ];
 
-            return $data;
+
         }
+        return $data;
     }
 
 
@@ -517,79 +519,89 @@ class BusinessController extends PublicController
         $nodeType = get_node_type('servicetype');
         $type = $nodeType->getKey();
 
+
+
         $title = $request->input('title');
         $node_name = str_slug($title);
+        $check = Node::withType('servicetype')->withName($node_name)->first();
 
-        /*Category Meta*/
-        $cat = $request->category;
-        $categories = Node::find($cat);
-        $nodes = $categories->getAncestors();
-        if(count($nodes) > 0) {
-            $c = '';
-            foreach ($nodes as $n) {
-                $c .= $n->getKey().','.$request->category.',';
+
+        if ($check != null) {
+            $data = 'exist';
+        } else {
+
+
+            /*Category Meta*/
+            $cat = $request->category;
+            $categories = Node::find($cat);
+            $nodes = $categories->getAncestors();
+            if (count($nodes) > 0) {
+                $c = '';
+                foreach ($nodes as $n) {
+                    $c .= $n->getKey() . ',' . $request->category . ',';
+                }
+                $category = rtrim($c, ',');
+                $cc[] = $category;
             }
-            $category = rtrim($c, ',');
-            $cc[]  = $category;
-        }
-        /*Category Meta*/
+            /*Category Meta*/
 
-        $request->request->set('title', $title);
-        $request->request->set('node_name', $node_name);
-        $request->request->set('locale', 'en');
-        $request->request->set('type', $type);
+            $request->request->set('title', $title);
+            $request->request->set('node_name', $node_name);
+            $request->request->set('locale', 'en');
+            $request->request->set('type', $type);
 
-        $this->validateCreateForm($request);
+            $this->validateCreateForm($request);
 
-        list($node, $locale) = $this->createNode($request, $business->getKey());
+            list($node, $locale) = $this->createNode($request, $business->getKey());
 
-        /*Category Meta*/
-        if(count($nodes) > 0) {
-            $node->setmeta('categories', $cc);
-        }else{
-            $node->setmeta('categories', $cat);
-        }
-        $node->save();
-        /*Category Meta*/
-
-
-        /*Cover Image*/
-        $coverimage = $request->file('coverimage');
-        if ($coverimage) {
-
-            # code...
-            $name = str_random(6);
-            $ext = $coverimage->extension();
-
-            $destinationPath = public_path('/uploads');
-            $coverimage->move($destinationPath, $name . '.' . $ext);
-            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
-
-            $cover = $node->getImages()->where('img_type', 'cover')->first();
-
-            if ($cover) {
-                File::delete(upload_path($cover->path));
-                Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
+            /*Category Meta*/
+            if (count($nodes) > 0) {
+                $node->setmeta('categories', $cc);
+            } else {
+                $node->setmeta('categories', $cat);
             }
-            //-- Save Image in Database--//
-            $media = new Media();
-            $media->node_id = $node->getKey();
-            $media->path = $name . '.' . $ext;
-            $media->name = $name;
-            $media->extension = $ext;
-            $media->mimetype = $coverimage->getClientMimeType();
-            $media->img_type = 'cover';
-            $media->size = 0;
-            $media->user_id = Auth::user()->id;
-            $media->save();
+            $node->save();
+            /*Category Meta*/
+
+
+            /*Cover Image*/
+            $coverimage = $request->file('coverimage');
+            return $coverimage;
+            if ($coverimage) {
+
+                # code...
+                $name = str_random(6);
+                $ext = $coverimage->extension();
+
+                $destinationPath = public_path('/uploads');
+                $coverimage->move($destinationPath, $name . '.' . $ext);
+                ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+
+                $cover = $node->getImages()->where('img_type', 'cover')->first();
+
+                if ($cover) {
+                    File::delete(upload_path($cover->path));
+                    Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
+                }
+                //-- Save Image in Database--//
+                $media = new Media();
+                $media->node_id = $node->getKey();
+                $media->path = $name . '.' . $ext;
+                $media->name = $name;
+                $media->extension = $ext;
+                $media->mimetype = $coverimage->getClientMimeType();
+                $media->img_type = 'cover';
+                $media->size = 0;
+                $media->user_id = Auth::user()->id;
+                $media->save();
+            }
+
+
+            $data = [
+                'node_id' => $node->getKey(),
+                'source_id' => $node->translate($locale)->getKey(),
+            ];
         }
-
-
-        $data = [
-            'node_id' => $node->getKey(),
-            'source_id' => $node->translate($locale)->getKey(),
-        ];
-
         return $data;
 
 
@@ -598,10 +610,10 @@ class BusinessController extends PublicController
     public function editPost($id, $source_id = null){
 
         $source = NodeSource::find($source_id);
-        $business = Node::withType('servicetype')->find($id);
+        $service = Node::withType('servicetype')->find($id);
 
         /*Cover Image*/
-        $coverimage = $business->getImages()->where('img_type', 'cover')->first();
+        $coverimage = $service->getImages()->where('img_type', 'cover')->first();
         $coverimg = '/cover.jpg';
         if ($coverimage) {
 
@@ -609,14 +621,21 @@ class BusinessController extends PublicController
         }
 
         $user = Auth::user();
-        if ($business || $source) {
+        if ($service || $source) {
 
             $source = Node::withType('servicetype')->find($source->node_id);
-            if ($user->id == $business->user_id && $user->id == $source->user_id) {
-                $data['node'] = $business;
-                $data['coverimage'] = $coverimg;
+            if ($user->id == $service->user_id && $user->id == $source->user_id) {
+                $data['node'] = [
+                    'title' => $service->getTitle(),
+                    'description' => $service->description,
+                    'status' => $service->isPublished() ? 'publish' : 'unpublish',
+                    'email_enquiry' => $service->emailenquiry,
+                    'phone_message' => $service->phonemessage,
+                    'coverimage' => $coverimg
+                ];
 
-                $cat_meta = $business->metas()->where('key', 'categories')->first();
+
+                $cat_meta = $service->metas()->where('key', 'categories')->first();
                 if ($cat_meta) {
                     $categories = explode(',', $cat_meta->value);
                     $category = Node::find(max($categories));
@@ -644,9 +663,14 @@ class BusinessController extends PublicController
 
         //--Update Node
         $node->update([
-            $locale => array_except($request->all(), ['_token', '_method']),
+            $locale => array_except($request->all(), ['_token', '_method','status']),
         ]);
 
+        if($request->status) {
+            $status = $request->status;
+
+            $node->{$status}()->save();
+        }
 
         /*Category Meta*/
         $cat = $request->category;
