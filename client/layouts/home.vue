@@ -25,34 +25,28 @@
         <v-container grid-list-lg fill-height class="grey--text">
           <v-layout column justify-center align-center mt-5>
             <div class="display-2 font-weight-thin mb-4 hidden-xs-only">Discover business in your area</div>
-            <v-toolbar dense floating class="py-2" >
-
+            <v-toolbar floating dense extense class="py-2">
               <v-layout row wrap>
 
-              <v-text-field
-                hide-details
-                prepend-icon="search"
-                label="Keywords"
-                placeholder="What are you looking for?"
-                single-line
-                full-width
-              ></v-text-field>
+                <v-text-field
+                  hide-details
+                  prepend-icon="search"
+                  label="Keywords"
+                  placeholder="What are you looking for?"
+                  single-line
+                  full-width
+                  class="pr-5"
+                ></v-text-field>
 
-
-
-              <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn icon>
-                  <v-icon>my_location</v-icon>
-                </v-btn>
-              </v-toolbar-items>
+                <v-toolbar-items class="hidden-sm-and-down">
+                  <v-btn icon>
+                    <v-icon color="primary">my_location</v-icon>
+                  </v-btn>
+                </v-toolbar-items>
               </v-layout>
             </v-toolbar>
 
-
-    <div class="black--text font-weight-bold">Siliguri</div>
-
-
-
+            <div class="black--text font-weight-bold">Siliguri</div>
           </v-layout>
         </v-container>
       </v-img>
@@ -106,7 +100,8 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      text:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
   }
 }

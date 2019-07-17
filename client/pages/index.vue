@@ -51,6 +51,41 @@
       </v-flex>
     </v-layout>
 
+    <v-layout row wrap justify-center align-center class="mt-5">
+
+      <v-sheet height="200">
+          <div class="text-xs-center pa-3">
+            <v-icon size="70" color="primary">list</v-icon>
+          </div>
+          <div class="text-xs-center">
+            <div class="display-1 font-weight-bold">Popular Categories</div>
+            <div
+              class="text-muted pt-1"
+            >Post your requirement for FREE! Get matching products/services in your mail box</div>
+          </div>
+        </v-sheet>
+
+      <swiper :options="swiperOption" ref="mySwiper" @someSwiperEvent="callback" class="my-swiper">
+        <!-- slides -->
+        <swiper-slide v-for="i in 10" :key="i" class="swiper-slide">
+          <v-card flat>
+            <v-card-actions class="pa-3">
+              <v-layout column justify-center align-center>
+                <v-img src="/service.png" contain width="80" />
+              </v-layout>
+            </v-card-actions>
+
+            <v-card-actions>
+              <v-layout column justify-center align-center>1245 reviews</v-layout>
+            </v-card-actions>
+          </v-card>
+        </swiper-slide>
+
+        <!-- Optional controls -->
+        <div class="swiper-pagination hidden-xs-only" slot="pagination"></div>
+      </swiper>
+    </v-layout>
+
     <v-layout column justify-center align-center mt-5>
       <v-flex xs6 md3>
         <v-sheet height="300">
@@ -76,7 +111,9 @@
           <v-flex xs6 md3>
             <v-sheet>
               <div class="text-xs-center pa-2">
-                <div class="display-1 font-weight-bold default--text text-default">The Businesses growing with us</div>
+                <div
+                  class="display-1 font-weight-bold default--text text-default"
+                >The Businesses growing with us</div>
                 <div
                   class="text-muted pt-1"
                 >Post your requirement for FREE! Get matching products/services in your mail box</div>
@@ -115,7 +152,7 @@
                 <template>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
-                      <img src="https://cdn.vuetifyjs.com/images/lists/ali.png">
+                      <img src="https://cdn.vuetifyjs.com/images/lists/ali.png" />
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
@@ -146,6 +183,33 @@
         </v-layout>
       </v-flex>
     </v-layout>
+
+<v-layout row wrap justify-center align-center mt-5>
+      <v-flex xs12 sm10 md8>
+        <v-layout column justify-center align-center>
+          <v-flex xs6 md3>
+            <v-sheet>
+               <div class="text-xs-center pa-3">
+            <v-icon size="70" color="primary">graphic_eq</v-icon>
+          </div>
+              <div class="text-xs-center pa-2">
+                <div class="display-1 font-weight-bold default--text text-default">Popular location</div>
+                <div
+                  class="text-muted pt-1"
+                >Post your requirement for FREE! Get matching products/services in your mail box</div>
+              </div>
+            </v-sheet>
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs12 md2 v-for="i in 30" :key="i">
+            <nuxt-link to=# class="text-xs-center pa-1" > Siliguri </nuxt-link>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+
+
 
     <v-layout row wrap justify-center align-center mt-5>
       <v-flex xs12 sm10 md10>
@@ -214,7 +278,39 @@ export default {
 
   data() {
     return {
-      r:'',
+      r: '',
+      swiperOption: {
+        auto: true,
+        slidesPerView: 5,
+        spaceBetween: 2,
+        mousewheel: true,
+        autoplay: {
+            delay: 1000,
+            disableOnInteraction: false
+          },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        breakpoints: {
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 40
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 30
+            },
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20
+            },
+            320: {
+              slidesPerView: 1,
+              spaceBetween: 10
+            }
+          }
+      },
       text:
         'The typography of an application is just as important as its functionality. Vuetify.js uses the Material Design spec Roboto Font.',
       text2:
