@@ -88,7 +88,10 @@ class SiteExtensionServiceProvider extends ServiceProvider {
          * Loader for registering facades.
          */
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-     
+        $this->app->register(\Matrix\Locations\LocationsServiceProvider::class );
+        $this->app->register(\Matrix\Categories\CategoriesServiceProvider::class);
+
+
         /*
          * Load third party local providers
          * $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);

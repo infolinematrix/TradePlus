@@ -39,6 +39,7 @@
     "laracasts/flash": "^3.0",
     "laravel/framework": "5.6.*",
     "laravel/tinker": "^1.0",
+    "maatwebsite/excel": "~2.1.0",
     "plank/laravel-metable": "^1.1",
     "reactor/documents": "dev-master",
     "reactor/files": "dev-master",
@@ -64,7 +65,9 @@
       "App\\": "app/",
       "ReactorCMS\\": "app/",
       "gen\\": "gen/",
-      "Extension\\": "extension/"
+      "Extension\\": "extension/",
+      "Matrix\\Locations\\": "packages/Matrix/Locations/src",
+      "Matrix\\Categories\\": "packages/Matrix/Categories/src"
     }
   },
   "autoload-dev": {

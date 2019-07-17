@@ -31,7 +31,6 @@ class EditLocationsForm extends Form {
             'label' => 'Latitude',
             'help_block' => ['text' => ''],
 
-                        'rules' => 'required',
             
             
             
@@ -41,7 +40,6 @@ class EditLocationsForm extends Form {
             'label' => 'Longitude',
             'help_block' => ['text' => ''],
 
-                        'rules' => 'required',
             
             
             

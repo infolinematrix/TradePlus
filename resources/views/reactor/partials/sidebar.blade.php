@@ -34,10 +34,28 @@
 
 
         <!-- sidebar menu: : Packages -->
+        <hr class="divider">
         <ul class="sidebar-menu" data-widget="tree">
+
+            <li class="">
+                <a href="{!! route("reactor.location.index") !!}">
+                    <i class="fa fa-map-marker"></i> <span>Locations</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="{!! route("reactor.category.index") !!}">
+                    <i class="fa fa-map-marker"></i> <span>Categories</span>
+                </a>
+            </li>
+
+
+
 
 
         </ul>
+
+
 
 
         <!-- sidebar menu: : Packages -->
