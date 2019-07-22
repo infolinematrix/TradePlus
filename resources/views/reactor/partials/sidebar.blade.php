@@ -56,6 +56,16 @@
             </li>
         </ul>
 
+        <hr class="divider">
+
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="">
+                <a href="{!! route("reactor.pages.index") !!}">
+                    <i class="fa fa-edit"></i> <span>Pages</span>
+                </a>
+            </li>
+        </ul>
         <!-- sidebar menu: : Packages -->
         <hr class="divider">
 
