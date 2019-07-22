@@ -512,6 +512,7 @@ class BusinessController extends PublicController
 
     public function postServices(Request $request){
 
+
         /*Get Businesss*/
         $user = Auth::user();
         $business = Node::withType('business')->where('user_id', $user->id)->first();
@@ -882,6 +883,19 @@ class BusinessController extends PublicController
 
             return 'not_found';
         }
+    }
+
+    public function getPost(){
+
+
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+        
+        $nodes = $node->children()->withType('servicetype')->get();
+
+        dd($nodes);
+
+
     }
 
 }

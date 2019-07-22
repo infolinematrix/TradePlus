@@ -222,7 +222,7 @@ class CategoriesController extends ReactorController
 
         if ($num_rows > 0) {
             $select = "<option value=''>--Select--</option>";
-            $tt = "<select  class='cat form-control' name='category[]'";
+            $tt = "<select  class='cat form-control' name='categories[]'";
             $tt .= "<option value=''>$select</option>";
             foreach ($categories as $cat) {
                 $id = $cat->getKey();

@@ -49,14 +49,12 @@
                 </a>
             </li>
 
-
-
-
-
+            <li class="">
+                <a href="{!! route("reactor.business.index") !!}">
+                    <i class="fa fa-briefcase"></i> <span>Business</span>
+                </a>
+            </li>
         </ul>
-
-
-
 
         <!-- sidebar menu: : Packages -->
         <hr class="divider">
