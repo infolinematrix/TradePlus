@@ -214,6 +214,11 @@
                     <v-card-actions class="pa-0">
                       <v-btn type="submit" large depressed color="orange">Update</v-btn>
                     </v-card-actions>
+
+                    <v-subheader class="pl-0">Delete My Profile</v-subheader>
+                    <v-btn icon @click="delete_business()">
+                        <v-icon>delete</v-icon>
+                    </v-btn>
                   </v-form>
                 </v-container>
               </v-card>
@@ -708,7 +713,7 @@ export default {
     /*About*/
     async about(scope) {
       let formData = new FormData()
-      formData.append('business_description', this.form2.description)
+      formData.append('description', this.form2.description)
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -790,8 +795,7 @@ export default {
       this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.$axios.post(`business/update`, formData).then(response => {
-
-            console.log(response.data);
+            
             this.dialog = false
             swal.fire({
               title: 'Settings Updated Successfully',
@@ -806,6 +810,26 @@ export default {
       })
     },
 
+ async delete_business(){
+      
+      swal.fire({
+            title: "Are You Sure",
+            type: "warning",
+            animation: true,
+            showCloseButton: true,
+            showCancelButton: true,
+            }).then(result => {
+              if (result.value) {
+              this.$axios
+                .post(`delete-business`)
+                .then(response => {
+                this.dialog = true
+                this.$root.$router.push({path: '/business/create'})
+              })
+              }
+            })
+
+    }
 
   },
 

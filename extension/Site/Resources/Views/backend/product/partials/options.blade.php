@@ -12,7 +12,7 @@
         </li>
         <li>
             {!! delete_form(
-                route('reactor.nodes.destroy', $node->getKey()),
+                route('reactor.business.product.destroy', $node->getKey()),
                 'Delete') !!}
         </li>
     </ul>

@@ -307,4 +307,26 @@ class ServiceController extends ReactorController
             }
         }
     }
+
+    public function destroy($id)
+    {
+        //$this->authorize('EDIT_NODES');
+
+        $node = Node::findOrFail($id);
+
+        if ($response = $this->validateNodeIsNotLocked($node)) return $response;
+
+        /*Parent Node's files delete*/
+        $files = $node->getImages()->get();
+        foreach ($files as $file){
+
+            File::delete(upload_path($file->path));
+        }
+
+        $node->delete();
+
+        $this->notify('nodes.destroyed');
+
+        return redirect()->back();
+    }
 }

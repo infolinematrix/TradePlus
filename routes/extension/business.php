@@ -63,6 +63,10 @@ Route::group([
             'as' => 'reactor.business.upload.photo',
         ]);
 
+        Route::delete('/delete/{id}', [
+            'uses' => '\Extension\Site\Http\Backend\BusinessController@destroy',
+            'as' => 'reactor.business.destroy']);
+
         /*Service*/
 
         Route::get('/services/{id}', [
@@ -100,6 +104,10 @@ Route::group([
             'as' => 'reactor.business.service.import',
         ]);
 
+        Route::delete('/service/delete/{id}', [
+            'uses' => '\Extension\Site\Http\Backend\ServiceController@destroy',
+            'as' => 'reactor.business.service.destroy']);
+
 
         /*Product*/
 
@@ -135,8 +143,13 @@ Route::group([
 
         Route::post('/product/import/{id}', [
             'uses' => '\Extension\Site\Http\Backend\ProductController@import_store',
-            'as' => 'reactor.business.service.import',
+            'as' => 'reactor.business.product.import',
         ]);
+
+        Route::delete('/product/delete/{id}', [
+            'uses' => '\Extension\Site\Http\Backend\ProductController@destroy',
+            'as' => 'reactor.business.product.destroy']);
+
 
     });
 });

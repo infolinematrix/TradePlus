@@ -162,15 +162,6 @@ class EditBusinessForm extends Form {
             
 
         ]);
-                                $this->add('business_description', 'wysiwyg', [
-            'label' => 'Description',
-            'help_block' => ['text' => ''],
-
-            
-            
-            
-
-        ]);
                                 $this->add('payment_accept', 'text', [
             'label' => 'Payment Accept',
             'help_block' => ['text' => ''],
@@ -205,6 +196,15 @@ class EditBusinessForm extends Form {
 
             
                         'default_value' => false,
+            
+            
+
+        ]);
+                                $this->add('description', 'wysiwyg', [
+            'label' => 'Business Description',
+            'help_block' => ['text' => ''],
+
+            
             
             
 

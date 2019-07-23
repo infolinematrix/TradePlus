@@ -77,7 +77,7 @@
 
 
                 <v-container grid-list-lg>
-                  <v-form @submit.prevent="business" enctype="multipart/form-data">
+                  <v-form @submit.prevent="services" enctype="multipart/form-data">
                     <v-layout row wrap>
                       <v-flex xs12 md12>
                         <v-text-field 

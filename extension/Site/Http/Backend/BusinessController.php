@@ -341,7 +341,7 @@ class BusinessController extends ReactorController
             $request->request->set('node_name', trim(str_slug($str['business_title'])));
             $request->request->set('locale', 'en');
             $request->request->set('type', $type);
-            $request->request->set('business_description', trim($str['description']));
+            $request->request->set('description', trim($str['description']));
             $request->request->set('business_address', trim($str['address']));
             $request->request->set('business_zipcode', trim($str['address']));
             $request->request->set('business_email', trim($str['email']));
@@ -399,4 +399,38 @@ class BusinessController extends ReactorController
         }
     }
 
+
+    public function destroy($id)
+    {
+        //$this->authorize('EDIT_NODES');
+
+        $node = Node::findOrFail($id);
+
+        if ($response = $this->validateNodeIsNotLocked($node)) return $response;
+
+        /*Child node's files delete*/
+        $childs = $node->children()->get();
+        foreach ($childs as $child){
+
+            $photos = $child->getImages()->get();
+
+            foreach ($photos as $photo){
+                File::delete(upload_path($photo->path));
+            }
+
+        }
+
+        /*Parent Node's files delete*/
+        $files = $node->getImages()->get();
+        foreach ($files as $file){
+
+            File::delete(upload_path($file->path));
+        }
+
+        $node->delete();
+
+        $this->notify('nodes.destroyed');
+
+        return redirect()->back();
+    }
 }

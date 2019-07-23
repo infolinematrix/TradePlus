@@ -272,7 +272,7 @@ class ProductController extends ReactorController
             $request->request->set('node_name', trim(str_slug($str['title'])));
             $request->request->set('locale', 'en');
             $request->request->set('type', $type);
-            $request->request->set('product_description', trim($str['description']));
+            $request->request->set('description', trim($str['description']));
 
             $chk_location = Node::withName(trim(str_slug($str['title'])))->first();
 

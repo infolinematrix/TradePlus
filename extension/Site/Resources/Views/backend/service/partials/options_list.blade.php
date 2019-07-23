@@ -41,8 +41,8 @@
 
             <li class="list-group-item">
                 {!! delete_form(
-                    route('reactor.nodes.destroy', $node->getKey()),
-                    __('Delete (with Child)')) !!}
+                    route('reactor.business.service.destroy', $node->getKey()),
+                    __('Delete')) !!}
             </li>
 
         </ul>

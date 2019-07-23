@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            {!! form_row($form->product_description)  !!}
+                                            {!! form_row($form->description)  !!}
                                         </div>
 
                                     </div>

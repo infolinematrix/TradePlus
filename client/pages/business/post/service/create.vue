@@ -273,7 +273,7 @@ export default {
          this.$axios
             .post(`post-services`, formData)
             .then(response => {
-            console.log(response.data);  
+          
             if(response.data == "exist") {
             this.dialog = false;
             swal.fire({
