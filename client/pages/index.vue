@@ -52,31 +52,32 @@
     </v-layout>
 
     <v-layout row wrap justify-center align-center class="mt-5">
-
       <v-sheet height="200">
-          <div class="text-xs-center pa-3">
-            <v-icon size="70" color="primary">list</v-icon>
-          </div>
-          <div class="text-xs-center">
-            <div class="display-1 font-weight-bold">Popular Categories</div>
-            <div
-              class="text-muted pt-1"
-            >Post your requirement for FREE! Get matching products/services in your mail box</div>
-          </div>
-        </v-sheet>
+        <div class="text-xs-center pa-3">
+          <v-icon size="70" color="primary">list</v-icon>
+        </div>
+        <div class="text-xs-center">
+          <div class="display-1 font-weight-bold">Popular Categories</div>
+          <div
+            class="text-muted pt-1"
+          >Post your requirement for FREE! Get matching products/services in your mail box</div>
+        </div>
+      </v-sheet>
 
-      <swiper :options="swiperOption" ref="mySwiper" @someSwiperEvent="callback" class="my-swiper">
+      <swiper :options="swiperOption" ref="mySwiper"  class="my-swiper">
         <!-- slides -->
-        <swiper-slide v-for="i in 10" :key="i" class="swiper-slide">
+        <swiper-slide v-for="category in categories" :key="category" class="swiper-slide">
           <v-card flat>
             <v-card-actions class="pa-3">
               <v-layout column justify-center align-center>
-                <v-img src="/service.png" contain width="80" />
+                <v-img :src="category.icon" contain width="60" />
               </v-layout>
             </v-card-actions>
 
             <v-card-actions>
-              <v-layout column justify-center align-center>1245 reviews</v-layout>
+              <v-layout column justify-center align-center>
+                <nuxt-link to="#" class="black--text">{{ category.title}}</nuxt-link>
+              </v-layout>
             </v-card-actions>
           </v-card>
         </swiper-slide>
@@ -84,25 +85,6 @@
         <!-- Optional controls -->
         <div class="swiper-pagination hidden-xs-only" slot="pagination"></div>
       </swiper>
-    </v-layout>
-
-    <v-layout column justify-center align-center mt-5>
-      <v-flex xs6 md3>
-        <v-sheet height="300">
-          <div class="text-xs-center pa-3">
-            <v-icon size="70" color="primary">graphic_eq</v-icon>
-          </div>
-          <div class="text-xs-center pa-2">
-            <div class="display-1 font-weight-bold">Post your requirement</div>
-            <div
-              class="text-muted pt-1"
-            >Post your requirement for FREE! Get matching products/services in your mail box</div>
-            <div class="mt-2">
-              <v-btn outline large depressed color="primary">Post now</v-btn>
-            </div>
-          </div>
-        </v-sheet>
-      </v-flex>
     </v-layout>
 
     <v-layout column justify-center align-center class="mt-5">
@@ -122,7 +104,7 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs6 md4 v-for="i in 3" :key="i">
+          <v-flex xs12 md4 v-for="i in 3" :key="i">
             <v-card>
               <v-img
                 :src="`https://picsum.photos/250/150?random=${Math.floor(Math.random() * 100) + r}`"
@@ -184,16 +166,18 @@
       </v-flex>
     </v-layout>
 
-<v-layout row wrap justify-center align-center mt-5>
-      <v-flex xs12 sm10 md8>
+    <v-layout row wrap justify-center align-center class="mt-5">
+      <v-flex xs12 sm10 md10>
         <v-layout column justify-center align-center>
           <v-flex xs6 md3>
             <v-sheet>
-               <div class="text-xs-center pa-3">
-            <v-icon size="70" color="primary">graphic_eq</v-icon>
-          </div>
               <div class="text-xs-center pa-2">
-                <div class="display-1 font-weight-bold default--text text-default">Popular location</div>
+                <v-icon size="70" color="primary">pin_drop</v-icon>
+              </div>
+              <div class="text-xs-center pa-2">
+                <div
+                  class="display-1 font-weight-bold default--text text-default"
+                >Suppliers Location</div>
                 <div
                   class="text-muted pt-1"
                 >Post your requirement for FREE! Get matching products/services in your mail box</div>
@@ -202,16 +186,33 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12 md2 v-for="i in 30" :key="i">
-            <nuxt-link to=# class="text-xs-center pa-1" > Siliguri </nuxt-link>
+          <v-flex xs4 md2 v-for="location in locations" :key="location" class="text-xs-center">
+            <nuxt-link to="#" class="black--text font-weight-bold">{{location.title}}</nuxt-link>
           </v-flex>
         </v-layout>
       </v-flex>
     </v-layout>
 
+    <v-layout column justify-center align-center class="mt-5">
+      <v-flex xs6 md3>
+        <v-sheet height="300">
+          <div class="text-xs-center pa-3">
+            <v-icon size="70" color="primary">graphic_eq</v-icon>
+          </div>
+          <div class="text-xs-center pa-2">
+            <div class="display-1 font-weight-bold">Post your requirement</div>
+            <div
+              class="text-muted pt-1"
+            >Post your requirement for FREE! Get matching products/services in your mail box</div>
+            <div class="mt-2">
+              <v-btn outline large depressed color="primary">Post now</v-btn>
+            </div>
+          </div>
+        </v-sheet>
+      </v-flex>
+    </v-layout>
 
-
-    <v-layout row wrap justify-center align-center mt-5>
+    <v-layout row wrap justify-center align-center class="mt-5">
       <v-flex xs12 sm10 md10>
         <v-layout column justify-center align-center>
           <v-flex xs6 md3>
@@ -276,46 +277,57 @@ export default {
     VuetifyLogo
   },
 
+  async asyncData({ $axios }) {
+    let categories = await $axios.get('categories')
+    let locations = await $axios.get('locations')
+    return (
+      {
+        categories: categories.data,
+        locations: locations.data
+      }
+    )
+  },
+
   data() {
     return {
       r: '',
+
       swiperOption: {
         auto: true,
-        slidesPerView: 5,
+        slidesPerView: 6,
         spaceBetween: 2,
         mousewheel: true,
         autoplay: {
-            delay: 1000,
-            disableOnInteraction: false
-          },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true
+          delay: 1000,
+          disableOnInteraction: false
         },
+
         breakpoints: {
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 40
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 30
-            },
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 20
-            },
-            320: {
-              slidesPerView: 1,
-              spaceBetween: 10
-            }
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 40
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20
+          },
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 10
           }
+        }
       },
       text:
         'The typography of an application is just as important as its functionality. Vuetify.js uses the Material Design spec Roboto Font.',
       text2:
         'The typography of an application is just as important as its functionality.'
     }
-  }
+  },
+
+  async mounted() {}
 }
 </script>

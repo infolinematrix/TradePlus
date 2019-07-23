@@ -3,16 +3,12 @@
 namespace Extension\Site\Http;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
-
 use ReactorCMS\Entities\Node;
 use ReactorCMS\Http\Controllers\PublicController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
 use ReactorCMS\Http\Controllers\Traits\UsesTranslations;
 use Reactor\Hierarchy\NodeRepository;
-use Reactor\Hierarchy\Tags\Tag;
 
 class ApiController extends PublicController
 {
@@ -41,6 +37,25 @@ class ApiController extends PublicController
         return $data;
     }
 
+    public function getPages()
+    {
+        $nodes = Node::withType('pages')->get();
+        $data = [];
+
+        foreach ($nodes as $node) {
+            $data[] = [
+                'title' => $node->getTitle(),
+                'content' => strip_tags($node->content),
+                'meta_title' => $node->getMetaTitle(),
+                'meta_description' => $node->getMetaDescription(),
+                'meta_keywords' => $node->getMetaKeywords(),
+            ];
+
+        }
+
+        return $data;
+    }
+
     /**
      * Shows the search page
      *
@@ -56,8 +71,6 @@ class ApiController extends PublicController
 
         return view('search', compact('results'));
     }
-
-
 
     public function getBanner($homepage = false, $limit = 2)
     {
@@ -87,7 +100,5 @@ class ApiController extends PublicController
         return $data;
 
     }
-
-   
 
 }

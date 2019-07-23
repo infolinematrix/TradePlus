@@ -363,12 +363,12 @@ class CategoriesController extends ReactorController
             $request->request->set('node_name', trim(str_slug($str['title'])));
             $request->request->set('locale', 'en');
             $request->request->set('type', $type);
-            $request->request->set('popular', trim($str['popular']));
+            //$request->request->set('popular', trim($str['popular']));
             $request->request->set('meta_title', trim($str['meta_title']));
             $request->request->set('meta_keywords', trim($str['meta_keywords']));
             $request->request->set('meta_description', trim($str['meta_description']));
 
-            $chk_location = Node::where('parent_id', $parent)->withName(trim($str['slug']))->first();
+            $chk_location = Node::where('parent_id', $parent)->withName(trim(str_slug($str['title'])))->first();
 
             if (!$chk_location) {
 
