@@ -31,8 +31,12 @@ class LocationsController extends ReactorController
         // constructor body
     }
 
-    public function index($id = null)
+    public function index(Request $request, $id = null)
     {
+
+
+
+
 
         $nodes = Node::withType('locations')->where('parent_id', $id)->translatedIn(locale());
         $nodes = $nodes->translatedIn(locale())->paginate();
@@ -259,15 +263,108 @@ class LocationsController extends ReactorController
     }
 
 
-    public function import($id = null)
+    public function import(Request $request, $id = null)
     {
         if ($id) {
             $node = Node::find($id);
             $parent = $node->getTitle();
-        } else {
-
-            $parent = 'Parent';
         }
+
+        $nodeType = get_node_type('locations');
+        $type = $nodeType->getKey();
+
+        $countries_data = file_get_contents('cities.json');
+
+
+
+        $countries = json_decode($countries_data, true);
+
+
+
+
+
+        foreach ($countries as $country){
+
+            foreach ($country as $location){
+
+                    /*    if($location['state_id'] == 1) {
+                         $data[] = $location['state_id'];
+                        }
+                    */
+                if($location['state_id'] == 539) {
+
+                    $chk_location = Node::where('parent_id', $id)->withName(trim(str_slug($location['name'])))->first();
+
+
+                    $request->request->set('title', trim($location['name']));
+                    if($chk_location) {
+                        $request->request->set('node_name', trim(str_slug($location['name'])));
+                    }else{
+                        $request->request->set('node_name', trim(str_slug($location['name'].' '.$parent)));
+                    }
+                    $request->request->set('locale', 'en');
+                    $request->request->set('type', $type);
+                    $request->request->set('popular', 0);
+                    $request->request->set('meta_title', trim($location['name']));
+                    $request->request->set('meta_keywords', trim($location['name']));
+                    $request->request->set('meta_description', trim($location['name']));
+
+
+
+                    if (!$chk_location) {
+
+                        $this->validateCreateForm($request);
+
+                        list($node, $locale) = $this->createNode($request, $id);
+
+
+                    }
+
+                }
+                /*
+
+                $request->request->set('title', trim($location['name']));
+                $request->request->set('node_name', trim(str_slug($location['name'])));
+                $request->request->set('locale', 'en');
+                $request->request->set('type', $type);
+                $request->request->set('popular', 0);
+                $request->request->set('countrycode', trim($location['sortname']));
+                $request->request->set('dialcode', trim($location['phoneCode']));
+                $request->request->set('meta_title', trim($location['name']));
+                $request->request->set('meta_keywords', trim($location['name']));
+                $request->request->set('meta_description', trim($location['name']));
+
+                $chk_location = Node::where('parent_id', $id)->withName(trim(str_slug($location['name'])))->first();
+
+
+                if (!$chk_location) {
+
+                    $this->validateCreateForm($request);
+
+                    list($node, $locale) = $this->createNode($request, $id);
+
+
+                } else {
+
+                    $node_id = $chk_location->getKey();
+                    $source = $chk_location->translate('en')->getKey();
+                    list($node, $locale, $source) = $this->authorizeAndFindNode($node_id, $source);
+
+                    //--Update Node
+                    $node->update([
+                        $locale => array_except($request->all(), ['_token', '_method']),
+                    ]);
+                }
+                */
+            }
+
+        }
+
+//        dd($data);
+        dd('LOCATION IMPORTED');
+
+
+
 
         return view('Locations::import', compact('id', 'parent'));
     }

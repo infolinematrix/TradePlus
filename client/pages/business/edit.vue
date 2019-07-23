@@ -75,38 +75,33 @@
           <v-layout align-start justify-left row fill-height>
             <v-flex xs12 md12>
               <v-card flat>
-
-
-
                 <v-container grid-list-lg>
-                  <v-form @submit.prevent="business" enctype="multipart/form-data">
-                    <v-layout row wrap>
-                      <v-flex xs12 md4>
-                        <v-card flat>
-                           <v-img :src="profilemageUrl" height="170" >
-                          <v-layout column fill-height>
+                
+               <v-layout row wrap>
+                <v-flex xs12 md4>
+                <v-card flat>
+                   <v-form @submit.prevent="update_image()" enctype="multipart/form-data">
+                 <v-img :src="profilemageUrl" height="170" >
+                    <v-layout column fill-height>
                         <v-card-title>
-              <v-btn dark icon>
-                <span>
-                      <input
+                        <v-btn dark icon>
+                          <span>
+                           <input
                         type="file"
                         ref="profile_file"
                         style="display: none"
-                        @change="onProfileFile"
-                      >
-                      <v-icon color="grey" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
-                    </span>
-              </v-btn>
-            </v-card-title>
-
-
-                  </v-layout>
+                        @change="onProfileFile">
+                          <v-icon color="grey" dark @click="profileFile" v-model="form.profileName">camera_alt</v-icon>
+                        </span>
+                    </v-btn>
+                    </v-card-title>
+                    </v-layout>
                 </v-img>
+                   </v-form>
+                </v-card>
+                </v-flex>
 
 
-
-                        </v-card>
-                      </v-flex>
                       <v-flex xs12 md8>
                         <v-text-field
                           v-model="form.business_title"
@@ -125,7 +120,8 @@
                     </v-layout>
 
                     <v-subheader class="pl-0">Others Information</v-subheader>
-
+                    <v-form @submit.prevent="business" enctype="multipart/form-data">
+               
                     <v-layout row wrap>
                       <v-flex xs8>
                         <v-text-field
@@ -218,6 +214,11 @@
                     <v-card-actions class="pa-0">
                       <v-btn type="submit" large depressed color="orange">Update</v-btn>
                     </v-card-actions>
+
+                    <v-subheader class="pl-0">Delete My Profile</v-subheader>
+                    <v-btn icon @click="delete_business()">
+                        <v-icon>delete</v-icon>
+                    </v-btn>
                   </v-form>
                 </v-container>
               </v-card>
@@ -624,6 +625,7 @@ export default {
         fr.addEventListener("load", () => {
           this.profilemageUrl = fr.result;
           this.form.profileimageFile = files[0];
+           this.update_image(this.form.profileimageFile);
         });
       } else {
         this.form.profileName = "";
@@ -642,19 +644,22 @@ export default {
     },
 
 
-     async update_image() {
+     async update_image(e) {
 
       this.dialog = true;
       let formData = new FormData();
       if(this.coverName.length != 0){
-      formData.append("coverimage", this.coverimageFile);
+      formData.append("coverimage", e);
+      }
+      if(this.form.profileName.length != 0){
+      formData.append("profileimage", e);
       }
 
       this.$axios.post(`business/update`, formData).then(response => {
 
             this.dialog = false
             swal.fire({
-              title: 'Cover image updated successfully',
+              title: 'Profile image updated successfully',
               type: 'success',
               animation: true,
               showCloseButton: true
@@ -674,12 +679,20 @@ export default {
       formData.append('business_phone', this.form.phone)
       formData.append('business_website', this.form.website)
       formData.append('business_entity', this.form.business_type)
-      if(this.form.profileName.length != 0){
-      formData.append("profileimage", this.form.profileimageFile);
-      }
-
+      
       this.$validator.validateAll().then(result => {
         if (result) {
+
+           if(this.id == null){
+            this.dialog = false;
+            swal.fire({
+            title: "Choose Location!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            });
+
+         }else{
           this.$axios.post(`business/update`, formData).then(response => {
 
             this.dialog = false
@@ -690,6 +703,7 @@ export default {
               showCloseButton: true
             })
           })
+        }
         } else {
           this.dialog = false
         }
@@ -699,7 +713,7 @@ export default {
     /*About*/
     async about(scope) {
       let formData = new FormData()
-      formData.append('business_description', this.form2.description)
+      formData.append('description', this.form2.description)
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -781,8 +795,7 @@ export default {
       this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.$axios.post(`business/update`, formData).then(response => {
-
-            console.log(response.data);
+            
             this.dialog = false
             swal.fire({
               title: 'Settings Updated Successfully',
@@ -797,6 +810,26 @@ export default {
       })
     },
 
+ async delete_business(){
+      
+      swal.fire({
+            title: "Are You Sure",
+            type: "warning",
+            animation: true,
+            showCloseButton: true,
+            showCancelButton: true,
+            }).then(result => {
+              if (result.value) {
+              this.$axios
+                .post(`delete-business`)
+                .then(response => {
+                this.dialog = true
+                this.$root.$router.push({path: '/business/create'})
+              })
+              }
+            })
+
+    }
 
   },
 

@@ -39,10 +39,10 @@
           <v-subheader>Products/Services</v-subheader>
           <v-container class="pt-0">
             <v-flex class="mb-2">
-              <nuxt-link to="/business/post/service/create">Create</nuxt-link>
+              <nuxt-link to="/business/post/service/create">Service</nuxt-link>
             </v-flex>
             <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">About</nuxt-link>
+              <nuxt-link to="/business/post/product/create">Product</nuxt-link>
             </v-flex>
             <v-flex class="mb-2">
               <nuxt-link to="business-profile#">Location</nuxt-link>
@@ -160,5 +160,7 @@ export default {
       title: 'Vuetify.js'
     }
   }
+
+  
 }
 </script>

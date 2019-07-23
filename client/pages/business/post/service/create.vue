@@ -242,9 +242,12 @@ export default {
 
      async services() {
        
+        
         if(this.chkbox == false){
             this.chkbox = null;
         }
+
+
         let formData = new FormData();
         formData.append("title", this.form.service_title);
         formData.append("description", this.form.description);
@@ -255,9 +258,22 @@ export default {
 
         this.$validator.validateAll().then(result => {
         if (result) {
+
+         if(this.form.id == null){
+            this.dialog = false;
+            swal.fire({
+            title: "Choose Category!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            });
+
+         }else{   
+
          this.$axios
             .post(`post-services`, formData)
             .then(response => {
+          
             if(response.data == "exist") {
             this.dialog = false;
             swal.fire({
@@ -272,6 +288,7 @@ export default {
             this.$root.$router.push({path: '/business/post/service/'+service.node_id+'/edit/'+service.source_id})
             }
           })
+        }
         }
       });
      }

@@ -45,6 +45,24 @@ class EditLocationsForm extends Form {
             
 
         ]);
+                                $this->add('countrycode', 'text', [
+            'label' => 'Country Code',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('dialcode', 'text', [
+            'label' => 'Dial Code',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
                     }
 
 }

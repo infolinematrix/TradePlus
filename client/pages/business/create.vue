@@ -361,6 +361,17 @@ layout: 'user',
         
         this.$validator.validateAll().then(result => {
         if (result) {
+
+        if(this.id == null){
+            this.dialog = false;
+            swal.fire({
+            title: "Choose Location!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            });
+
+         }else{  
          this.$axios
             .post(`post-business`, formData)
             .then(response => {
@@ -377,6 +388,7 @@ layout: 'user',
             this.$root.$router.push({path: '/business/edit'})
           }
           })
+        }
         }else{
           this.dialog = false;
         }

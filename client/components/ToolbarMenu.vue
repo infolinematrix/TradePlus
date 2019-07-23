@@ -41,6 +41,9 @@
         <v-list-tile nuxt to="/business/create">
           <v-list-tile-title>Business</v-list-tile-title>
         </v-list-tile>
+        <v-list-tile nuxt to="/business/create">
+          <v-list-tile-title>Logout</v-list-tile-title>
+        </v-list-tile>
       </v-list>
     </v-menu>
 

@@ -18,8 +18,26 @@ class EditProducttypeForm extends Form {
     public function buildForm()
     {
         $this->compose('Reactor\Hierarchy\Http\Forms\NodeSourceForm');
-                        $this->add('product_description', 'wysiwyg', [
-            'label' => 'Description',
+                        $this->add('emailenquiry', 'text', [
+            'label' => 'Email Enquiry',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('phonemessage', 'text', [
+            'label' => 'Phone/SMS Message',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('description', 'wysiwyg', [
+            'label' => 'Product Description',
             'help_block' => ['text' => ''],
 
             

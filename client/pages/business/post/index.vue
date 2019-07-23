@@ -80,18 +80,20 @@
         <v-tab ripple class="text-capitalize">Services</v-tab>
         <v-tab ripple class="text-capitalize">Offers</v-tab>
         <v-tab ripple class="text-capitalize">Promotion</v-tab>
-        <v-tab-item class="pl-0 pr-0 bg-light" v-for="i in 5" :key="i">
+        <v-tab-item class="pl-0 pr-0 bg-light">
           <v-container grid-list-md class="pa-3">
+           <v-alert v-model="all_alert" dismissible :type="this.type">{{ all_message }}</v-alert>
+
             <v-layout row wrap>
-              <v-flex xs12 sm6 v-for="i in 4" :key="i">
+              <v-flex xs12 sm6 v-for="post in posts" :key="post">
                 <v-card flat class="bg-white">
-                  <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"></v-img>
+                  <v-img :src="post.image" height="200px"></v-img>
 
                   <v-card-title>
 
                       <div
                         class="title-2 lh1 font-weight-medium  line-1 text-no-wrap"
-                      >Top western road trips Top western road trips</div>
+                      >{{ post.title }}</div>
                       <span class="grey--text">1,000 views in this month</span>
 
                   </v-card-title>
@@ -104,9 +106,115 @@
                       <v-icon color="secondary">multiline_chart</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn icon>
+                    <v-btn v-if="post.type == 'business'" icon nuxt to="/business/edit">
                       <v-icon>edit</v-icon>
                     </v-btn>
+                    <v-btn v-if="post.type == 'producttype'" 
+                    icon nuxt :to="{path: '/business/post/product/'+post.id+'/edit/'+post.source_id}">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+
+                     <v-btn v-if="post.type == 'servicetype'" 
+                    icon nuxt :to="{path: '/business/post/service/'+post.id+'/edit/'+post.source_id}">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                    
+                     <v-btn v-if="post.type != 'business'" icon @click="delete_post(post.id)">
+                      <v-icon>delete</v-icon>
+                    </v-btn>
+
+                  </v-card-actions>
+
+                  <v-slide-y-transition>
+                    <v-card-text
+                      v-show="show"
+                    >I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.</v-card-text>
+                  </v-slide-y-transition>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-tab-item>
+
+        <v-tab-item class="pl-0 pr-0 bg-light">
+        <v-container grid-list-md class="pa-3">
+         <v-alert v-model="pro_alert" dismissible :type="this.type">{{ pro_message }}</v-alert>
+
+            <v-layout row wrap>
+            
+              <v-flex xs12 sm6 v-for="product in products" :key="product">
+                <v-card flat class="bg-white">
+                  <v-img :src="product.image" height="200px"></v-img>
+
+                  <v-card-title>
+
+                      <div
+                        class="title-2 lh1 font-weight-medium  line-1 text-no-wrap"
+                      >{{ product.title }}</div>
+                      <span class="grey--text">{{ product.description }}</span>
+
+                  </v-card-title>
+
+                  <v-card-actions>
+                    <v-btn flat class="bg-light text-capitalize">
+                      <v-icon class="pr-2" color="primary">outlined_flag</v-icon>Propmote
+                    </v-btn>
+                    <v-btn icon>
+                      <v-icon color="secondary">multiline_chart</v-icon>
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn icon nuxt :to="{path: '/business/post/product/'+product.id+'/edit/'+product.source_id}">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                    <v-btn icon @click="delete_product(product.id)">
+                      <v-icon>delete</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+
+                  <v-slide-y-transition>
+                    <v-card-text
+                      v-show="show"
+                    >I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.</v-card-text>
+                  </v-slide-y-transition>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-tab-item>
+
+         <v-tab-item class="pl-0 pr-0 bg-light">
+        <v-container grid-list-md class="pa-3">
+          <v-alert v-model="serv_alert" dismissible :type="this.type">{{ serv_message }}</v-alert>
+
+            <v-layout row wrap>
+              <v-flex xs12 sm6 v-for="service in services" :key="service">
+                <v-card flat class="bg-white">
+                  <v-img :src="service.image" height="200px"></v-img>
+
+                  <v-card-title>
+
+                      <div
+                        class="title-2 lh1 font-weight-medium  line-1 text-no-wrap"
+                      >{{ service.title }}</div>
+                      <span class="grey--text">{{ service.description }}</span>
+
+                  </v-card-title>
+
+                  <v-card-actions>
+                    <v-btn flat class="bg-light text-capitalize">
+                      <v-icon class="pr-2" color="primary">outlined_flag</v-icon>Propmote
+                    </v-btn>
+                    <v-btn icon>
+                      <v-icon color="secondary">multiline_chart</v-icon>
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn ico nuxt :to="{path: '/business/post/service/'+service.id+'/edit/'+service.source_id}">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                     <v-btn icon @click="delete_service(service.id)">
+                      <v-icon>delete</v-icon>
+                    </v-btn>
+                    
                   </v-card-actions>
 
                   <v-slide-y-transition>
@@ -125,56 +233,129 @@
 </template>
 
 <script>
-import CategoryPopup from '~/components/CategoryPopup.vue'
+import swal from "sweetalert2";
 
 export default {
   layout: 'user',
-  components: {
-    CategoryPopup
-  },
   data() {
     return {
       active: true,
-      category_dialog: false,
-      chkbox: true,
-      select: { state: 'Florida', abbr: 'FL' },
-      categories: [
-        { state: 'Florida', abbr: 'FL' },
-        { state: 'Georgia', abbr: 'GA' },
-        { state: 'Nebraska', abbr: 'NE' },
-        { state: 'California', abbr: 'CA' },
-        { state: 'New York', abbr: 'NY' }
-      ],
-      form: {
-        service_title: null,
-        description: null,
-        title: 'Category from Parent',
-        id: null
-      },
+      type: '',
+      all_alert: false,
+      pro_alert: false,
+      serv_alert: false,
+      all_message: null,
+      pro_message: null,
+      serv_message: null,
+      posts: [],
+      products: [],
+      services: [],
       text:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
       text_short:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.'
     }
   },
+
   methods: {
-    update_title(value) {
-      this.form.title = value
-    },
-    update_id(value) {
-      this.form.id = value
-    },
 
-    async services() {
-      let formData = new FormData()
-      formData.append('title', this.form.service_title)
-      formData.append('description', this.form.description)
-      formData.append('category', this.form.id)
+     async delete_product(e) {
+          swal.fire({
+            title: "Are You Sure",
+            type: "warning",
+            animation: true,
+            showCloseButton: true,
+            showCancelButton: true,
+            }).then(result => {
+              if (result.value) {
+              this.$axios
+                .post(`delete-post/`+e)
+                .then(response => {
+               this.pro_alert = true
+               this.type = "info"
+               this.pro_message = 'Post Deleted....'
+               
+               this.$axios.get(`get-products`).then(response => {
+                this.products = response.data;
+               })  
+               this.posts = response.data;
+               this.$root.$router.push({path: '/business/post'})
+              })
+              }
+            })
+     },
 
-      this.$axios.post(`post-services`, formData).then(response => {
-        this.$root.$router.push({ path: '/business/post/edit' })
-      })
-    }
+     async delete_service(e) {
+          swal.fire({
+            title: "Are You Sure",
+            type: "warning",
+            animation: true,
+            showCloseButton: true,
+            showCancelButton: true,
+            }).then(result => {
+              if (result.value) {
+              this.$axios
+                .post(`delete-post/`+e)
+                .then(response => {
+
+               this.serv_alert = true
+               this.type = "info"
+               this.serv_message = 'Post Deleted....'
+               
+               this.$axios.get(`get-services`).then(response => {
+                this.services = response.data;
+               })  
+
+               this.posts = response.data;
+               this.$root.$router.push({path: '/business/post'})
+              })
+              }
+            })
+     },
+
+     async delete_post(e) {
+          swal.fire({
+            title: "Are You Sure",
+            type: "warning",
+            animation: true,
+            showCloseButton: true,
+            showCancelButton: true,
+            }).then(result => {
+              if (result.value) {
+              this.$axios
+                .post(`delete-post/`+e)
+                .then(response => {
+
+               this.all_alert = true
+               this.type = "info"
+               this.all_message = 'Post Deleted....'
+               
+               this.posts = response.data;
+              })
+              }
+            })
+     }
+  },
+
+  mounted(){
+              this.$axios
+                .get(`get-products`)
+                .then(response => {
+                  this.products = response.data;
+                })
+
+                this.$axios
+                .get(`get-services`)
+                .then(response => {
+                  this.services = response.data;
+                })
+
+                 this.$axios
+                .get(`all-posts`)
+                .then(response => {
+                  this.posts = response.data;
+                })
   }
+  
 }
 </script>

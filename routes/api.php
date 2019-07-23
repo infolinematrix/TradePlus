@@ -58,8 +58,11 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
     Route::get('categories/{parent?}','BusinessController@getCategories');
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 05d24fe4b21c55ffc4a9fbd50924af9512fcf59c
     /*Business*/
     Route::get('locations/{parent?}','BusinessController@getLocations');
     Route::get('add-business','BusinessController@addBusiness');
@@ -72,6 +75,18 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('service/{node_id}/edit/{source_id}','BusinessController@editPost');
     Route::post('service/{node_id}/udpate/{source_id}','BusinessController@updatePost');
 
+
+    /*Product*/
+    Route::post('post-product','BusinessController@postProduct');
+    Route::get('product/{node_id}/edit/{source_id}','BusinessController@editProduct');
+    Route::post('product/{node_id}/udpate/{source_id}','BusinessController@updatePost');
+
+    Route::get('all-posts','BusinessController@All');
+    Route::get('get-products','BusinessController@getProducts');
+    Route::get('get-services','BusinessController@getServices');
+
+    Route::post('delete-business','BusinessController@destroy');
+    Route::post('delete-post/{id}','BusinessController@deletePost');
 });
 
 /**

@@ -306,7 +306,7 @@ class BusinessController extends PublicController
                         'website' => $node->business_website,
                         'phone' => $node->business_phone,
                         'zipcode' => $node->business_zipcode,
-                        'description' => $node->business_description,
+                        'description' => $node->description,
                         'facebook' => $node->business_facebook,
                         'twitter' => $node->business_twitter,
                         'linkedin' => $node->business_linkedin,
@@ -507,6 +507,7 @@ class BusinessController extends PublicController
 
     public function postServices(Request $request){
 
+
         /*Get Businesss*/
         $user = Auth::user();
         $business = Node::withType('business')->where('user_id', $user->id)->first();
@@ -630,6 +631,152 @@ class BusinessController extends PublicController
 
 
                 $cat_meta = $service->metas()->where('key', 'categories')->first();
+                if ($cat_meta) {
+                    $categories = explode(',', $cat_meta->value);
+                    $category = Node::find(max($categories));
+                    $data['category'] = [
+
+                        'id' => $category->getKey(),
+                        'title' => $category->getTitle()
+                    ];
+
+                }
+
+            }
+        }
+
+        return $data;
+
+    }
+
+    public function postProduct(Request $request){
+
+
+        /*Get Businesss*/
+        $user = Auth::user();
+        $business = Node::withType('business')->where('user_id', $user->id)->first();
+        /*Get Business*/
+        $nodeType = get_node_type('producttype');
+        $type = $nodeType->getKey();
+
+
+
+        $title = $request->input('title');
+        $node_name = str_slug($title);
+        $check = Node::withType('producttype')->withName($node_name)->first();
+
+
+        if ($check != null) {
+            $data = 'exist';
+        } else {
+
+
+            /*Category Meta*/
+            $cat = $request->category;
+            $categories = Node::find($cat);
+            $nodes = $categories->getAncestors();
+            if (count($nodes) > 0) {
+                $c = '';
+                foreach ($nodes as $n) {
+                    $c .= $n->getKey() . ',' . $request->category . ',';
+                }
+                $category = rtrim($c, ',');
+                $cc[] = $category;
+            }
+            /*Category Meta*/
+
+            $request->request->set('title', $title);
+            $request->request->set('node_name', $node_name);
+            $request->request->set('locale', 'en');
+            $request->request->set('type', $type);
+
+            $this->validateCreateForm($request);
+
+            list($node, $locale) = $this->createNode($request, $business->getKey());
+
+            /*Category Meta*/
+            if (count($nodes) > 0) {
+                $node->setmeta('categories', $cc);
+            } else {
+                $node->setmeta('categories', $cat);
+            }
+            $node->save();
+            /*Category Meta*/
+
+
+            /*Cover Image*/
+            $coverimage = $request->file('coverimage');
+            if ($coverimage) {
+
+                # code...
+                $name = str_random(6);
+                $ext = $coverimage->extension();
+
+                $destinationPath = public_path('/uploads');
+                $coverimage->move($destinationPath, $name . '.' . $ext);
+                ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+
+                $cover = $node->getImages()->where('img_type', 'cover')->first();
+
+                if ($cover) {
+                    File::delete(upload_path($cover->path));
+                    Media::where('node_id', $node->getKey())->where('img_type', 'cover')->delete();
+                }
+                //-- Save Image in Database--//
+                $media = new Media();
+                $media->node_id = $node->getKey();
+                $media->path = $name . '.' . $ext;
+                $media->name = $name;
+                $media->extension = $ext;
+                $media->mimetype = $coverimage->getClientMimeType();
+                $media->img_type = 'cover';
+                $media->size = 0;
+                $media->user_id = Auth::user()->id;
+                $media->save();
+            }
+
+
+            $data = [
+                'node_id' => $node->getKey(),
+                'source_id' => $node->translate($locale)->getKey(),
+            ];
+        }
+        return $data;
+
+
+    }
+
+
+    public function editProduct($id, $source_id = null){
+
+        $source = NodeSource::find($source_id);
+        $product = Node::withType('producttype')->find($id);
+
+        /*Cover Image*/
+        $coverimage = $product->getImages()->where('img_type', 'cover')->first();
+        $coverimg = '/cover.jpg';
+        if ($coverimage) {
+
+            $coverimg = asset('uploads/' . $coverimage->path);
+        }
+
+        $user = Auth::user();
+
+        if ($product || $source) {
+
+            $source = Node::withType('producttype')->find($source->node_id);
+            if ($user->id == $product->user_id && $user->id == $source->user_id) {
+                $data['node'] = [
+                    'title' => $product->getTitle(),
+                    'description' => $product->description,
+                    'status' => $product->isPublished() ? 'publish' : 'unpublish',
+                    'email_enquiry' => $product->emailenquiry,
+                    'phone_message' => $product->phonemessage,
+                    'coverimage' => $coverimg
+                ];
+
+
+                $cat_meta = $product->metas()->where('key', 'categories')->first();
                 if ($cat_meta) {
                     $categories = explode(',', $cat_meta->value);
                     $category = Node::find(max($categories));
@@ -854,6 +1001,212 @@ class BusinessController extends PublicController
 
             return 'not_found';
         }
+    }
+
+
+    public function All(){
+
+        $user = Auth::user();
+        $nodes = Node::where('user_id', $user->id)->get();
+
+        $data = [];
+
+        foreach ($nodes as $node){
+
+            $nodeType = $node->nodeType()->first()->name;
+
+            if($node->getNodeTypeName() == 'business') {
+                $img = $node->getImages()->where('img_type','profile')->first();
+
+            }else{
+                $img = $node->getImages()->first();
+            }
+            if($img){
+                $img = asset('/uploads/'.$img->path);
+            }else{
+
+                $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
+            }
+
+
+            $data[] = [
+
+                'type' => $nodeType,
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img
+
+            ];
+        }
+
+        return $data;
+
+
+
+    }
+    public function getProducts(){
+
+
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+        
+        $nodes = $node->children()->withType('producttype')->get();
+
+        $data = [];
+
+        foreach ($nodes as $node){
+
+            $img = $node->getImages()->first();
+            if($img){
+                $img = asset('/uploads/'.$img->path);
+            }else{
+
+                $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
+            }
+            $data[] = [
+
+                'type' => $node->getNodeTypeName(),
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img,
+                'description' => strip_tags(str_limit($node->description,50))
+            ];
+        }
+
+        return $data;
+
+
+    }
+
+    public function getServices(){
+
+
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+
+        $nodes = $node->children()->withType('servicetype')->get();
+
+        $data = [];
+
+        foreach ($nodes as $node){
+
+            $img = $node->getImages()->first();
+            if($img){
+                $img = asset('/uploads/'.$img->path);
+            }else{
+
+                $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
+            }
+            $data[] = [
+
+                'type' => $node->getNodeTypeName(),
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img,
+                'description' => strip_tags(str_limit($node->description,50))
+            ];
+        }
+
+        return $data;
+
+
+    }
+
+    public function deletePost($node_id){
+
+        //$this->authorize('EDIT_NODES');
+
+        $node = Node::findOrFail($node_id);
+
+
+        if ($response = $this->validateNodeIsNotLocked($node)) return $response;
+
+        /*Parent Node's files delete*/
+        $files = $node->getImages()->get();
+        foreach ($files as $file){
+
+            File::delete(upload_path($file->path));
+        }
+
+        $node->delete();
+
+        $this->notify('nodes.destroyed');
+
+        $data = [];
+
+        $user = Auth::user();
+        $nodes = Node::where('user_id', $user->id)->get();
+
+        foreach ($nodes as $node){
+
+            $nodeType = $node->nodeType()->first()->name;
+
+            if($node->getNodeTypeName() == 'business') {
+                $img = $node->getImages()->where('img_type','profile')->first();
+
+            }else{
+                $img = $node->getImages()->first();
+            }
+            if($img){
+                $img = asset('/uploads/'.$img->path);
+            }else{
+
+                $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
+            }
+
+            $data[] = [
+                'type' => $nodeType,
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img
+
+            ];
+        }
+
+        return $data;
+    }
+
+
+    public function destroy()
+    {
+        $user = Auth::user();
+        $node = Node::where('user_id', $user->id)->first();
+
+
+        if ($response = $this->validateNodeIsNotLocked($node)) return $response;
+
+        /*Child node's files delete*/
+        $childs = $node->children()->get();
+        foreach ($childs as $child){
+
+            $photos = $child->getImages()->get();
+
+            foreach ($photos as $photo){
+                File::delete(upload_path($photo->path));
+            }
+
+        }
+
+        /*Parent Node's files delete*/
+        $files = $node->getImages()->get();
+        foreach ($files as $file){
+
+            File::delete(upload_path($file->path));
+        }
+
+        $node->delete();
+
+        $this->notify('nodes.destroyed');
+
+        return "Deleted";
     }
 
 }
