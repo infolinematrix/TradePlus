@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <label>Category</label>
                                     <div id="show_sub_categories">
-                                        <select required class="form-control cat" name="categories[]" id="categories[]" required>
+                                        <select class="form-control cat" name="categories[]" id="categories[]">
                                             <option value="">{!! __('----Select Category----') !!}</option>
                                             @foreach($categories as $category)
 

@@ -265,6 +265,7 @@ class LocationsController extends ReactorController
 
     public function import(Request $request, $id = null)
     {
+        dd("HH");
         if ($id) {
             $node = Node::find($id);
             $parent = $node->getTitle();

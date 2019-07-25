@@ -17,7 +17,7 @@
             <tr>
                 <td>#{!! $node->getKey() !!}</td>
                 <td>
-                    {!! link_to_route('reactor.nodes.children.all', str_limit($node->title,25), [$node->getKey()]) !!}
+                    {!! $node->title !!}
                 </td>
                 <td>{!! str_limit($node->node_name,25) !!}</td>
                 <td>{!! (is_null($node->parent_id) ? 0 : $node->parent_id) !!}</td>

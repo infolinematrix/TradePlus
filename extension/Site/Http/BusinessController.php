@@ -1237,4 +1237,46 @@ class BusinessController extends PublicController
         return "Deleted";
     }
 
+
+    public function getBusiness(){
+
+        $nodes = Node::withType('business')->Published()->sortable()->take(3)->get();
+
+        $data = [];
+
+        foreach ($nodes as $node){
+
+            $coverimg = $node->getImages()->where('img_type','cover')->first();
+            $profileimg = $node->getImages()->where('img_type','profile')->first();
+
+            if($coverimg){
+
+                $coverimg = asset('/uploads/'.$coverimg->path);
+            }else{
+
+                $coverimg = '/cover.jpg';
+            }
+
+            if($profileimg){
+
+                $profileimg = asset('/uploads/'.$profileimg->path);
+            }else{
+
+                $profileimg = '/avatar_male.png';
+            }
+            $data[] = [
+
+                'id' => $node->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'description' => strip_tags(str_limit($node->description,150)),
+                'coverimage' => $coverimg,
+                'profileimage' => $profileimg,
+                'location' => getBusinessLocation($node->getKey())
+            ];
+        }
+
+        return $data;
+    }
+
 }

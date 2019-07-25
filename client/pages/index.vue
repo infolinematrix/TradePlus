@@ -122,42 +122,23 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs6 md4 v-for="i in 3" :key="i">
+          <v-flex xs6 md4 v-for="node in business" :key="node">
             <v-card>
               <v-img
-                :src="`https://picsum.photos/250/150?random=${Math.floor(Math.random() * 100) + r}`"
+                :src="node.coverimage" height="200px"
               >
-                <v-layout column fill-height>
-                  <v-card-title>
-                    <v-btn dark icon>
-                      <v-icon>chevron_left</v-icon>
-                    </v-btn>
-
-                    <v-spacer></v-spacer>
-
-                    <v-btn dark icon class="mr-3">
-                      <v-icon>edit</v-icon>
-                    </v-btn>
-
-                    <v-btn dark icon>
-                      <v-icon>more_vert</v-icon>
-                    </v-btn>
-                  </v-card-title>
-
-                  <v-spacer></v-spacer>
-                </v-layout>
               </v-img>
 
               <v-list two-line>
                 <template>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
-                      <img src="https://cdn.vuetifyjs.com/images/lists/ali.png" />
+                      <img :src="node.profileimage" />
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
-                      <v-list-tile-title class="font-weight-medium">Matrix Infoline Private Limited</v-list-tile-title>
-                      <v-list-tile-sub-title>Siliguri, West Bengal</v-list-tile-sub-title>
+                      <v-list-tile-title class="font-weight-medium">{{ node.title }}</v-list-tile-title>
+                      <v-list-tile-sub-title>{{ node.location }}</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>
                 </template>
@@ -165,7 +146,7 @@
               <v-divider></v-divider>
               <v-card-title primary-title>
                 <div>
-                  <div class="font-weight-light">{{ text }}</div>
+                  <div class="font-weight-light">{{ node.description }}</div>
                 </div>
               </v-card-title>
 
@@ -180,6 +161,8 @@
               </v-card-actions>
             </v-card>
           </v-flex>
+
+
         </v-layout>
       </v-flex>
     </v-layout>
@@ -269,7 +252,18 @@ import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
 export default {
+
+  async asyncData({ $axios }) {
+      let nodes = await $axios.get('get-business')
+      return {
+       business: nodes.data
+      }
+   
+  },
+
+
   layout: 'home',
+
 
   components: {
     Logo,
