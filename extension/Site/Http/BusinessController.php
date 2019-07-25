@@ -383,11 +383,6 @@ class BusinessController extends PublicController
     public function updateBusiness(Request $request)
     {
 
-
-
-
-
-        $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         $source = $node->translate(locale())->getKey();
 
@@ -885,25 +880,6 @@ class BusinessController extends PublicController
     {
 
         $data = [];
-        /**
-         * Omited 'meta' from node "protected $with = ['translations','meta];"
-         * You can use Node::with('meta')
-         */
-        //  $nodes = Node::withType('categories')->translatedIn(locale())->get();
-
-        /*
-        for($i=0; $i < 10; $i ++){
-          $data = [
-            'node_id' => null,
-            'sender_id' => null,
-            'sender_info' => json_encode(['name' => 'Subha', 'email' => 'subhadas.gamil.com']),
-            'message_content'=> 'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.',
-          ];
-
-          DB::table('messages')->insert($data);
-        }
-*/
-
 
         $nodes = Node::withType('categories');
 
@@ -952,6 +928,7 @@ class BusinessController extends PublicController
                 'title' => trim($node->getTitle()),
                 'slug' => trim($node->getName()),
                 'breadcrumb' => $breadcrumb,
+                'icon' => asset('assets/icons/'.$node->category_icon)
             ];
         }
 
@@ -963,15 +940,10 @@ class BusinessController extends PublicController
         }
     }
 
-    public function getLocations($parent = 0)
+    public function getLocations($parent = 0, $limit=12)
     {
 
         $data = [];
-        /**
-         * Omited 'meta' from node "protected $with = ['translations','meta];"
-         * You can use Node::with('meta')
-         */
-        //  $nodes = Node::withType('categories')->translatedIn(locale())->get();
 
         $nodes = Node::withType('locations');
 
@@ -991,7 +963,7 @@ class BusinessController extends PublicController
 
         }
 
-        $locations = $nodes->get();
+        $locations = $nodes->take($limit)->get();
 
         foreach ($locations as $node) {
 

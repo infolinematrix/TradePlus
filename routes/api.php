@@ -58,6 +58,8 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
     Route::get('categories/{parent?}','BusinessController@getCategories');
 
+
+
     /*Business*/
     Route::get('get-business','BusinessController@getBusiness');
 

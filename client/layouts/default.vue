@@ -9,7 +9,7 @@
         flat
         class="border-bottom"
       >
-      <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-toolbar-side-icon to="/"></v-toolbar-side-icon>
 
       <v-toolbar-title>Trading Plus</v-toolbar-title>
 
