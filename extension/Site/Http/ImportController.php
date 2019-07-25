@@ -5,6 +5,7 @@ namespace Extension\Site\Http;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use ReactorCMS\Http\Controllers\PublicController;
 use Reactor\Hierarchy\NodeRepository;
@@ -19,69 +20,28 @@ class importController extends PublicController
     public $parent_node_id;
     use UsesTranslations, UsesNodeHelpers, UsesNodeForms;
 
-    public function location()
+
+    public function fakeProducts()
     {
-        $filename = 'cat_aniques.csv';
-        $rows = Excel::load(public_path() . '/data/' . $filename, function ($reader) {
-            $reader->toArray();
-            $reader->noHeading();
-        })->get();
 
-        $locale = 'en';
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \Bezhanov\Faker\Provider\Commerce($faker));
 
+        $data[] = null;
 
-        foreach ($rows as $row) {
+        for ($i = 0; $i <= 1; $i++) {
 
-            $item = explode('>', $row[0]);
-            $parent_node_id = null;
-
-            foreach ($item as $i => $value) {
-
-                $l = $this->getLocation(str_slug(trim($value)));
-
-                $node = new Node;
-                $node->setNodeTypeByKey(49);
-
-                if(!$l ){
-                    $data = [
-                        'user_id' => 1,
-                        'title' => trim($value),
-                        'node_name' => str_slug(trim($value)),
-                        'meta_title' => trim($value),
-                        "meta_keywords" => trim($value),
-                        "meta_description" => trim($value)
-                    ];
-                    $node->fill([
-                        $locale => $data,
-                    ]);
-                    $node = $this->locateNodeInTree($parent_node_id, $node);
-                    $node->save();
-
-                }
-
-                //$node->save();
-                //dd("EE");
-                //list($node, $locale) = $this->createNode($data, $parent_node_id);
-
-                //$parent_node_id = $node->getKey();
-                //dd($parent_node_id);
-            }
-            //DB::table('lecturas_temp')->insert($item );
+            $data[] = [
+                'product' => $faker->productName, // Kids & Games
+                'keywords' => $faker->department(5, true), // Kids & Games
+            ];
         }
 
 
-    }
 
 
-    public function getLocation($name = null)
-    {
-        if($name == null) return;
 
-        $node = Node::withType('categories')->withName($name)->first();
-
-        if($node) return $node->getKey();
-
-        return null;
+        dd($data);
 
     }
 

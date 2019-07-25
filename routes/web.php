@@ -27,6 +27,10 @@ Route::group(['namespace' => '\Extension\Site\Http'], function () {
         'uses' => 'SiteController@getHome',
     ]);
 
+    Route::get('/fproducts', [
+        'as' => 'site.home',
+        'uses' => 'ImportController@fakeProducts',
+    ]);
 
 });
 

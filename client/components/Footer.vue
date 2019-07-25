@@ -140,7 +140,7 @@
                   <div class="black--text">mail@companymail.com</div>
                 </v-flex>
                 <v-flex class="pb-1" md12>
-                  <v-btn depressed color="primary" class="white--text ml-0">
+                  <v-btn depressed color="primary" class="white--text ml-0" nuxt to="/contact">
                     Reach us
                     <v-icon right dark>email</v-icon>
                   </v-btn>
