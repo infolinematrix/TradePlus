@@ -93,7 +93,7 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('get-services','BusinessController@getServices');
 
     //--Browse
-    Route::get('browse/{slug?}','SearchController@browse');
+    Route::get('browse/{all?}','SearchController@browse')->where(['all' => '.*']);
 
 });
 

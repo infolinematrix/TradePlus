@@ -76,7 +76,7 @@
 
             <v-card-actions>
               <v-layout column justify-center align-center>
-                <nuxt-link to="#" class="black--text">{{ category.title}}</nuxt-link>
+                <nuxt-link :to="'/browse/'+ category.slug" class="black--text">{{ category.title}}</nuxt-link>
               </v-layout>
             </v-card-actions>
           </v-card>
@@ -265,7 +265,7 @@ export default {
         spaceBetween: 2,
         mousewheel: true,
         autoplay: {
-          delay: 1000,
+          delay: 1500,
           disableOnInteraction: false
         },
 

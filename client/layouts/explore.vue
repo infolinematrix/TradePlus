@@ -137,7 +137,7 @@
         <v-divider></v-divider>
         <v-container fluid grid-list-sm class="pa-2">
           <v-card flat class="elevation-0 mb-1">
-            <v-layout row wrap v-for="i in 5" :key="i">
+            <v-layout row wrap >
               <v-card-title class="title-1 font-weight-medium mb-0 pb-0">
                 <nuxt-link to="#">Best Quality mobile tempered protector</nuxt-link>
               </v-card-title>

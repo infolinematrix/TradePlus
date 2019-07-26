@@ -859,7 +859,7 @@ class BusinessController extends PublicController
 
         }
 
-        $categories = $nodes->get();
+        $categories = $nodes->published()->get();
 
         foreach ($categories as $node) {
 

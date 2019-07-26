@@ -46,18 +46,18 @@ class SearchController extends PublicController
     {
 
         //--get Node type
-        $node = $nodeRepository->getNodeAndSetLocale($slug, false);
+        $node = $nodeRepository->getNode($slug);
 
         //Assume categories
-        $nodes = Node::withType('producttype')->take(5)->get();
+        $nodes = Node::withType('producttype')
+            ->take(10)
+            ->findMetaValue($node->getKey())
+            ->Published()
+            ->get();
 
-        foreach ($nodes as $node){
-            $products = $node->description;
+        $data = $this->create_data($nodes);
 
-            dd($products);
-        }
-
-        dd($products);
+        return $data;
     }
 
 
@@ -68,9 +68,11 @@ class SearchController extends PublicController
         foreach ($nodes as $node) {
             $data[] = [
                 'id' => $node->getKey(),
+                'type' => $node->getNodeTypeName(),
+                'source_id' => $node->translate('en')->getKey(),
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
-                'description' => strip_tags(str_limit($node->description, 50)),
+                'description' => strip_tags($node->description),
             ];
         }
 
