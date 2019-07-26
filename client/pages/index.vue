@@ -64,7 +64,7 @@
         </div>
       </v-sheet>
 
-      <swiper :options="swiperOption" ref="mySwiper"  class="my-swiper">
+      <swiper :options="swiperOption" ref="mySwiper" class="my-swiper">
         <!-- slides -->
         <swiper-slide v-for="category in categories" :key="category" class="swiper-slide">
           <v-card flat>
@@ -104,25 +104,42 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12 md4 v-for="node in business" :key="node">
+          <v-flex xs12 md4 v-for="i in 3" :key="i">
             <v-card>
               <v-img
-                :src="node.coverimage" height=200px
+                :src="`https://picsum.photos/250/150?random=${Math.floor(Math.random() * 100) + r}`"
               >
+                <v-layout column fill-height>
+                  <v-card-title>
+                    <v-btn dark icon>
+                      <v-icon>chevron_left</v-icon>
+                    </v-btn>
+
+                    <v-spacer></v-spacer>
+
+                    <v-btn dark icon class="mr-3">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+
+                    <v-btn dark icon>
+                      <v-icon>more_vert</v-icon>
+                    </v-btn>
+                  </v-card-title>
+
+                  <v-spacer></v-spacer>
+                </v-layout>
               </v-img>
 
               <v-list two-line>
                 <template>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
-                      <img :src="node.profileimage" />
+                      <img src="https://cdn.vuetifyjs.com/images/lists/ali.png" />
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
-                      <v-list-tile-title class="font-weight-medium">
-                        {{ node.title }}
-                        </v-list-tile-title>
-                      <v-list-tile-sub-title>{{ node.location }}</v-list-tile-sub-title>
+                      <v-list-tile-title class="font-weight-medium">Matrix Infoline Private Limited</v-list-tile-title>
+                      <v-list-tile-sub-title>Siliguri, West Bengal</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>
                 </template>
@@ -130,7 +147,7 @@
               <v-divider></v-divider>
               <v-card-title primary-title>
                 <div>
-                  <div class="font-weight-light">{{ node.description }}</div>
+                  <div class="font-weight-light">{{ text }}</div>
                 </div>
               </v-card-title>
 
@@ -204,43 +221,14 @@
                 <div class="display-1 font-weight-bold default--text text-default">Recent Activities</div>
                 <div
                   class="text-muted pt-1"
-                >Post your requirement for FREE! Get matching products/services in your mail box</div>
+                >Recent and On-going Activities, check it out below to see what user been doing!</div>
               </div>
             </v-sheet>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12 md6 v-for="i in 2" :key="i">
-            <v-card flat v-for="item in 3" :key="item" class="mb-3">
-              <v-layout>
-                <v-flex xs5>
-                  <v-img src="http://lorempixel.com/400/300/abstract/" contain class="ma-3"></v-img>
-                </v-flex>
-                <v-flex xs7>
-                  <v-card-title>
-                    <div>
-                      <div class="subheading font-weight-medium">Foster the People</div>
-                      <div class="text-muted">{{ text2 }}</div>
-                    </div>
-                  </v-card-title>
-                  <v-card-actions class="pa-3">
-                    1245 reviews
-                    <v-spacer></v-spacer>
-                    <v-icon color="primary">stars</v-icon>
-                    <v-icon color="primary">stars</v-icon>
-                    <v-icon color="primary">stars</v-icon>
-                    <v-icon>star_border</v-icon>
-                    <v-icon>star_border</v-icon>
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-              <v-divider light></v-divider>
-              <v-card-actions class="pa-2 pl-3 text-muted">
-                Before 3 min ago
-                <v-spacer></v-spacer>
-                <v-btn color="primary" flat depressed small>Contact</v-btn>
-              </v-card-actions>
-            </v-card>
+          <v-flex xs12 md6>
+            <recent-products :limit=3></recent-products>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -249,29 +237,22 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import RecentProducts from '~/components/RecentProducts.vue'
 
 export default {
   layout: 'home',
 
   components: {
-    Logo,
-    VuetifyLogo
+    RecentProducts
   },
-
 
   async asyncData({ $axios }) {
     let categories = await $axios.get('categories')
     let locations = await $axios.get('locations')
-     let nodes = await $axios.get('get-business')
-    return (
-      {
-        categories: categories.data,
-        locations: locations.data,
-         business: nodes.data
-      }
-    )
+    return {
+      categories: categories.data,
+      locations: locations.data
+    }
   },
 
   data() {

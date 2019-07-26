@@ -81,9 +81,15 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::post('product/{node_id}/udpate/{source_id}','BusinessController@updatePost');
 
     Route::get('all-posts','BusinessController@All');
+
+    //--Products
     Route::get('get-products','BusinessController@getProducts');
+    Route::get('get-recent-products/{limit?}','BusinessController@recent_products');
+
+    //--Services
     Route::get('get-services','BusinessController@getServices');
 
+    //--Business
     Route::post('delete-business','BusinessController@destroy');
     Route::post('delete-post/{id}','BusinessController@deletePost');
 });
