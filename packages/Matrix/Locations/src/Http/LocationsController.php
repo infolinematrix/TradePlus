@@ -31,13 +31,8 @@ class LocationsController extends ReactorController
         // constructor body
     }
 
-    public function index(Request $request, $id = null)
+    public function index($id = null)
     {
-
-
-
-
-
         $nodes = Node::withType('locations')->where('parent_id', $id)->translatedIn(locale());
         $nodes = $nodes->translatedIn(locale())->paginate();
 
@@ -263,6 +258,7 @@ class LocationsController extends ReactorController
     }
 
 
+    /*
     public function import(Request $request, $id = null)
     {
         dd("HH");
@@ -291,7 +287,7 @@ class LocationsController extends ReactorController
                     /*    if($location['state_id'] == 1) {
                          $data[] = $location['state_id'];
                         }
-                    */
+
                 if($location['state_id'] == 539) {
 
                     $chk_location = Node::where('parent_id', $id)->withName(trim(str_slug($location['name'])))->first();
@@ -356,7 +352,7 @@ class LocationsController extends ReactorController
                         $locale => array_except($request->all(), ['_token', '_method']),
                     ]);
                 }
-                */
+
             }
 
         }
@@ -369,7 +365,20 @@ class LocationsController extends ReactorController
 
         return view('Locations::import', compact('id', 'parent'));
     }
+*/
 
+public function import($id = null)
+{
+    if ($id) {
+        $node = Node::find($id);
+        $parent = $node->getTitle();
+    } else {
+
+        $parent = 'Parent';
+    }
+
+    return view('Locations::import', compact('id', 'parent'));
+}
     public function import_store($id = null, Request $request)
     {
 

@@ -29,104 +29,9 @@ class ProductController extends ReactorController
 
     }
 
-    public function index(Request $request, $node_id)
+    public function index($node_id)
     {
 
-
-    /*   $nodeType = get_node_type('producttype');
-        $type = $nodeType->getKey();
-
-        $product_data = file_get_contents('books.json');
-        $products = json_decode($product_data, true);
-//dd($products);
-
-        foreach ($products as $product){
-
-            foreach ($product as $pro){
-
-
-                if(isset($pro['longDescription'])){
-
-                    $desc = $pro['longDescription'];
-                }else{
-
-                    $desc = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                ";
-                }
-
-                $meta_keywords = $pro['categories'];
-                if(count($meta_keywords) > 0) {
-
-                    $k = '';
-                    foreach ($meta_keywords as $key => $value) {
-
-                        $k .= $value . ',';
-                    }
-                    $meta_key = rtrim($k, ',');
-                }else{
-
-                    $meta_key = $pro['title'];
-                }
-
-                $request->request->set('title', trim($pro['title']));
-                $request->request->set('locale', 'en');
-                $request->request->set('type', $type);
-                $request->request->set('description', trim($desc));
-                $request->request->set('meta_title', trim($pro['title']));
-                $request->request->set('meta_keywords', trim($meta_key));
-                $request->request->set('meta_description', trim($pro['title']));
-
-                $chk_poro = Node::withName(trim(str_slug($pro['title'])))->first();
-
-
-                if (!$chk_poro) {
-
-                    $this->validateCreateForm($request);
-
-                    list($node, $locale) = $this->createNode($request, $node_id);
-
-
-                   // $node->setmeta('categories', '1946,11912');
-                   // $node->setmeta('categories', '1946,12031');
-                    //$node->setmeta('categories', '1947,11995');
-                    $node->setmeta('categories', '1939,2386');
-                    $node->save();
-
-
-
-                    if (count($pro['categories']) != null) {
-                        $keywords = $pro['categories'];
-                       // $keywords = explode(",", $pro['Category']);
-                        foreach ($keywords as $key => $value) {
-
-                            $tag = Tag::firstByTitleOrCreate(trim($value));
-                            
-                            $node->attachTag($tag->getKey());
-                        }
-                    }
-
-
-
-                } else {
-
-                    $node_id = $chk_poro->getKey();
-                    $source = $chk_poro->translate('en')->getKey();
-                    list($node, $locale, $source) = $this->authorizeAndFindNode($node_id, $source);
-
-                    //--Update Node
-                    $node->update([
-                        $locale => array_except($request->all(), ['_token', '_method']),
-                    ]);
-
-
-                }
-            }
-
-        }
-
-
-*/
 
         $node = Node::find($node_id);
 
@@ -297,6 +202,7 @@ class ProductController extends ReactorController
 
     }
 
+    /*
     public function import_store($id = null, Request $request)
     {
 
@@ -356,9 +262,6 @@ class ProductController extends ReactorController
 
     private function check_product($request, $parent = 0, $str)
     {
-
-
-
 
 
 
@@ -479,8 +382,6 @@ class ProductController extends ReactorController
 
                     list($node, $locale) = $this->createNode($request, $parent);
 
-                    /*save meta*/
-                    /*category*/
 
                     $node->setmeta('categories', $meta);
                     $node->save();
@@ -511,8 +412,121 @@ class ProductController extends ReactorController
             }
         }
     }
+    */
 
-    public function destroy($id)
+    public function import_store($id = null, Request $request)
+    {
+
+
+        $file = trim($request->file('file'));
+
+
+        Excel::load($file, function ($reader) use ($request, $id) {
+            $results = $reader->get();
+
+            if (count($results) > 500) {
+
+                return redirect()->back()->with('message', 'Not allowed more than 500 data');
+            }
+
+            $isValid = false;
+
+            $isFailed = [];
+
+            foreach ($results as $row1) {
+
+
+
+
+
+                if (trim($row1['title']) != null) {
+
+                    $isValid = $this->check_product($request, $id, $row1);
+
+                } else {
+
+                    $isFailed[] = $row1;
+                }
+            }
+
+            if ($isValid == true) {
+
+                $msz = "Imported Successfully, " . count($isFailed) . " Rejected";
+                return redirect()->back()->with('message', $msz);
+            } else {
+
+                if (count($isFailed) > 0) {
+                    $msz = count($isFailed) . " Rejected";
+                } else {
+
+                    $msz = "Already Exist!";
+
+                }
+                return redirect()->back()->with('message', $msz);
+            }
+
+        });
+
+        return redirect()->back();
+
+    }
+
+    private function check_product($request, $parent = 0, $str)
+    {
+
+
+        $categories = $request->categories;
+
+        $nodeType = get_node_type('producttype');
+        $type = $nodeType->getKey();
+
+        if ($str != '') {
+
+            $request->request->set('title', trim($str['title']));
+            $request->request->set('node_name', trim(str_slug($str['title'])));
+            $request->request->set('locale', 'en');
+            $request->request->set('type', $type);
+            $request->request->set('description', trim($str['description']));
+
+            $chk_location = Node::withName(trim(str_slug($str['title'])))->first();
+
+            if (!$chk_location) {
+
+                $this->validateCreateForm($request);
+
+                list($node, $locale) = $this->createNode($request, $parent);
+
+                /*save meta*/
+                /*category*/
+                $cat = '';
+                foreach ($categories as $key => $value) {
+
+                    $cat .= $value . ',';
+                }
+                $category = rtrim($cat, ',');
+                $node->setmeta('categories', $category);
+                $node->save();
+
+                return true;
+
+            } else {
+
+                $node_id = $chk_location->getKey();
+                $source = $chk_location->translate('en')->getKey();
+                list($node, $locale, $source) = $this->authorizeAndFindNode($node_id, $source);
+
+                //--Update Node
+                $node->update([
+                    $locale => array_except($request->all(), ['_token', '_method']),
+                ]);
+
+                return true;
+            }
+        }
+    }
+
+
+public function destroy($id)
     {
         //$this->authorize('EDIT_NODES');
 

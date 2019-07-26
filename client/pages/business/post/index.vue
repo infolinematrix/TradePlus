@@ -62,30 +62,34 @@
       <v-card-title>
         <div class="text-muted">{{ text_short }}</div>
       </v-card-title>
-      <v-layout row justify-center align-center class="mb-3">
-        <v-sheet height="200">
-          <div class="text-xs-center mt-3">
-            <v-icon size="50" color="primary">graphic_eq</v-icon>
-          </div>
-          <div class="text-xs-center">
-            <div class="title">No post found..</div>
-            <div class="text-muted pt-1">Sorry! no post found, Create your first post now..</div>
-          </div>
-        </v-sheet>
-      </v-layout>
-
       <v-tabs height="60" v-model="active" color="grey lighten-3" slider-color="primary">
         <v-tab ripple class="text-capitalize">All</v-tab>
         <v-tab ripple class="text-capitalize">Products</v-tab>
         <v-tab ripple class="text-capitalize">Services</v-tab>
         <v-tab ripple class="text-capitalize">Offers</v-tab>
         <v-tab ripple class="text-capitalize">Promotion</v-tab>
+        
+        <div class="text-xs-center">
+
+
+                      <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                        <v-card color="primary">
+                          <v-card-text>
+                            Please stand by
+                            <v-progress-linear indeterminate color="blue" class="mb-0"></v-progress-linear>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                    </div>
         <v-tab-item class="pl-0 pr-0 bg-light">
           <v-container grid-list-md class="pa-3">
            <v-alert v-model="all_alert" dismissible :type="this.type">{{ all_message }}</v-alert>
 
             <v-layout row wrap>
+              
               <v-flex xs12 sm6 v-for="post in posts" :key="post">
+                
+
                 <v-card flat class="bg-white">
                   <v-img :src="post.image" height="200px"></v-img>
 
@@ -239,6 +243,7 @@ export default {
   layout: 'user',
   data() {
     return {
+      dialog: true,
       active: true,
       type: '',
       all_alert: false,
@@ -341,18 +346,21 @@ export default {
               this.$axios
                 .get(`get-products`)
                 .then(response => {
+                   this.dialog = false;
                   this.products = response.data;
                 })
 
                 this.$axios
                 .get(`get-services`)
                 .then(response => {
+                   this.dialog = false;
                   this.services = response.data;
                 })
 
                  this.$axios
                 .get(`all-posts`)
                 .then(response => {
+                  this.dialog = false;
                   this.posts = response.data;
                 })
   }

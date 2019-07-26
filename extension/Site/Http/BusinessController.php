@@ -382,6 +382,9 @@ class BusinessController extends PublicController
 
     public function updateBusiness(Request $request)
     {
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+
 
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         $source = $node->translate(locale())->getKey();
@@ -1007,7 +1010,7 @@ class BusinessController extends PublicController
     public function All(){
 
         $user = Auth::user();
-        $nodes = Node::where('user_id', $user->id)->get();
+        $nodes = Node::where('user_id', $user->id)->paginate(20);
 
         $data = [];
 
@@ -1052,7 +1055,7 @@ class BusinessController extends PublicController
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         
-        $nodes = $node->children()->withType('producttype')->get();
+        $nodes = $node->children()->withType('producttype')->paginate(20);
 
         $data = [];
 
@@ -1088,7 +1091,7 @@ class BusinessController extends PublicController
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
 
-        $nodes = $node->children()->withType('servicetype')->get();
+        $nodes = $node->children()->withType('servicetype')->paginate(20);
 
         $data = [];
 
