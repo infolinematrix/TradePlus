@@ -61,6 +61,8 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
 
     /*Business*/
+    Route::get('get-business','BusinessController@getBusiness');
+
     Route::get('locations/{parent?}','BusinessController@getLocations');
     Route::get('add-business','BusinessController@addBusiness');
     Route::post('post-business','BusinessController@postBusiness');
