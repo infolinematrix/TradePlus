@@ -9,22 +9,21 @@
 namespace extension\Site\Http;
 
 use extension\Site\Helpers\UseAppHelper;
+use function GuzzleHttp\json_encode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
+use Intervention\Image\Facades\Image as ImageFacade;
 use ReactorCMS\Http\Controllers\PublicController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
 use ReactorCMS\Http\Controllers\Traits\UsesTranslations;
+use Reactor\Documents\Media\Media;
 use Reactor\Hierarchy\Node;
 use Reactor\Hierarchy\NodeRepository;
 use Reactor\Hierarchy\NodeSource;
-use Illuminate\Support\Facades\DB;
-use function GuzzleHttp\json_encode;
-use Intervention\Image\Facades\Image as ImageFacade;
-use Illuminate\Support\Facades\File;
-use Reactor\Documents\Media\Media;
 
 class BusinessController extends PublicController
 {
@@ -100,14 +99,13 @@ class BusinessController extends PublicController
 
         /*Entity*/
         $entities = config('site.entity');
-        foreach ($entities  as $key => $value){
+        foreach ($entities as $key => $value) {
             $e[] = [
                 'id' => $key,
-                'name' => $value
+                'name' => $value,
             ];
         }
         $data['entities'] = $e;
-
 
         if ($node) {
             /*Profile Image*/
@@ -131,7 +129,7 @@ class BusinessController extends PublicController
                 'node_id' => $node->getKey(),
                 'source_id' => $node->translate(locale())->getKey(),
                 'profileImage' => $profileimg,
-                'coverImage' => $coverimg
+                'coverImage' => $coverimg,
             ];
 
         } else {
@@ -144,17 +142,15 @@ class BusinessController extends PublicController
     public function postBusiness(Request $request)
     {
 
-
         $nodeType = get_node_type('business');
         $type = $nodeType->getKey();
 
         $title = $request->input('title');
         $node_name = str_slug($title);
 
-
         /*Location Meta*/
         $loc = $request->location;
-        if($loc) {
+        if ($loc) {
             $locations = Node::find($loc);
             $nodes = $locations->getAncestors();
             if (count($nodes) > 0) {
@@ -168,10 +164,7 @@ class BusinessController extends PublicController
         }
         /*Location Meta*/
 
-
-
         $check = Node::withType('business')->withName($node_name)->first();
-
 
         if ($check != null) {
 
@@ -189,7 +182,7 @@ class BusinessController extends PublicController
 
             //save meta
             /*Location Meta*/
-            if($loc) {
+            if ($loc) {
                 if (count($nodes) > 0) {
                     $node->setmeta('locations', $ll);
                 } else {
@@ -198,7 +191,6 @@ class BusinessController extends PublicController
                 $node->save();
             }
             /*Location Meta*/
-
 
             /*Profile Image*/
 
@@ -256,30 +248,28 @@ class BusinessController extends PublicController
                 'source_id' => $node->translate($locale)->getKey(),
             ];
 
-
         }
         return $data;
     }
-
 
     public function editBusiness()
     {
         /*Scale*/
         $scales = config('site.scale');
-        foreach ($scales  as $key => $value){
+        foreach ($scales as $key => $value) {
             $s[] = [
                 'id' => $key,
-                'name' => $value
+                'name' => $value,
             ];
         }
         $data['scales'] = $s;
 
         /*Entity*/
         $entities = config('site.entity');
-        foreach ($entities  as $key => $value){
+        foreach ($entities as $key => $value) {
             $e[] = [
                 'id' => $key,
-                'name' => $value
+                'name' => $value,
             ];
         }
         $data['entities'] = $e;
@@ -287,9 +277,7 @@ class BusinessController extends PublicController
         $user = Auth::user();
         $business = Node::withType('business')->where('user_id', $user->id)->first();
 
-
-
-        if($business) {
+        if ($business) {
             $source = NodeSource::find($business->translate(locale())->getKey());
 
             $user = Auth::user();
@@ -318,13 +306,8 @@ class BusinessController extends PublicController
                         'estabished' => $node->business_established,
                         'status' => $node->isPublished() ? 'publish' : 'unpublish',
                         'email_enquiry' => $node->emailenquiry,
-                        'phone_message' => $node->phonemessage
+                        'phone_message' => $node->phonemessage,
                     ];
-
-
-
-
-
 
                     $loc_meta = $business->metas()->where('key', 'locations')->first();
                     if ($loc_meta) {
@@ -333,10 +316,9 @@ class BusinessController extends PublicController
                         $data['location'] = [
 
                             'id' => $location->getKey(),
-                            'title' => $location->getTitle()
+                            'title' => $location->getTitle(),
                         ];
                     }
-
 
                     $data['business'] = 'EXIST';
                 } else {
@@ -349,31 +331,29 @@ class BusinessController extends PublicController
             /*Payment Accept*/
             $payment_accept = $business->payment_accept;
 
-            if($payment_accept){
+            if ($payment_accept) {
 
-
-
-                foreach(config('site.payment_accept') as $key => $value){
+                foreach (config('site.payment_accept') as $key => $value) {
 
                     $payment = json_decode($payment_accept, true);
-                    if($payment != null) {
+                    if ($payment != null) {
                         $data['payment_accept'][] = (in_array($key, $payment));
-                    }else{
+                    } else {
 
                         $data['payment_accept'][] = null;
                     }
                 }
 
-            }else{
+            } else {
 
                 $data['payment_accept'][] = null;
 
             }
 
-              /*Payment Accept*/
+            /*Payment Accept*/
 
             return $data;
-        }else{
+        } else {
 
             return null;
         }
@@ -389,16 +369,16 @@ class BusinessController extends PublicController
         list($node, $locale, $source) = $this->authorizeAndFindNode($node->getKey(), $source);
 
         /*Payment Accept*/
-        if($request->accept_payment){
+        if ($request->accept_payment) {
             $request->request->set('payment_accept', json_encode($request->payment));
         }
 
         //--Update Node
         $node->update([
-            $locale => array_except($request->all(), ['_token', '_method','status']),
+            $locale => array_except($request->all(), ['_token', '_method', 'status']),
         ]);
 
-        if($request->status) {
+        if ($request->status) {
             $status = $request->status;
 
             $node->{$status}()->save();
@@ -407,7 +387,7 @@ class BusinessController extends PublicController
         //save meta Locations
         /*Location Meta*/
         $loc = $request->location;
-        if($loc) {
+        if ($loc) {
             $locations = Node::find($loc);
             $nodes = $locations->getAncestors();
             if (count($nodes) > 0) {
@@ -429,8 +409,7 @@ class BusinessController extends PublicController
             $node->save();
         }
 
-
-       /*Profile Image*/
+        /*Profile Image*/
 
         $profileimage = $request->file('profileimage');
 
@@ -463,7 +442,6 @@ class BusinessController extends PublicController
             $media->save();
         }
 
-
         /*Cover Image*/
         $coverimage = $request->file('coverimage');
         if ($coverimage) {
@@ -495,7 +473,6 @@ class BusinessController extends PublicController
             $media->save();
         }
 
-
         $data = [
             'node_id' => $node->getKey(),
             'source_id' => $node->translate($locale)->getKey(),
@@ -504,9 +481,8 @@ class BusinessController extends PublicController
         return $data;
     }
 
-
-    public function postServices(Request $request){
-
+    public function postServices(Request $request)
+    {
 
         /*Get Businesss*/
         $user = Auth::user();
@@ -515,17 +491,13 @@ class BusinessController extends PublicController
         $nodeType = get_node_type('servicetype');
         $type = $nodeType->getKey();
 
-
-
         $title = $request->input('title');
         $node_name = str_slug($title);
         $check = Node::withType('servicetype')->withName($node_name)->first();
 
-
         if ($check != null) {
             $data = 'exist';
         } else {
-
 
             /*Category Meta*/
             $cat = $request->category;
@@ -559,7 +531,6 @@ class BusinessController extends PublicController
             $node->save();
             /*Category Meta*/
 
-
             /*Cover Image*/
             $coverimage = $request->file('coverimage');
             if ($coverimage) {
@@ -591,7 +562,6 @@ class BusinessController extends PublicController
                 $media->save();
             }
 
-
             $data = [
                 'node_id' => $node->getKey(),
                 'source_id' => $node->translate($locale)->getKey(),
@@ -599,10 +569,10 @@ class BusinessController extends PublicController
         }
         return $data;
 
-
     }
 
-    public function editPost($id, $source_id = null){
+    public function editPost($id, $source_id = null)
+    {
 
         $source = NodeSource::find($source_id);
         $service = Node::withType('servicetype')->find($id);
@@ -626,9 +596,8 @@ class BusinessController extends PublicController
                     'status' => $service->isPublished() ? 'publish' : 'unpublish',
                     'email_enquiry' => $service->emailenquiry,
                     'phone_message' => $service->phonemessage,
-                    'coverimage' => $coverimg
+                    'coverimage' => $coverimg,
                 ];
-
 
                 $cat_meta = $service->metas()->where('key', 'categories')->first();
                 if ($cat_meta) {
@@ -637,7 +606,7 @@ class BusinessController extends PublicController
                     $data['category'] = [
 
                         'id' => $category->getKey(),
-                        'title' => $category->getTitle()
+                        'title' => $category->getTitle(),
                     ];
 
                 }
@@ -649,8 +618,8 @@ class BusinessController extends PublicController
 
     }
 
-    public function postProduct(Request $request){
-
+    public function postProduct(Request $request)
+    {
 
         /*Get Businesss*/
         $user = Auth::user();
@@ -659,17 +628,13 @@ class BusinessController extends PublicController
         $nodeType = get_node_type('producttype');
         $type = $nodeType->getKey();
 
-
-
         $title = $request->input('title');
         $node_name = str_slug($title);
         $check = Node::withType('producttype')->withName($node_name)->first();
 
-
         if ($check != null) {
             $data = 'exist';
         } else {
-
 
             /*Category Meta*/
             $cat = $request->category;
@@ -703,7 +668,6 @@ class BusinessController extends PublicController
             $node->save();
             /*Category Meta*/
 
-
             /*Cover Image*/
             $coverimage = $request->file('coverimage');
             if ($coverimage) {
@@ -735,7 +699,6 @@ class BusinessController extends PublicController
                 $media->save();
             }
 
-
             $data = [
                 'node_id' => $node->getKey(),
                 'source_id' => $node->translate($locale)->getKey(),
@@ -743,11 +706,10 @@ class BusinessController extends PublicController
         }
         return $data;
 
-
     }
 
-
-    public function editProduct($id, $source_id = null){
+    public function editProduct($id, $source_id = null)
+    {
 
         $source = NodeSource::find($source_id);
         $product = Node::withType('producttype')->find($id);
@@ -772,9 +734,8 @@ class BusinessController extends PublicController
                     'status' => $product->isPublished() ? 'publish' : 'unpublish',
                     'email_enquiry' => $product->emailenquiry,
                     'phone_message' => $product->phonemessage,
-                    'coverimage' => $coverimg
+                    'coverimage' => $coverimg,
                 ];
-
 
                 $cat_meta = $product->metas()->where('key', 'categories')->first();
                 if ($cat_meta) {
@@ -783,7 +744,7 @@ class BusinessController extends PublicController
                     $data['category'] = [
 
                         'id' => $category->getKey(),
-                        'title' => $category->getTitle()
+                        'title' => $category->getTitle(),
                     ];
 
                 }
@@ -795,19 +756,17 @@ class BusinessController extends PublicController
 
     }
 
-    public function updatePost(Request $request, $node_id, $source){
-
-
-
+    public function updatePost(Request $request, $node_id, $source)
+    {
 
         list($node, $locale, $source) = $this->authorizeAndFindNode($node_id, $source);
 
         //--Update Node
         $node->update([
-            $locale => array_except($request->all(), ['_token', '_method','status']),
+            $locale => array_except($request->all(), ['_token', '_method', 'status']),
         ]);
 
-        if($request->status) {
+        if ($request->status) {
             $status = $request->status;
 
             $node->{$status}()->save();
@@ -815,7 +774,7 @@ class BusinessController extends PublicController
 
         /*Category Meta*/
         $cat = $request->category;
-        if($cat) {
+        if ($cat) {
             $categories = Node::find($cat);
             $nodes = $categories->getAncestors();
             if (count($nodes) > 0) {
@@ -827,16 +786,15 @@ class BusinessController extends PublicController
                 $cc[] = $category;
             }
 
-        /*Category Meta*/
+            /*Category Meta*/
 
-
-        /*Category Meta*/
-        if(count($nodes) > 0) {
-            $node->setmeta('categories', $cc);
-        }else{
-            $node->setmeta('categories', $cat);
-        }
-        $node->save();
+            /*Category Meta*/
+            if (count($nodes) > 0) {
+                $node->setmeta('categories', $cc);
+            } else {
+                $node->setmeta('categories', $cat);
+            }
+            $node->save();
         }
         /*Category Meta*/
 
@@ -870,7 +828,6 @@ class BusinessController extends PublicController
             $media->user_id = Auth::user()->id;
             $media->save();
         }
-
 
         return "DATA UPDATED";
 
@@ -928,7 +885,7 @@ class BusinessController extends PublicController
                 'title' => trim($node->getTitle()),
                 'slug' => trim($node->getName()),
                 'breadcrumb' => $breadcrumb,
-                'icon' => asset('assets/icons/'.$node->category_icon)
+                'icon' => asset('assets/icons/' . $node->category_icon),
             ];
         }
 
@@ -940,7 +897,7 @@ class BusinessController extends PublicController
         }
     }
 
-    public function getLocations($parent = 0, $limit=12)
+    public function getLocations($parent = 0, $limit = 12)
     {
 
         $data = [];
@@ -1003,31 +960,30 @@ class BusinessController extends PublicController
         }
     }
 
-
-    public function All(){
+    public function All()
+    {
 
         $user = Auth::user();
         $nodes = Node::where('user_id', $user->id)->get();
 
         $data = [];
 
-        foreach ($nodes as $node){
+        foreach ($nodes as $node) {
 
             $nodeType = $node->nodeType()->first()->name;
 
-            if($node->getNodeTypeName() == 'business') {
-                $img = $node->getImages()->where('img_type','profile')->first();
+            if ($node->getNodeTypeName() == 'business') {
+                $img = $node->getImages()->where('img_type', 'profile')->first();
 
-            }else{
+            } else {
                 $img = $node->getImages()->first();
             }
-            if($img){
-                $img = asset('/uploads/'.$img->path);
-            }else{
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
 
                 $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
             }
-
 
             $data[] = [
 
@@ -1036,32 +992,30 @@ class BusinessController extends PublicController
                 'source_id' => $node->translate('en')->getKey(),
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
-                'image' => $img
+                'image' => $img,
 
             ];
         }
 
         return $data;
 
-
-
     }
-    public function getProducts(){
-
+    public function getProducts()
+    {
 
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
-        
+
         $nodes = $node->children()->withType('producttype')->get();
 
         $data = [];
 
-        foreach ($nodes as $node){
+        foreach ($nodes as $node) {
 
             $img = $node->getImages()->first();
-            if($img){
-                $img = asset('/uploads/'.$img->path);
-            }else{
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
 
                 $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
             }
@@ -1073,17 +1027,16 @@ class BusinessController extends PublicController
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
                 'image' => $img,
-                'description' => strip_tags(str_limit($node->description,50))
+                'description' => strip_tags(str_limit($node->description, 50)),
             ];
         }
 
         return $data;
 
-
     }
 
-    public function getServices(){
-
+    public function getServices()
+    {
 
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
@@ -1092,12 +1045,12 @@ class BusinessController extends PublicController
 
         $data = [];
 
-        foreach ($nodes as $node){
+        foreach ($nodes as $node) {
 
             $img = $node->getImages()->first();
-            if($img){
-                $img = asset('/uploads/'.$img->path);
-            }else{
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
 
                 $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
             }
@@ -1109,27 +1062,28 @@ class BusinessController extends PublicController
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
                 'image' => $img,
-                'description' => strip_tags(str_limit($node->description,50))
+                'description' => strip_tags(str_limit($node->description, 50)),
             ];
         }
 
         return $data;
 
-
     }
 
-    public function deletePost($node_id){
+    public function deletePost($node_id)
+    {
 
         //$this->authorize('EDIT_NODES');
 
         $node = Node::findOrFail($node_id);
 
-
-        if ($response = $this->validateNodeIsNotLocked($node)) return $response;
+        if ($response = $this->validateNodeIsNotLocked($node)) {
+            return $response;
+        }
 
         /*Parent Node's files delete*/
         $files = $node->getImages()->get();
-        foreach ($files as $file){
+        foreach ($files as $file) {
 
             File::delete(upload_path($file->path));
         }
@@ -1143,19 +1097,19 @@ class BusinessController extends PublicController
         $user = Auth::user();
         $nodes = Node::where('user_id', $user->id)->get();
 
-        foreach ($nodes as $node){
+        foreach ($nodes as $node) {
 
             $nodeType = $node->nodeType()->first()->name;
 
-            if($node->getNodeTypeName() == 'business') {
-                $img = $node->getImages()->where('img_type','profile')->first();
+            if ($node->getNodeTypeName() == 'business') {
+                $img = $node->getImages()->where('img_type', 'profile')->first();
 
-            }else{
+            } else {
                 $img = $node->getImages()->first();
             }
-            if($img){
-                $img = asset('/uploads/'.$img->path);
-            }else{
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
 
                 $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
             }
@@ -1166,7 +1120,7 @@ class BusinessController extends PublicController
                 'source_id' => $node->translate('en')->getKey(),
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
-                'image' => $img
+                'image' => $img,
 
             ];
         }
@@ -1174,22 +1128,22 @@ class BusinessController extends PublicController
         return $data;
     }
 
-
     public function destroy()
     {
         $user = Auth::user();
         $node = Node::where('user_id', $user->id)->first();
 
-
-        if ($response = $this->validateNodeIsNotLocked($node)) return $response;
+        if ($response = $this->validateNodeIsNotLocked($node)) {
+            return $response;
+        }
 
         /*Child node's files delete*/
         $childs = $node->children()->get();
-        foreach ($childs as $child){
+        foreach ($childs as $child) {
 
             $photos = $child->getImages()->get();
 
-            foreach ($photos as $photo){
+            foreach ($photos as $photo) {
                 File::delete(upload_path($photo->path));
             }
 
@@ -1197,7 +1151,7 @@ class BusinessController extends PublicController
 
         /*Parent Node's files delete*/
         $files = $node->getImages()->get();
-        foreach ($files as $file){
+        foreach ($files as $file) {
 
             File::delete(upload_path($file->path));
         }
@@ -1209,4 +1163,34 @@ class BusinessController extends PublicController
         return "Deleted";
     }
 
+    //** Recently created products */
+    public function recent_products($limit = 50)
+    {
+        $data=[];
+
+        $nodes = Node::withType('producttype')->Sortable()->take($limit)->get();
+
+        foreach ($nodes as $node) {
+
+            $img = $node->getImages()->first();
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
+
+                $img = 'http://lorempixel.com/400/300/abstract/';
+            }
+            $data[] = [
+
+                'type' => $node->getNodeTypeName(),
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img,
+                'description' => strip_tags(str_limit($node->description, 100)),
+            ];
+        }
+
+        return $data;
+    }
 }

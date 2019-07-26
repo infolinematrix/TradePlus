@@ -64,7 +64,7 @@
         </div>
       </v-sheet>
 
-      <swiper :options="swiperOption" ref="mySwiper"  class="my-swiper">
+      <swiper :options="swiperOption" ref="mySwiper" class="my-swiper">
         <!-- slides -->
         <swiper-slide v-for="category in categories" :key="category" class="swiper-slide">
           <v-card flat>
@@ -221,43 +221,14 @@
                 <div class="display-1 font-weight-bold default--text text-default">Recent Activities</div>
                 <div
                   class="text-muted pt-1"
-                >Post your requirement for FREE! Get matching products/services in your mail box</div>
+                >Recent and On-going Activities, check it out below to see what user been doing!</div>
               </div>
             </v-sheet>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12 md6 v-for="i in 2" :key="i">
-            <v-card flat v-for="item in 3" :key="item" class="mb-3">
-              <v-layout>
-                <v-flex xs5>
-                  <v-img src="http://lorempixel.com/400/300/abstract/" contain class="ma-3"></v-img>
-                </v-flex>
-                <v-flex xs7>
-                  <v-card-title>
-                    <div>
-                      <div class="subheading font-weight-medium">Foster the People</div>
-                      <div class="text-muted">{{ text2 }}</div>
-                    </div>
-                  </v-card-title>
-                  <v-card-actions class="pa-3">
-                    1245 reviews
-                    <v-spacer></v-spacer>
-                    <v-icon color="primary">stars</v-icon>
-                    <v-icon color="primary">stars</v-icon>
-                    <v-icon color="primary">stars</v-icon>
-                    <v-icon>star_border</v-icon>
-                    <v-icon>star_border</v-icon>
-                  </v-card-actions>
-                </v-flex>
-              </v-layout>
-              <v-divider light></v-divider>
-              <v-card-actions class="pa-2 pl-3 text-muted">
-                Before 3 min ago
-                <v-spacer></v-spacer>
-                <v-btn color="primary" flat depressed small>Contact</v-btn>
-              </v-card-actions>
-            </v-card>
+          <v-flex xs12 md6>
+            <recent-products :limit=3></recent-products>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -266,26 +237,22 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import RecentProducts from '~/components/RecentProducts.vue'
 
 export default {
   layout: 'home',
 
   components: {
-    Logo,
-    VuetifyLogo
+    RecentProducts
   },
 
   async asyncData({ $axios }) {
     let categories = await $axios.get('categories')
     let locations = await $axios.get('locations')
-    return (
-      {
-        categories: categories.data,
-        locations: locations.data
-      }
-    )
+    return {
+      categories: categories.data,
+      locations: locations.data
+    }
   },
 
   data() {

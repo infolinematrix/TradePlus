@@ -79,7 +79,7 @@
           class="mx-3 toolbar-search"
           readonly
           v-model="search_text"
-           @click.stop="dialog = true"
+          @click.stop="dialog = true"
         ></v-text-field>
 
         <v-spacer></v-spacer>
@@ -119,35 +119,23 @@
       </v-content>
 
       <v-navigation-drawer right clipped app :width="300" class="inner-border">
-        <v-img
-          mg
-          height="200px"
-          :src="`https://picsum.photos/300/200?random=${Math.floor(Math.random() * 100) + i}`"
-          alt="lorem"
-          class="image"
-        ></v-img>
+        <v-card-text class="pb-0">
+          <div class="pb-0 mb-1 grey--text caption">Sponsored</div>
+          <nuxt-link to="#" class="title-2 font-weight-bold">Plastic Bottle, Best price gurentee</nuxt-link>
+          <div class="font-weight-medium mt-2 grey--text">{{text}}</div>
+          <v-card-actions class="px-0">
+            <v-icon color="red">stars</v-icon>
+            <v-icon color="red">stars</v-icon>
+            <v-icon color="red">stars</v-icon>
+            <v-icon>star_border</v-icon>
+            <v-icon>star_border</v-icon>136 reviews
+            <v-spacer></v-spacer>
 
+            <v-icon>star_border</v-icon>
+          </v-card-actions>
+        </v-card-text>
         <v-divider></v-divider>
         <v-container fluid grid-list-sm class="pa-2">
-          <v-card flat>
-            <v-list two-line>
-              <template>
-                <v-list-tile avatar ripple>
-                  <v-list-tile-content>
-                    <v-list-tile-title>Best Quality mobile tempered protector</v-list-tile-title>
-                    <div class="text--primary">item.headline</div>
-                    <div>item.subtitle</div>
-                  </v-list-tile-content>
-                  <v-list-tile-action>
-                    <v-list-tile-action-text>item.action</v-list-tile-action-text>
-                    <v-icon color="grey lighten-1">star_border</v-icon>
-                  </v-list-tile-action>
-                </v-list-tile>
-                <v-divider></v-divider>
-              </template>
-            </v-list>
-          </v-card>
-
           <v-card flat class="elevation-0 mb-1">
             <v-layout row wrap v-for="i in 5" :key="i">
               <v-card-title class="title-1 font-weight-medium mb-0 pb-0">
@@ -175,15 +163,9 @@
       </v-navigation-drawer>
     </v-app>
 
-
-
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-top-transition">
-
-
-        <v-toolbar flat color="primary" class="pl-0">
-
-
-           <v-text-field
+      <v-toolbar flat color="primary" class="pl-0">
+        <v-text-field
           append-icon="mic"
           flat
           solo
@@ -192,19 +174,14 @@
           readonly
           v-model="search_text"
         ></v-text-field>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-             <v-btn icon  @click="dialog = false">
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn icon @click="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-
-
-
+        </v-toolbar-items>
+      </v-toolbar>
     </v-dialog>
-
-
   </div>
 </template>
 
@@ -217,7 +194,7 @@ export default {
   },
   data() {
     return {
-      dialog:false,
+      dialog: false,
       drawer: true,
       notifications: null,
       search_text: 'Lather Mobile Cover',
