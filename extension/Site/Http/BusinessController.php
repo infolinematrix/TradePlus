@@ -1207,4 +1207,35 @@ class BusinessController extends PublicController
 
         return $data;
     }
+
+    //** Recently created products */
+    public function recent_products($limit = 50)
+    {
+        $data=[];
+
+        $nodes = Node::withType('producttype')->Sortable()->take($limit)->get();
+
+        foreach ($nodes as $node) {
+
+            $img = $node->getImages()->first();
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
+
+                $img = 'http://lorempixel.com/400/300/abstract/';
+            }
+            $data[] = [
+
+                'type' => $node->getNodeTypeName(),
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img,
+                'description' => strip_tags(str_limit($node->description, 100))
+            ];
+        }
+
+        return $data;
+    }
 }

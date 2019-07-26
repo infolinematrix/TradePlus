@@ -9,18 +9,13 @@
 namespace extension\Site\Http;
 
 
-
-use Nuclear\Hierarchy\NodeType;
-use Reactor\Entities\Node;
-use Reactor\Entities\NodeMeta;
-use Reactor\Http\Controllers\PublicController;
-use Reactor\Http\Controllers\Traits\UsesNodeForms;
-use Reactor\Http\Controllers\Traits\UsesNodeHelpers;
-use Nuclear\Hierarchy\NodeRepository;
-use DaveJamesMiller\Breadcrumbs\Facade as Breadcrumbs ;
+use DaveJamesMiller\Breadcrumbs\Facade as Breadcrumbs;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
-use Mail;
+use Reactor\Hierarchy\Node;
+use Reactor\Hierarchy\NodeRepository;
+use ReactorCMS\Http\Controllers\PublicController;
+use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
+use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
 
 class SearchController extends PublicController
 {
@@ -30,17 +25,12 @@ class SearchController extends PublicController
 
     public function index(Request $request)
     {
+        if ($request->search == null) return redirect()->to('/');
 
+        \Session::forget(['products']);
 
-
-        if($request->search == null) return redirect()->to('/');
-
-           \Session::forget(['products']);
-
-           $search = trim($request->search);
-return redirect()->route("site.search.products", str_slug($search));
-
-
+        $search = trim($request->search);
+        return redirect()->route("site.search.products", str_slug($search));
     }
 
     public function productResult($search)
@@ -49,7 +39,42 @@ return redirect()->route("site.search.products", str_slug($search));
         \Session::put('products', $search);
         $nodes = $products->paginate(20);
 
-        return $this->compileView('Site::product-list', compact('home','nodes'), 'Search for products');
+        return $this->compileView('Site::product-list', compact('home', 'nodes'), 'Search for products');
+    }
+
+    public function browse($slug = null, NodeRepository $nodeRepository)
+    {
+
+        //--get Node type
+        $node = $nodeRepository->getNodeAndSetLocale($slug, false);
+
+        //Assume categories
+        $nodes = Node::withType('producttype')->take(5)->get();
+
+        foreach ($nodes as $node){
+            $products = $node->description;
+
+            dd($products);
+        }
+
+        dd($products);
+    }
+
+
+    private function create_data($nodes = null)
+    {
+        $data = [];
+
+        foreach ($nodes as $node) {
+            $data[] = [
+                'id' => $node->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'description' => strip_tags(str_limit($node->description, 50)),
+            ];
+        }
+
+        return $data;
     }
 
 }

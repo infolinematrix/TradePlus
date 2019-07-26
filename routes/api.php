@@ -69,6 +69,9 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('edit-business','BusinessController@editBusiness');
     Route::post('business/update','BusinessController@updateBusiness');
 
+    Route::post('delete-business','BusinessController@destroy');
+    Route::post('delete-post/{id}','BusinessController@deletePost');
+
     /*Services*/
     Route::post('post-services','BusinessController@postServices');
     Route::get('service/{node_id}/edit/{source_id}','BusinessController@editPost');
@@ -89,9 +92,9 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     //--Services
     Route::get('get-services','BusinessController@getServices');
 
-    //--Business
-    Route::post('delete-business','BusinessController@destroy');
-    Route::post('delete-post/{id}','BusinessController@deletePost');
+    //--Browse
+    Route::get('browse/{slug?}','SearchController@browse');
+
 });
 
 /**
