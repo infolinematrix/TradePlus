@@ -362,6 +362,9 @@ class BusinessController extends PublicController
 
     public function updateBusiness(Request $request)
     {
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+
 
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         $source = $node->translate(locale())->getKey();
@@ -1163,33 +1166,6 @@ class BusinessController extends PublicController
         return "Deleted";
     }
 
-<<<<<<< HEAD
-    //** Recently created products */
-    public function recent_products($limit = 50)
-    {
-        $data=[];
-
-        $nodes = Node::withType('producttype')->Sortable()->take($limit)->get();
-
-        foreach ($nodes as $node) {
-
-            $img = $node->getImages()->first();
-            if ($img) {
-                $img = asset('/uploads/' . $img->path);
-            } else {
-
-                $img = 'http://lorempixel.com/400/300/abstract/';
-            }
-            $data[] = [
-
-                'type' => $node->getNodeTypeName(),
-                'id' => $node->getKey(),
-                'source_id' => $node->translate('en')->getKey(),
-                'title' => $node->getTitle(),
-                'slug' => $node->getName(),
-                'image' => $img,
-                'description' => strip_tags(str_limit($node->description, 100)),
-=======
 
     public function getBusiness(){
 
@@ -1226,14 +1202,9 @@ class BusinessController extends PublicController
                 'coverimage' => $coverimg,
                 'profileimage' => $profileimg,
                 'location' => getBusinessLocation($node->getKey())
->>>>>>> 50bd55229873111df9912949ab93b8715ee485f3
             ];
         }
 
         return $data;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 50bd55229873111df9912949ab93b8715ee485f3
 }
