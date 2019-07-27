@@ -106,7 +106,7 @@
             <v-flex v-for="product in products" :key="product">
               <v-card class="elevation-1 mb-3">
                 <v-layout row wrap>
-                  <v-flex xs12 md3>
+                  <v-flex xs12 md3 class="mr-5">
                     <v-img :src="product.image" aspect-ratio="1.5"></v-img>
                   </v-flex>
                   <v-flex xs12 md8>
