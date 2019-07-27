@@ -26,7 +26,8 @@ const util = {
       str_location = '/' + location.slug
     }
 
-    return '/browse/' + str + str_location
+    //return '/browse/' + str + str_location
+    return '/browse/' + str
   }
 
 }
