@@ -1,5 +1,7 @@
 <template>
   <v-layout row wrap>
+    
+
     <v-flex xs12 class="pl-2">
       <v-text-field
         @click.stop="dialog = true"
@@ -54,10 +56,14 @@
           </v-layout>
 
           <v-layout row wrap>
+            
             <v-flex xs4 sm3 md3 v-for="location in this.locations" :key="location">
               <a href="#" @click="getLocations(location.id, location.title)">{{ location.title}}</a>
+              
             </v-flex>
+           
           </v-layout>
+           
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -77,6 +83,7 @@ export default {
 
   data() {
     return {
+      limit: 0,
       dialog: false,
       node_title: null,
       node_id: null,
@@ -113,7 +120,6 @@ export default {
   methods: {
     
     selectLocation(cid, ctitle) {
-      
       this.getLocations(cid)
 
       //this.node_title = ctitle
@@ -129,7 +135,7 @@ export default {
       this.node_title = ctitle
       this.node_id = this.parent
 
-      this.$axios.get('locations/' + this.parent).then(response => {
+      this.$axios.get('locations/' + this.parent + '/'+ this.limit).then(response => {
         this.locations = response.data
         this.breadcrumb = this.locations[0].breadcrumb
       })
@@ -144,7 +150,10 @@ export default {
     
   },
   mounted() {
-    this.getLocations()
+    this.message = false;
+    this.getLocations();
+    
+    
   }
 }
 </script>

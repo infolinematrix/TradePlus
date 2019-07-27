@@ -10,6 +10,16 @@
         </div>
 
 
+<div class="text-xs-center">
+                      <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                        <v-card color="primary">
+                          <v-card-text>
+                            Please stand by
+                            <v-progress-linear indeterminate color="blue" class="mb-0"></v-progress-linear>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                    </div>
       </v-card-title>
 
 
@@ -70,6 +80,7 @@
         <v-tab ripple class="text-capitalize">About <v-icon color="green">filter_frames</v-icon></v-tab>
         <v-tab ripple class="text-capitalize">Others <v-icon color="grey">toggle_off</v-icon></v-tab>
         <v-tab ripple class="text-capitalize">Settings  <v-icon color="megenta">toggle_off</v-icon></v-tab>
+
 
         <v-tab-item class="pl-0 pr-0">
           <v-layout align-start justify-left row fill-height>
@@ -526,7 +537,7 @@ export default {
   data() {
     return {
 
-      dialog: false,
+      dialog: true,
       active: true,
       title: 'Choose Location',
       id: null,
@@ -918,6 +929,7 @@ export default {
         }
 
 
+      this.dialog = false;
     })
   }
 }

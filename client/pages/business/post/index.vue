@@ -91,7 +91,7 @@
                 
 
                 <v-card flat class="bg-white">
-                  <v-img :src="post.image" height="200px"></v-img>
+                  <v-img :src="post.image"  height="200" content></v-img>
 
                   <v-card-title>
 

@@ -10,7 +10,7 @@ namespace extension\Site\Http\Backend;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-use ReactorCMS\Entities\Node;
+use Reactor\Hierarchy\Node;
 use ReactorCMS\Http\Controllers\ReactorController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
@@ -166,7 +166,7 @@ class ProductController extends ReactorController
             $destinationPath = public_path('/uploads');
 
             $coverimage->move($destinationPath, $name . '.' . $ext);
-            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save()->save();
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(600, 400)->save()->save();
 
             $cover = $node->getImages()->where('img_type', 'cover')->first();
 
@@ -202,7 +202,7 @@ class ProductController extends ReactorController
 
     }
 
-    /*
+   
     public function import_store($id = null, Request $request)
     {
 
@@ -412,9 +412,9 @@ class ProductController extends ReactorController
             }
         }
     }
-    */
 
-    public function import_store($id = null, Request $request)
+
+    public function import_store1($id = null, Request $request)
     {
 
 
@@ -471,7 +471,7 @@ class ProductController extends ReactorController
 
     }
 
-    private function check_product($request, $parent = 0, $str)
+    private function check_product1($request, $parent = 0, $str)
     {
 
 

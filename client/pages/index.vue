@@ -187,7 +187,7 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs4 md2 v-for="location in locations" :key="location" class="text-xs-center">
-            <nuxt-link to="#" class="black--text font-weight-bold">{{location.title}}</nuxt-link>
+            <nuxt-link :to="'/browse/'+ location.slug" class="black--text font-weight-bold">{{location.title}}</nuxt-link>
           </v-flex>
         </v-layout>
       </v-flex>

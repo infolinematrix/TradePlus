@@ -10,7 +10,7 @@ namespace extension\Site\Http\Backend;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-use ReactorCMS\Entities\Node;
+use Reactor\Hierarchy\Node;
 use ReactorCMS\Http\Controllers\ReactorController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;

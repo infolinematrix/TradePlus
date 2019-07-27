@@ -48,7 +48,8 @@
           <v-list-tile v-for="category in this.categories" :key="category" class="pb-0 mb-0">
             <v-list-tile-content>
               <v-list-tile-title>
-                <nuxt-link :to="$helpers.category_url(category.slug, $store)">{{ category.title}}</nuxt-link>
+                <a v-on:click="getFilterresult(category.slug)">{{ category.title }}</a>
+                
               </v-list-tile-title>
               <v-list-tile-sub-title
                 class="font-weight-thin caption"
@@ -210,26 +211,21 @@ export default {
     })
   },
   methods: {
-    setCategoryParent(e) {
-      this.$store.commit('modules/products/SET_FILTER_CATEGORY', e)
-
-      let lslug = this.$route.params.result
-      if (
-        getData('search_type') == 'locations' ||
-        this.$route.params.slug != undefined
-      ) {
-        this.$root.$router.push('/browse/' + lslug + '/' + e)
+    getFilterresult(e) {
+     let param = this.$route.params
+      if (param.slug != undefined && param.source != undefined) {
+        this.$root.$router.push('/browse/' + param.slug + '/' + e)
       } else {
         this.$root.$router.push('/browse/' + e)
       }
-      //
     }
   },
 
   async mounted() {
     this.$axios.get('categories/' + this.parent).then(response => {
       this.categories = response.data
-    })
+    });
+
   }
 }
 </script>

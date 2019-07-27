@@ -921,7 +921,13 @@ class BusinessController extends PublicController
 
         }
 
-        $locations = $nodes->take($limit)->get();
+        if($limit > 0){
+
+            $locations = $nodes->take($limit)->get();
+        }else{
+
+            $locations = $nodes->get();
+        }
 
         foreach ($locations as $node) {
 
@@ -1030,6 +1036,8 @@ class BusinessController extends PublicController
                 'image' => $img,
                 'description' => strip_tags(str_limit($node->description, 50)),
             ];
+
+            
         }
 
         return $data;
@@ -1199,6 +1207,7 @@ class BusinessController extends PublicController
                 'description' => strip_tags(str_limit($node->description,150)),
                 'coverimage' => $coverimg,
                 'profileimage' => $profileimg,
+
                 'location' => getBusinessLocation($node->getKey())
             ];
         }
