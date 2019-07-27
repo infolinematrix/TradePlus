@@ -3,7 +3,7 @@
     <v-card flat v-for="item in this.products" :key="item" class="mb-3">
       <v-layout row wrap>
         <v-flex xs5>
-          <v-img src="http://lorempixel.com/400/300/abstract/" contain></v-img>
+          <v-img src="https://picsum.photos/400/300?random" contain></v-img>
         </v-flex>
         <v-flex xs7>
           <v-card-actions class="text-muted caption">Before 3 min ago</v-card-actions>

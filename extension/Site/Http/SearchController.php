@@ -66,6 +66,7 @@ class SearchController extends PublicController
         $data = [];
 
         foreach ($nodes as $node) {
+            $company = $node->parent()->first();
             $data[] = [
                 'id' => $node->getKey(),
                 'type' => $node->getNodeTypeName(),
@@ -73,6 +74,8 @@ class SearchController extends PublicController
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
                 'description' => strip_tags($node->description),
+                'company' => $company->getTitle(),
+                'company_location' => getBusinessLocation($company->getKey()),
             ];
         }
 
