@@ -3,7 +3,7 @@
     <v-flex>
       <v-toolbar flat dense class="transparent" style="height:40px">
         <v-toolbar-title class>
-          <h1 class="body-2">{{ meta_data.title }}</h1>
+          <h1 class="body-2">{{ meta_data.category }} in {{ meta_data.location }}</h1>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <span class="grey--text">1254 found</span>
@@ -319,16 +319,13 @@ export default {
   },
 
   async asyncData({ $axios, params }) {
-    let products = await $axios.get('browse/' + params.slug)
+    let products = await $axios.get('browse/' + params.slug +'/'+params.source)
     return {
       products: products.data.products,
       meta_data: products.data.meta_data
     }
-  },
-
-  mounted() {
-    console.log(this.meta_data)
   }
+
 }
 </script>
 
