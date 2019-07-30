@@ -60,8 +60,6 @@ class SearchController extends PublicController
 
             $meta_data1 = Node::withName($metas[0])->first();
 
-
-
             if ($meta_data1) {
 
                 /*get Business*/

@@ -11,7 +11,7 @@
           <v-layout row wrap>
             <v-flex sm8 md8 xs12>
               <v-card-text>
-                <v-form>
+                <v-form @submit.prevent="contact">
                   <v-layout row wrap>
                     <v-flex md6 xs12>
                       <v-text-field label="First name" outline></v-text-field>
