@@ -60,7 +60,7 @@
           <div class="display-1 font-weight-bold">Popular Categories</div>
           <div
             class="text-muted pt-1"
-          >Post your requirement for FREE! Get matching products/services in your mail box</div>
+          >Post your requirement for FREE! Get matching a products/services in your mail box</div>
         </div>
       </v-sheet>
 
