@@ -106,17 +106,20 @@
             <v-flex v-for="product in products" :key="product">
               <v-card class="elevation-1 mb-3">
                 <v-layout row wrap>
-                  <v-flex xs12 md3 class="mr-5">
-                    <v-img :src="product.image" aspect-ratio="1.5"></v-img>
+                  <v-flex xs12 md4>
+                    <v-img :src="product.image"></v-img>
                   </v-flex>
                   <v-flex xs12 md8>
                     <v-card-text class="pb-0">
                       <div class="pb-0 mb-1 grey--text caption">Sponsored</div>
-                      <nuxt-link to="#" class="title-2 font-weight-bold">{{ product.title }}</nuxt-link>
+                      <nuxt-link
+                        to="#"
+                        class="title-2 font-weight-bold"
+                      >{{ $helpers.text_truncate(product.title,80) }}</nuxt-link>
 
-                      <div class="mt-2 grey--text">
-                        {{ $helpers.text_truncate(product.description,100) }}
-                      </div>
+                      <div
+                        class="mt-2 grey--text"
+                      >{{ $helpers.text_truncate(product.description,125) }}</div>
 
                       <v-card-actions class="px-0">
                         <v-icon color="red">stars</v-icon>
@@ -126,7 +129,12 @@
                         <v-icon>star_border</v-icon>136 reviews
                         <v-spacer></v-spacer>
 
-                        <v-icon>star_border</v-icon>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                            <v-icon color="primary" size="30" v-on="on">loyalty</v-icon>
+                          </template>
+                          <span>Verified</span>
+                        </v-tooltip>
                       </v-card-actions>
                     </v-card-text>
                   </v-flex>
@@ -134,9 +142,7 @@
                 <v-card-actions class="px-0">
                   <v-list-tile class="grow">
                     <v-list-tile-avatar color="grey lighten-1">
-                      <v-img
-                        :src="product.logo"
-                      ></v-img>
+                      <v-img :src="product.logo"></v-img>
                     </v-list-tile-avatar>
 
                     <v-list-tile-content class="hidden-xs text-truncate">
@@ -290,14 +296,13 @@
   </v-layout>
 </template>
 <script>
-
 export default {
   layout: 'explore',
   data() {
     return {
       infobox: true,
       products: [],
-      meta_data:null,
+      meta_data: null,
       breadcrumb: [
         {
           text: 'Home',
