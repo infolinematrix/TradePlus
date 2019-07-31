@@ -109,49 +109,35 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12 md4 v-for="i in 3" :key="i">
+          <v-flex xs12 md4 v-for="business in businesses" :key="business">
             <v-card>
               <v-img
-                :src="`https://picsum.photos/250/150?random=${Math.floor(Math.random() * 100) + r}`"
-              >
-                <v-layout column fill-height>
-                  <v-card-title>
-                    <v-btn dark icon>
-                      <v-icon>chevron_left</v-icon>
-                    </v-btn>
-
-                    <v-spacer></v-spacer>
-
-                    <v-btn dark icon class="mr-3">
-                      <v-icon>edit</v-icon>
-                    </v-btn>
-
-                    <v-btn dark icon>
-                      <v-icon>more_vert</v-icon>
-                    </v-btn>
-                  </v-card-title>
-
-                  <v-spacer></v-spacer>
-                </v-layout>
-              </v-img>
+                :src="business.coverimage" height=200
+              ></v-img>
 
               <v-list two-line>
                 <template>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
-                      <img src="https://cdn.vuetifyjs.com/images/lists/ali.png" />
+                      <img :src="business.profileimage">
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
-                      <v-list-tile-title class="font-weight-medium">Matrix Infoline Private Limited</v-list-tile-title>
-                      <v-list-tile-sub-title>Siliguri, West Bengal</v-list-tile-sub-title>
+                      <v-list-tile-title class="font-weight-medium">{{ business.title }}</v-list-tile-title>
+                      <v-list-tile-sub-title>{{ business.location }}</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>
                 </template>
               </v-list>
               <v-divider></v-divider>
               <v-card-title primary-title>
+<<<<<<< HEAD
                   <div class="font-weight-light">{{ text }}</div>
+=======
+                <div>
+                  <div class="font-weight-light">{{ business.description }}</div>
+                </div>
+>>>>>>> 808be79688850e5caa4c74518bcf40098b5ab733
               </v-card-title>
 
               <v-card-actions class="pa-3">
@@ -255,9 +241,11 @@ export default {
   async asyncData({ $axios }) {
     let categories = await $axios.get('categories')
     let locations = await $axios.get('locations')
+    let buz = await $axios.get('get-business')
     return {
       categories: categories.data,
-      locations: locations.data
+      locations: locations.data,
+      businesses: buz.data
     }
   },
 
@@ -301,6 +289,9 @@ export default {
     }
   },
 
-  async mounted() {}
+  async mounted() {
+
+    
+  }
 }
 </script>

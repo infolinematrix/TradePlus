@@ -77,7 +77,9 @@
                                     <div class="col-md-6">
                                         {!! form_row($form->skype) !!}
                                     </div>
-
+                                    <div class="col-md-12">
+                                        {!! form_row($form->email_from_email) !!}
+                                    </div>
                                     <div class="col-md-12">
                                         {!! form_row($form->address) !!}
                                     </div>

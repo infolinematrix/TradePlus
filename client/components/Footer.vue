@@ -131,13 +131,13 @@
             <v-card-text class="pa-2">
               <v-layout row wrap>
                 <v-flex class="pb-1" md12>
-                  <div class="black--text">24/6, Hakimpara, Siliguri, West Bengal, 734001, India</div>
+                  <div class="black--text">24/6, {{ getSetting('address')}}</div>
                 </v-flex>
                 <v-flex class="pb-1" md12>
-                  <div class="black--text">+91 98328 93116 (Toll free)</div>
+                  <div class="black--text">{{ getSetting('phone')}} (Toll free)</div>
                 </v-flex>
                 <v-flex class="pb-1" md12>
-                  <div class="black--text">mail@companymail.com</div>
+                  <div class="black--text">{{ getSetting('email_from_email')}}</div>
                 </v-flex>
                 <v-flex class="pb-1" md12>
                   <v-btn depressed color="primary" class="white--text ml-0" nuxt to="/contact">
@@ -165,5 +165,23 @@
 
 
 <script>
-export default {}
+import { mapGetters } from "vuex";
+export default {
+
+  computed: {
+    ...mapGetters({
+      settings: "app/settings"
+    })
+  },
+   methods: {
+    getSetting(varible) {
+      let filtered = this.settings.filter(m => m.variable === varible);
+
+      if (filtered.length > 0) return filtered[0].value;
+    }
+  },
+  mounted() {
+    this.$store.dispatch("app/updateSettings");
+  }
+}
 </script>

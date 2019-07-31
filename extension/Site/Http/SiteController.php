@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use DaveJamesMiller\Breadcrumbs\Facade as Breadcrumbs;
 use ReactorCMS\Entities\Testimonial;
 use ReactorCMS\Entities\Contacts;
+use Illuminate\Support\Facades\Config;
 
 
 
@@ -293,4 +294,33 @@ class SiteController extends PublicController
         }
         die("FINISH.....");
     }
+
+
+    public function postContact(Request $request)
+    {
+
+       // return "HELLO";
+        $data = [
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->contact_no,
+            'content' => $request->message,
+            'site_name' => getSettings('site_title'),
+        ];
+
+
+
+        /*Get Mail Configuration*/
+        Config::set('mail', getMailconfig());
+
+        Mail::send('Site::email.contact', $data, function ($message) use ($data) {
+            $message->from(getSettings('email_from_email'), getSettings('site_title'));
+            $message->subject('Contact us');
+            $message->to(getSettings('email_from_email'));
+        });
+
+        return "SUCCESS";
+
+    }
+
 }

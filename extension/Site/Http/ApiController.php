@@ -9,7 +9,7 @@ use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
 use ReactorCMS\Http\Controllers\Traits\UsesTranslations;
 use Reactor\Hierarchy\NodeRepository;
-
+use ReactorCMS\Entities\Settings;
 class ApiController extends PublicController
 {
 
@@ -33,6 +33,21 @@ class ApiController extends PublicController
             'meta_description' => $node->getMetaDescription(),
             'meta_keywords' => $node->getMetaKeywords(),
         ];
+
+        return $data;
+    }
+
+    public function getSettings(){
+
+        $data =[];
+        $settings = Settings::all();
+
+        foreach($settings as $setting){
+            $data[] = [
+                'variable' => $setting->variable,
+                'value' => $setting->value,
+            ];
+        }
 
         return $data;
     }
