@@ -151,9 +151,7 @@
               </v-list>
               <v-divider></v-divider>
               <v-card-title primary-title>
-                <div>
                   <div class="font-weight-light">{{ text }}</div>
-                </div>
               </v-card-title>
 
               <v-card-actions class="pa-3">

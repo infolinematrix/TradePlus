@@ -49,11 +49,7 @@ export default {
 */
   loading: {
     color: 'red',
-<<<<<<< HEAD
-    height: '3px'
-=======
     height: '2px'
->>>>>>> 47288d7490bcb178dd7c2309af3425417594237c
   },
 
   //loading: '~/components/loading.vue',
