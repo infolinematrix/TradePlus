@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-layout row wrap justify-center align-center mt-2>
+    <v-layout row wrap justify-center align-center mt-5>
       <v-flex xs12 sm8 md10>
         <v-layout row wrap>
           <v-flex xs6 md3>
@@ -60,31 +60,36 @@
           <div class="display-1 font-weight-bold">Popular Categories</div>
           <div
             class="text-muted pt-1"
-          >Post your requirement for FREE! Get matching products/services in your mail box</div>
+          >Post your requirement for FREE! Get matching a products/services in your mail box</div>
         </div>
       </v-sheet>
 
-      <swiper :options="swiperOption" ref="mySwiper" class="my-swiper">
-        <!-- slides -->
-        <swiper-slide v-for="category in categories" :key="category" class="swiper-slide">
-          <v-card flat>
-            <v-card-actions class="pa-3">
-              <v-layout column justify-center align-center>
-                <v-img :src="category.icon" contain width="60" />
-              </v-layout>
-            </v-card-actions>
+      <v-flex
+        @mouseenter="$refs.mySwiper.swiper.autoplay.stop()"
+        @mouseleave="$refs.mySwiper.swiper.autoplay.start()"
+        >
+        <swiper :options="swiperOption" ref="mySwiper" class="my-swiper">
+          <!-- slides -->
+          <swiper-slide v-for="category in categories" :key="category" class="swiper-slide">
+            <v-card flat>
+              <v-card-actions class="pa-3">
+                <v-layout column justify-center align-center>
+                  <v-img :src="category.icon" contain width="60" />
+                </v-layout>
+              </v-card-actions>
 
-            <v-card-actions>
-              <v-layout column justify-center align-center>
-                <nuxt-link :to="'/browse/'+ category.slug" class="black--text">{{ category.title}}</nuxt-link>
-              </v-layout>
-            </v-card-actions>
-          </v-card>
-        </swiper-slide>
+              <v-card-actions>
+                <v-layout column justify-center align-center>
+                  <nuxt-link :to="'/browse/'+ category.slug" class="black--text">{{ category.title}}</nuxt-link>
+                </v-layout>
+              </v-card-actions>
+            </v-card>
+          </swiper-slide>
 
-        <!-- Optional controls -->
-        <div class="swiper-pagination hidden-xs-only" slot="pagination"></div>
-      </swiper>
+          <!-- Optional controls -->
+          <div class="swiper-pagination hidden-xs-only" slot="pagination"></div>
+        </swiper>
+      </v-flex>
     </v-layout>
 
     <v-layout column justify-center align-center class="mt-5">
@@ -167,7 +172,10 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs4 md2 v-for="location in locations" :key="location" class="text-xs-center">
-            <nuxt-link :to="'/browse/'+ location.slug" class="black--text font-weight-bold">{{location.title}}</nuxt-link>
+            <nuxt-link
+              :to="'/browse/'+ location.slug"
+              class="black--text font-weight-bold"
+            >{{location.title}}</nuxt-link>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -208,7 +216,7 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs12 md6>
-            <recent-products :limit=3></recent-products>
+            <recent-products :limit="3"></recent-products>
           </v-flex>
         </v-layout>
       </v-flex>

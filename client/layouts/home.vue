@@ -20,7 +20,7 @@
       <toolbar-menu></toolbar-menu>
     </v-toolbar>
 
-    <v-sheet>
+    <v-sheet class="hidden-xs-only">
       <v-img class="white--text" height="500px" src="hero1.png">
         <v-container grid-list-lg fill-height class="grey--text">
           <v-layout column justify-center align-center mt-5>
@@ -35,7 +35,7 @@
                   placeholder="What are you looking for?"
                   single-line
                   full-width
-                  class="pr-5"
+          style="width:450px"
                 ></v-text-field>
 
                 <v-toolbar-items class="hidden-sm-and-down">
@@ -57,6 +57,7 @@
         <nuxt />
       </v-container>
     </v-content>
+
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-tile @click.native="right = !right">

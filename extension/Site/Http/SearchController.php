@@ -225,7 +225,7 @@ class SearchController extends PublicController
 
             }else{
 
-                $img = '/cover.jpg';
+                $img = '/image.png';
             }
 
             $company = $node->parent()->first();
