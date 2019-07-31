@@ -112,7 +112,7 @@
                   <v-flex xs12 md8>
                     <v-card-text class="pb-0">
                       <div class="pb-0 mb-1 grey--text caption">Sponsored</div>
-                      <nuxt-link to="#" class="title-2 font-weight-bold">{{ product.title }}</nuxt-link>
+                      <nuxt-link :to="{path: '/browse/product/'+product.slug}" class="title-2 font-weight-bold">{{ product.title }}</nuxt-link>
 
                       <div class="mt-2 grey--text">
                         {{ $helpers.text_truncate(product.description,100) }}

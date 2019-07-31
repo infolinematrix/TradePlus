@@ -113,7 +113,7 @@
                     <v-card-text class="pb-0">
                       <div class="pb-0 mb-1 grey--text caption">Sponsored</div>
                       <nuxt-link
-                        to="#"
+                        :to="{path: '/browse/product/'+product.slug}"
                         class="title-2 font-weight-bold"
                       >{{ $helpers.text_truncate(product.title,80) }}</nuxt-link>
 

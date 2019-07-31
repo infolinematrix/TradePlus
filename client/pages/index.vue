@@ -131,13 +131,10 @@
               </v-list>
               <v-divider></v-divider>
               <v-card-title primary-title>
-<<<<<<< HEAD
-                  <div class="font-weight-light">{{ text }}</div>
-=======
+                 
                 <div>
                   <div class="font-weight-light">{{ business.description }}</div>
                 </div>
->>>>>>> 808be79688850e5caa4c74518bcf40098b5ab733
               </v-card-title>
 
               <v-card-actions class="pa-3">

@@ -43,6 +43,52 @@ class SearchController extends PublicController
     }
 
 
+    public function single($name){
+
+        $node = Node::withName($name)->first();
+
+        $data = [];
+        if($node){
+
+            $coverimage = $node->getImages()->first();
+            if($coverimage){
+
+                $img = asset('uploads/'.$coverimage->path);
+
+            }else{
+
+                $img = '/image-600x400.png';
+            }
+
+            $company = $node->parent()->first();
+
+            $company_logo = $company->getImages()->where('img_type','profile')->first();
+            if($company_logo){
+
+                $logo = asset('/uploads/'.$company_logo->path);
+
+            }else{
+
+                $logo = '/avatar_male.png';
+            }
+
+            $data = [
+
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'description' => strip_tags($node->description),
+                'image' => $img,
+                'company' => $company->getTitle(),
+                'company_location' => getBusinessLocation($company->getKey()),
+                'company_logo' => $logo
+            ];
+        }
+
+        return $data;
+
+
+
+    }
     public function browse($params = null)
     {
 
@@ -233,7 +279,7 @@ class SearchController extends PublicController
             $company_logo = $company->getImages()->where('img_type','profile')->first();
             if($company_logo){
 
-                 $logo = $company_logo->path;
+                 $logo = asset('/uploads/'.$company_logo->path);
 
             }else{
 
