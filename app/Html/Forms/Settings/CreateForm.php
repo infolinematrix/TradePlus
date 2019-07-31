@@ -80,6 +80,10 @@ class CreateForm extends Form
 
         */
 
+        $this->add('email_from_email', 'text', [
+            'label' => 'Email From',
+        ]);
+
         $this->add('google_map_api', 'text', [
             'label' => 'Google Map Api',
         ]);

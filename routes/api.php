@@ -59,6 +59,8 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('categories/{parent?}','BusinessController@getCategories');
 
 
+    /*contact*/
+    Route::post('post-contact','SiteController@postContact');
 
     /*Business*/
     Route::get('get-business','BusinessController@getBusiness');
@@ -71,6 +73,7 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
     Route::post('delete-business','BusinessController@destroy');
     Route::post('delete-post/{id}','BusinessController@deletePost');
+
 
     /*Services*/
     Route::post('post-services','BusinessController@postServices');
@@ -117,7 +120,7 @@ Route::group(['middleware' => ['api', 'track'], 'namespace' => 'Extension\Site\H
     Route::post('contact', 'ApiController@contact');
 
     //Settings
-    //Route::get('settings','ApiController@getSettings');
+    Route::get('settings','ApiController@getSettings');
 
     //Room type
     Route::get('roomtypes', 'RoomTypeController@getRoomtype');

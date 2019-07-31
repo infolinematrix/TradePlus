@@ -1204,7 +1204,7 @@ class BusinessController extends PublicController
                 'id' => $node->getKey(),
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
-                'description' => strip_tags(str_limit($node->description,150)),
+                'description' => strip_tags(str_limit($node->description,130)),
                 'coverimage' => $coverimg,
                 'profileimage' => $profileimg,
 
