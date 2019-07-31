@@ -11,14 +11,11 @@
       <v-card flat>
         <v-layout row wrap>
           <v-flex md7 xs12>
-            <v-img class="white--text" :src="product.image">
-            </v-img>
+            <v-img class="white--text" :src="product.image"></v-img>
             <v-card-title primary-title>
               <div class="font-weight-medium title lh1">
                 {{ product.title }}
-                <div
-                  class="text-muted caption mt-2"
-                >{{ product.description }}</div>
+                <div class="text-muted caption mt-2">{{ product.description }}</div>
               </div>
             </v-card-title>
 
@@ -41,8 +38,7 @@
                 <template>
                   <v-list-tile avatar>
                     <v-list-tile-avatar>
-                     <v-img :src="product.company_logo">
-            </v-img>
+                      <v-img :src="product.company_logo"></v-img>
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
@@ -119,30 +115,67 @@
               <v-list subheader>
                 <v-subheader>Payment accept</v-subheader>
                 <v-list-tile avatar>
-
                   <v-list-tile-content>
                     <v-list-tile-sub-title>
                       <v-layout row wrap>
                         <v-avatar tile size="45" class="mr-4">
-                          <img src="icons/cash.svg" alt="Facebbok" />
+                          <img src="/icons/cash.svg" alt="Facebbok" />
                         </v-avatar>
 
                         <v-avatar tile size="45" class="mr-4">
-                          <img src="icons/banktransfer.svg" alt="Facebbok" />
+                          <img src="/icons/banktransfer.svg" alt="Facebbok" />
                         </v-avatar>
 
                         <v-avatar tile size="45" class="mr-4">
-                          <img src="icons/creditcard.svg" alt="Facebbok" />
+                          <img src="/icons/creditcard.svg" alt="Facebbok" />
                         </v-avatar>
 
                         <v-avatar tile size="45" class="mr-4">
-                          <img src="icons/paypal.svg" alt="Facebbok" />
+                          <img src="/icons/paypal.svg" alt="Facebbok" />
                         </v-avatar>
                       </v-layout>
                     </v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
               </v-list>
+            </v-sheet>
+
+            <v-sheet class="pl-3">
+              <v-container grid-list-lg class="bg-light-blue">
+                <v-subheader class="black--text title-2 pl-0">Get Quote from Supplier</v-subheader>
+
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-text-field :counter="25" label="First Name" required></v-text-field>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-text-field :counter="25" label="Last Name" required></v-text-field>
+                  </v-flex>
+                </v-layout>
+
+<v-text-field  label="Email" required></v-text-field>
+
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-text-field label="Contact no" required></v-text-field>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-text-field label="Quantity" required></v-text-field>
+                  </v-flex>
+<v-flex md12>
+                  <v-textarea
+          outlined
+          name="input-7-4"
+          label="Outline textarea"
+          value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
+        ></v-textarea>
+</v-flex>
+
+
+  <v-btn depressed color="primary">Send</v-btn>
+
+                </v-layout>
+              </v-container>
             </v-sheet>
           </v-flex>
         </v-layout>
@@ -157,13 +190,13 @@ export default {
   async asyncData({ $axios, params }) {
     let prodata = await $axios.get('browse/single/' + params.single)
     return {
-      product: prodata.data,
+      product: prodata.data
     }
-  }, 
+  },
   data() {
     return {
-      infobox: true,
-     }
+      infobox: true
+    }
   }
 }
 </script>
