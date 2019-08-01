@@ -46,7 +46,6 @@ class SearchController extends PublicController
     public function single($name){
 
         $node = Node::withName($name)->first();
-
         $data = [];
         if($node){
 
@@ -59,7 +58,6 @@ class SearchController extends PublicController
 
                 $img = '/image-600x400.png';
             }
-
             $company = $node->parent()->first();
 
             $company_logo = $company->getImages()->where('img_type','profile')->first();

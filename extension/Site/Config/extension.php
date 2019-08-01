@@ -42,4 +42,11 @@ return [
 
     ],
 
+    'unit' => [
+        'box' => 'Box',
+        'litre' => 'Litre',
+        'piece' => 'Piece',
+        'sets' => 'Sets',
+    ],
+
 ];

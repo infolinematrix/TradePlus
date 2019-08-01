@@ -141,41 +141,81 @@
             </v-sheet>
 
             <v-sheet class="pl-3">
+              <v-form @submit.prevent="quotation" ref="form">
               <v-container grid-list-lg class="bg-light-blue">
                 <v-subheader class="black--text title-2 pl-0">Get Quote from Supplier</v-subheader>
 
                 <v-layout row wrap>
                   <v-flex md6>
-                    <v-text-field :counter="25" label="First Name" required></v-text-field>
+                    <v-text-field 
+                    :counter="25"
+                    v-model="form.first_name" 
+                    label="First Name" 
+                    :rules="firstnameRules"
+                    required>
+                    </v-text-field>
                   </v-flex>
                   <v-flex md6>
-                    <v-text-field :counter="25" label="Last Name" required></v-text-field>
+                    <v-text-field 
+                    :counter="25" 
+                    v-model="form.last_name"
+                    label="Last Name" 
+                    :rules="lastnameRules"
+                    required
+                    >
+                    </v-text-field>
                   </v-flex>
                 </v-layout>
 
-<v-text-field  label="Email" required></v-text-field>
+                <v-text-field  
+                label="Email" 
+                v-model="form.email"
+                :rules="emailRules"
+                required
+                >
+                </v-text-field>
 
                 <v-layout row wrap>
                   <v-flex md6>
-                    <v-text-field label="Contact no" required></v-text-field>
+                    <v-text-field 
+                    label="Contact no" 
+                    v-model="form.contact"
+                    :rules="contactRules"
+                    required>
+                    </v-text-field>
                   </v-flex>
+
                   <v-flex md6>
-                    <v-text-field label="Quantity" required></v-text-field>
+                    <v-text-field 
+                    type="number"
+                    label="Quantity"
+                    v-model="form.quantity"
+                    :rules="quantityRules" 
+                    required>
+                    </v-text-field>
                   </v-flex>
-<v-flex md12>
-                  <v-textarea
-          outlined
-          name="input-7-4"
-          label="Outline textarea"
-          value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-        ></v-textarea>
-</v-flex>
+                <v-flex md12>
+               <v-textarea
+                outlined
+                label="Message"
+                v-model="form.message"
+                :rules="messageRules"
+               ></v-textarea>
+               </v-flex>
 
 
-  <v-btn depressed color="primary">Send</v-btn>
+              <v-btn 
+              depressed 
+              color="primary"
+              @click="loader = 'loading'"
+              :loading="loading"
+              :disabled="loading" 
+              type="submit" >Send
+              </v-btn>
 
                 </v-layout>
               </v-container>
+              </v-form>
             </v-sheet>
           </v-flex>
         </v-layout>
@@ -186,6 +226,9 @@
 
 
 <script>
+import Form from "vform";
+import swal from "sweetalert2";
+
 export default {
   async asyncData({ $axios, params }) {
     let prodata = await $axios.get('browse/single/' + params.single)
@@ -195,8 +238,95 @@ export default {
   },
   data() {
     return {
-      infobox: true
+      infobox: true,
+       /*Rules*/
+       firstnameRules: [
+        v => !!v || 'First Name is required',
+      ],
+      lastnameRules: [
+        v => !!v || 'Last Name is required',
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      contactRules: [
+        v => !!v || 'Contact is required',
+      ],
+      quantityRules: [
+        v => !!v || 'Quantity is required',
+      ],
+      messageRules: [
+        v => !!v || 'Message is required',
+      ],
+    loader: null,
+    loading: false,
+    node_name: this.$route.params.single,
+     form: new Form({
+      first_name: null,
+      last_name: null,
+      email: null,
+      contact_no: null,
+      quantity: null,
+      message: null
+     }),
     }
+  },
+
+  methods: {
+
+    async quotation() {
+      
+      const l = this.loader
+      this[l] = !this[l]
+      
+      this.dialog = true;
+      let formData = new FormData();
+      formData.append('node_name', this.node_name)
+      formData.append('first_name', this.form.first_name)
+      formData.append('last_name', this.form.last_name)
+      formData.append('email', this.form.email)
+      formData.append('contact_no', this.form.contact_no)
+      formData.append('quantity', this.form.quantity)
+      formData.append('message', this.form.message)
+        
+        if (this.$refs.form.validate()) {
+          this.snackbar = true
+         this.$axios
+            .post(`post-quote`, formData)
+            .then(response => {
+              console.log(response.data);
+            setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Successfully Send....",
+            type: "info",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 1500),
+        this.reset();
+          })
+         }else{
+
+      setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Invalid Input!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 500)
+      }
+     // });
+      
+      },
+
+      reset () {
+        this.$refs.form.reset()
+      },
+
   }
 }
 </script>
