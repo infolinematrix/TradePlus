@@ -99,6 +99,10 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('browse/single/{slug}','SearchController@single');
     Route::get('browse/{all?}','SearchController@browse')->where(['all' => '.*']);
 
+    //--Reviews
+    Route::get('reviews/{node_id}','ReviewController@reviews');
+    Route::post('review/submit','ReviewController@store');
+
 });
 
 /**
