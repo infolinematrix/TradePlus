@@ -24,6 +24,7 @@ use Reactor\Documents\Media\Media;
 use Reactor\Hierarchy\Node;
 use Reactor\Hierarchy\NodeRepository;
 use Reactor\Hierarchy\NodeSource;
+use Mail;
 
 class BusinessController extends PublicController
 {
@@ -712,6 +713,16 @@ class BusinessController extends PublicController
     public function editProduct($id, $source_id = null)
     {
 
+        /*Scale*/
+        $unit = config('site.unit');
+        foreach ($unit as $key => $value) {
+            $s[] = [
+                'id' => $key,
+                'name' => $value,
+            ];
+        }
+        $data['units'] = $s;
+        
         $source = NodeSource::find($source_id);
         $product = Node::withType('producttype')->find($id);
 
@@ -735,6 +746,11 @@ class BusinessController extends PublicController
                     'status' => $product->isPublished() ? 'publish' : 'unpublish',
                     'email_enquiry' => $product->emailenquiry,
                     'phone_message' => $product->phonemessage,
+                    'show_price' => $product->show_price,
+                    'product_price' => ($product->product_price ? $product->product_price : 0.00),
+                    'product_unit' => $product->product_unit,
+                    'product_moq' => $product->product_moq,
+                    'international_shipping' => ($product->shipping ? $product->shipping : 'no'),
                     'coverimage' => $coverimg,
                 ];
 
@@ -1245,4 +1261,45 @@ class BusinessController extends PublicController
 
         return $data;
     }
+
+    public function postquote(Request $request)
+    {
+
+
+
+        $product = Node::withName($request->node_name)->first();
+
+        $company = $product->parent()->withType('business')->first();
+        $company = $company->nodeSourceExtensions()->first();
+
+
+
+        $data = [
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->contact_no,
+            'quantity' => $request->quantity,
+            'content' => $request->message,
+            'product' => $product,
+            'business_email' => $company->business_email,
+            'site_name' => getSettings('site_title'),
+        ];
+
+
+
+
+        /*Get Mail Configuration*/
+        Config::set('mail', getMailconfig());
+
+        Mail::send('Site::email.quote', $data, function ($message) use ($data) {
+            $message->from(getSettings('email_from_email'), getSettings('site_title'));
+            $message->subject('New Order');
+            $message->to($data['business_email']);
+        });
+
+        return "SUCCESS";
+
+    }
+
+    
 }

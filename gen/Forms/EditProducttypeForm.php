@@ -45,6 +45,52 @@ class EditProducttypeForm extends Form {
             
 
         ]);
+                                $this->add('product_price', 'text', [
+            'label' => 'Price',
+            'help_block' => ['text' => ''],
+
+            
+                        'default_value' => 0.00,
+            
+            
+
+        ]);
+                                $this->add('show_price', 'text', [
+            'label' => 'Show Price',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('product_unit', 'text', [
+            'label' => 'Unit',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('product_moq', 'number', [
+            'label' => 'MOQ',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
+                                $this->add('shipping', 'text', [
+            'label' => 'International Shipping',
+            'help_block' => ['text' => ''],
+
+            
+            
+            
+
+        ]);
                     }
 
 }

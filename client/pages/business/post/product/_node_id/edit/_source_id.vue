@@ -110,6 +110,59 @@
                         ></v-textarea>
                       </v-flex>
                     </v-layout>
+
+                    <v-layout row wrap>
+                      <v-flex xs12 md6>
+                        <v-text-field 
+                        v-model="form.product_price" 
+                        label="Price" 
+                        placeholder="price" 
+                        v-validate="'required'"
+                        :error-messages="errors.collect('Price')"
+                        data-vv-name="Price"
+                        required
+                        outline
+                        >
+                        </v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 md6>
+                        <v-select
+                          v-model="form.product_unit"
+                          item-text="name"
+                          item-value="id"
+                          :items="units"
+                          label="Unit"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('Unit')"
+                          data-vv-name="Unit"
+                          required
+                          outline
+                        ></v-select>
+                      </v-flex>
+                    </v-layout>
+                    
+                    <v-layout row wrap>
+                      <v-flex xs12 md6>
+                        <v-text-field 
+                        type="number"
+                        v-model="form.product_moq" 
+                        label="MOQ" 
+                        placeholder="MOQ" 
+                        outline
+                        >
+                        </v-text-field>
+                      </v-flex>
+
+                     <v-flex xs12 md6>
+                      <v-checkbox
+                       v-model="form.internation_shipping" 
+                       label="International Shipping"
+                      >
+                       </v-checkbox>
+                    </v-flex>
+                     </v-layout>
+
                      <v-layout row wrap>
                     <v-flex xs12>
                       <v-checkbox
@@ -152,12 +205,23 @@
 
                 <v-list-tile avatar>
                   <v-list-tile-content>
-                    <v-list-tile-title>Profile</v-list-tile-title>
-                    <v-list-tile-sub-title>People can't find inactive profile</v-list-tile-sub-title>
+                    <v-list-tile-title>Product</v-list-tile-title>
+                    <v-list-tile-sub-title>People can't find inactive product</v-list-tile-sub-title>
                   </v-list-tile-content>
 
                   <v-list-tile-action>
                     <v-switch v-model="status"></v-switch>
+                  </v-list-tile-action>
+                </v-list-tile>
+
+                <v-list-tile avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>Show Price</v-list-tile-title>
+                    <v-list-tile-sub-title>Show product price</v-list-tile-sub-title>
+                  </v-list-tile-content>
+
+                  <v-list-tile-action>
+                    <v-switch v-model="show_price"></v-switch>
                   </v-list-tile-action>
                 </v-list-tile>
 
@@ -235,16 +299,22 @@ export default {
       chkbox: true,
       select: { state: 'Florida', abbr: 'FL' },
       categories: [],
+      units: [],
       coverName: "",
       coverimageFile: "",
       status: false,
+      show_price:  false,
       enquiry: false,
       message: false,
       form: {
         product_title: null,
         description: null,
         title:'Category from Parent',
-        id:null
+        id:null,
+        product_unit: null,
+        product_price: 0.00,
+        product_moq: 0,
+        internation_shipping: false, 
       },
       text:
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
@@ -319,6 +389,16 @@ export default {
         formData.append("title", this.form.product_title);
         formData.append("description", this.form.description);
         formData.append("category", this.form.id);
+        formData.append("product_price", this.form.product_price);
+        formData.append("product_unit", this.form.product_unit);
+        formData.append("product_moq", this.form.product_moq);
+        if(this.form.internation_shipping == false){
+           formData.append("shipping", 'no');
+        }else{
+           formData.append("shipping", 'yes');
+        }
+
+        formData.append("product_unit", this.form.product_unit);
         
         this.$validator.validateAll().then(result => {
         if (result) {
@@ -349,9 +429,9 @@ export default {
       }else{
        formData.append("status", 'publish');
       }
-
        formData.append("emailenquiry", this.enquiry);
        formData.append("phonemessage", this.message);
+       formData.append("show_price", this.show_price);
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -382,7 +462,16 @@ export default {
                this.form.description = response.data.node.description;
                this.form.title = response.data.category.title;
                this.form.id = response.data.category.id;
-
+               this.form.product_price = response.data.node.product_price;
+               this.units = response.data.units;
+               if (response.data.node.product_unit != null) {
+                this.form.product_unit = response.data.node.product_unit
+               }
+               this.form.product_moq = response.data.node.product_moq;
+              if (response.data.node.international_shipping == 'yes') {
+               this.form.internation_shipping = true;
+              }
+               
                /*Settings*/
 
         if(response.data.node.status == 'publish') {
@@ -401,6 +490,12 @@ export default {
         this.message = false
         }if(response.data.node.phone_message == 'true') {
         this.message = true
+        }
+
+        if(response.data.node.show_price == 'false') {
+        this.show_price = false
+        }if(response.data.node.show_price == 'true') {
+        this.show_price = true
         }
 
       })
