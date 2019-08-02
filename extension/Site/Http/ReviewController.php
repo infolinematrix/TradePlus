@@ -8,7 +8,6 @@ use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
 use ReactorCMS\Http\Controllers\Traits\UsesTranslations;
 use ReactorCMS\Http\Controllers\Controller;
-use Reactor\Hierarchy\Reviewable\HasReviews;
 use Prophecy\Exception\Prediction\NoCallsException;
 use Reactor\Hierarchy\Node;
 
@@ -16,13 +15,11 @@ class ReviewController extends Controller
 {
 
     use UsesTranslations, UsesNodeHelpers, UsesNodeForms;
-    use HasReviews;
-    
+
     public function reviews($node_id){
 
         $node = Node::find($node_id);
         $reviews = $node->reviews()->take(25)->get();
-
         $data=[];
 
         foreach($reviews as $review){
