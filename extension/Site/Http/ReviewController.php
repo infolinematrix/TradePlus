@@ -21,8 +21,8 @@ class ReviewController extends Controller
     public function reviews($node_id){
 
         $node = Node::find($node_id);
-        $reviews = $node->getReviews()->take(25)->get();
-        
+        $reviews = $node->reviews()->take(25)->get();
+
         $data=[];
 
         foreach($reviews as $review){
@@ -40,17 +40,19 @@ class ReviewController extends Controller
     }
 
     public function store(Request $request){
-        
+
+
+
         $data = [
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'first_name' => $request->name,
             'email' => $request->email,
             'title' => $request->title,
             'body' => $request->description,
             'rating' => $request->rating,
         ];
-        
+
         $node = Node::find($request->node);
+
         $node->createReview($data, $node);
 
         $data['message'] = 'Successfully submited, waiting for modaration';

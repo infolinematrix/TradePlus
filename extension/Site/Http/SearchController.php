@@ -93,6 +93,7 @@ class SearchController extends PublicController
 
             $data = [
 
+                'id' => $node->getKey(),
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
                 'description' => strip_tags($node->description),
