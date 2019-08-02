@@ -22,27 +22,13 @@
             </v-card-title>
 
             <v-divider></v-divider>
-            <!--<v-card-actions class="pa-3">
-              1245 reviews
-              <v-spacer></v-spacer>
-              <v-icon color="primary">star_border</v-icon>
-              <v-icon color="primary">star_border</v-icon>
-              <v-icon color="primary">star_border</v-icon>
-              <v-icon>star_border</v-icon>
-              <v-icon>star_border</v-icon>
-<<<<<<< HEAD
-            </v-card-actions>
-            <v-card-text>We are a reputed manufacturer and supplier of a huge range of Water Softener. Based on the technology of ion exchange, these softeners can be attached with dishwashers, washing machines and geysers for eliminating various water hardening minerals including calcium and magnesium. Our Water Softener is processed using quality compounds and modern techniques at our state of the art machining facility. WE can also offer these softeners at a reasonable price.</v-card-text>
-
-            <v-card-text>
-              <review-ratting :node_id="product.id"></review-ratting>
-=======
-            </v-card-actions>-->
             <v-card-text>
               {{ product.description }}
->>>>>>> 4b2d5e43a57d5e8899ad7112e7aa287810641d32
             </v-card-text>
-          </v-flex>
+         <v-card-text>
+              <review-ratting :node_id="product.id"></review-ratting>
+               </v-card-text>
+             </v-flex>
 
           <v-flex md5 xs12 class="bg-white">
             <v-sheet class="pa-2 pb-0">
@@ -108,15 +94,7 @@
                     <strong>{{ product.international_shipping }}</strong>
                   </v-list-tile>
                   
-                  <!--
-                  <v-list-tile class="height-30">
-                    <v-list-tile-content>
-                      <v-list-tile-title class="body-2 font-weight-regular">Cash on Delivery</v-list-tile-title>
-                    </v-list-tile-content>
-                    <strong>12350</strong>/Box
-                  </v-list-tile>
-                  -->
-
+                
                 </template>
               </v-list>
             </v-sheet>
@@ -180,9 +158,6 @@
                   </v-flex>
                 </v-layout>
 
-<<<<<<< HEAD
-                <v-text-field label="Email" required></v-text-field>
-=======
                 <v-text-field  
                 label="Email" 
                 v-model="form.email"
@@ -190,7 +165,6 @@
                 required
                 >
                 </v-text-field>
->>>>>>> 4b2d5e43a57d5e8899ad7112e7aa287810641d32
 
                 <v-layout row wrap>
                   <v-flex md6>
@@ -211,16 +185,7 @@
                     required>
                     </v-text-field>
                   </v-flex>
-<<<<<<< HEAD
-                  <v-flex md12>
-                    <v-textarea
-                      outlined
-                      name="input-7-4"
-                      label="Outline textarea"
-                      value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-                    ></v-textarea>
-                  </v-flex>
-=======
+                
                 <v-flex md12>
                <v-textarea
                 outlined
@@ -239,9 +204,7 @@
               :disabled="loading" 
               type="submit" >Send
               </v-btn>
->>>>>>> 4b2d5e43a57d5e8899ad7112e7aa287810641d32
 
-                  <v-btn depressed color="primary">Send</v-btn>
                 </v-layout>
               </v-container>
               </v-form>
@@ -255,12 +218,9 @@
 
 
 <script>
-<<<<<<< HEAD
 import ReviewRatting from '~/components/ReviewRatting.vue'
-=======
 import Form from "vform";
 import swal from "sweetalert2";
->>>>>>> 4b2d5e43a57d5e8899ad7112e7aa287810641d32
 
 export default {
   components: {

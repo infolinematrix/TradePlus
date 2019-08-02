@@ -2,7 +2,7 @@
 
 namespace Extension\Site\Http;
 
-use App\Entities\Testimonial;
+
 use Illuminate\Http\Request;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
