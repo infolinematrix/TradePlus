@@ -24,7 +24,7 @@
 
           <v-sheet class="mt-5 ml-3">
             <h1 class="title mb-1">Matrix Infoline Private Limited</h1>
-            <div>HDLD</div>
+            <div class="display-2">HDLD</div>
           </v-sheet>
 
           <v-spacer></v-spacer>
