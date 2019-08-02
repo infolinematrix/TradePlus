@@ -6,22 +6,7 @@
         <v-tab ripple>Write review</v-tab>
 
         <v-tab-item>
-          <v-card flat>
-            <v-card-text class="pb-0">
-              <div class="body-2">Kripa's Printed Cushions Cover</div>
-              <div
-                class="body-1 mt-2 font-weight-light"
-              >The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.</div>
-            </v-card-text>
-
-            <v-card-actions class="pl-3">
-              <span class="text-muted caption">Subha Sundar Das ~ 14th April, 2019</span>
-              <v-spacer></v-spacer>
-              <v-rating value="4" readonly dense color="pink accent-3" class="pa-0"></v-rating>
-            </v-card-actions>
-            <v-divider></v-divider>
-          </v-card>
-
+          
           <v-card flat v-for="review in reviews" :key="review">
             <v-card-text class="pb-0">
               <div class="body-2">{{ review.title }}</div>
@@ -38,7 +23,7 @@
         </v-tab-item>
 
         <v-tab-item>
-          <v-form>
+          <v-form @submit.prevent="post_review" ref="form1">
             <v-container>
               <v-catd-text class="text-muted">
                 Product review create a more consistent user experience. They can also help buyers
@@ -50,25 +35,38 @@
                   <v-text-field
                     :counter="25"
                     label="Full name"
-                    v-model="review.first_name"
+                    v-model="review.name"
+                    :rules="nameRules"
                     required
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 md6>
-                  <v-text-field label="E-mail" v-model="review.email" required></v-text-field>
+                  <v-text-field 
+                  label="E-mail" 
+                  v-model="review.email" 
+                  :rules="emailRules"
+                  required>
+                  </v-text-field>
                 </v-flex>
 
                 <v-flex xs12 md12>
-                  <v-text-field :counter="80" label="Title" v-model="review.title" required></v-text-field>
+                  <v-text-field 
+                  :counter="80" 
+                  label="Title" 
+                  v-model="review.title"
+                  :rules="titleRules"
+                  required></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 md12>
                   <v-textarea
                     name="input-7-1"
-                    label="Default style"
+                    label="Message"
                     v-model="review.description"
                     hint="Hint text"
+                    :rules="messageRules"
+                    required
                   ></v-textarea>
                 </v-flex>
 
@@ -78,7 +76,14 @@
                 </v-flex>
 
                 <v-flex xs12>
-                  <v-btn @click.stop="post_review()" class="ma-0" color="primary" depressed>Submit</v-btn>
+               <v-btn 
+              depressed 
+              class="ma-0" color="primary"
+              @click="loader = 'loading'"
+              :loading="loading"
+              :disabled="loading" 
+              type="submit" >Submit
+              </v-btn>
                 </v-flex>
               </v-layout>
 
@@ -92,17 +97,35 @@
 </template>
 
 <script>
-import Form from 'vform'
+import Form from "vform";
+import swal from "sweetalert2";
 export default {
   props: ['node_id'],
   data() {
     return {
       message: null,
       reviews: [],
+       /*Rules*/
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      titleRules: [
+        v => !!v || 'Title is required',
+      ],
+      messageRules: [
+        v => !!v || 'Message is required',
+      ],
+
+      loader: null,
+      loading: false,
+
       review: new Form({
         node: this.node_id,
-        first_name: null,
-        last_name: null,
+        name: null,
         email: null,
         title: null,
         description: null,
@@ -112,12 +135,60 @@ export default {
   },
 
   methods: {
-    async post_review() {
-      const { data } = await this.$axios.post(`review/submit`, this.review)
-      this.message = data.message
-    }
+     async post_review() {
+     
+      const l = this.loader
+      this[l] = !this[l]
+      
+      this.dialog = true;
+      let formData = new FormData();
+      formData.append('node', this.review.node)
+      formData.append('name', this.review.name)
+      formData.append('email', this.review.email)
+      formData.append('title', this.review.title)
+      formData.append('description', this.review.description)
+      formData.append('rating', this.review.rating)
+        
+        if (this.$refs.form1.validate()) {
+          this.snackbar = true
+         this.$axios
+            .post(`review/submit`, formData)
+            .then(response => {
+            setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Review submited, waiting for modaration",
+            type: "info",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 1500),
+        this.reset();
+          })
+         }else{
+
+      setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Invalid Input!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 500)
+      }
+     // });
+      
+      },
+
+      reset () {
+        this.$refs.form1.reset()
+      },
+
+  
   },
   mounted() {
+    
     this.$axios.get(`reviews/${this.node_id}`).then(res => {
       this.reviews = res.data
     })
