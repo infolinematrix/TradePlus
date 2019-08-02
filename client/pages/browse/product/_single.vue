@@ -30,7 +30,12 @@
               <v-icon>star_border</v-icon>
             </v-card-actions>
             <v-card-text>We are a reputed manufacturer and supplier of a huge range of Water Softener. Based on the technology of ion exchange, these softeners can be attached with dishwashers, washing machines and geysers for eliminating various water hardening minerals including calcium and magnesium. Our Water Softener is processed using quality compounds and modern techniques at our state of the art machining facility. WE can also offer these softeners at a reasonable price.</v-card-text>
+
+            <v-card-text>
+              <review-ratting :node_id="product.id"></review-ratting>
+            </v-card-text>
           </v-flex>
+
           <v-flex md5 xs12 class="bg-white">
             <v-sheet class="pa-2 pb-0">
               <v-list two-line>
@@ -153,7 +158,7 @@
                   </v-flex>
                 </v-layout>
 
-<v-text-field  label="Email" required></v-text-field>
+                <v-text-field label="Email" required></v-text-field>
 
                 <v-layout row wrap>
                   <v-flex md6>
@@ -162,18 +167,16 @@
                   <v-flex md6>
                     <v-text-field label="Quantity" required></v-text-field>
                   </v-flex>
-<v-flex md12>
-                  <v-textarea
-          outlined
-          name="input-7-4"
-          label="Outline textarea"
-          value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-        ></v-textarea>
-</v-flex>
+                  <v-flex md12>
+                    <v-textarea
+                      outlined
+                      name="input-7-4"
+                      label="Outline textarea"
+                      value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
+                    ></v-textarea>
+                  </v-flex>
 
-
-  <v-btn depressed color="primary">Send</v-btn>
-
+                  <v-btn depressed color="primary">Send</v-btn>
                 </v-layout>
               </v-container>
             </v-sheet>
@@ -186,7 +189,13 @@
 
 
 <script>
+import ReviewRatting from '~/components/ReviewRatting.vue'
+
 export default {
+  components: {
+    ReviewRatting
+  },
+
   async asyncData({ $axios, params }) {
     let prodata = await $axios.get('browse/single/' + params.single)
     return {

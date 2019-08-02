@@ -1,17 +1,31 @@
 <template>
-  <v-card>
+  <v-card flat>
     <div>
-      <v-tabs slider-color="yellow darken-3">
+      <v-tabs slider-color="primary" style="border:1px solid #dfdfdf">
         <v-tab ripple>Reviews</v-tab>
         <v-tab ripple>Write review</v-tab>
 
         <v-tab-item>
+          <v-card flat>
+            <v-card-text class="pb-0">
+              <div class="body-2">Kripa's Printed Cushions Cover</div>
+              <div
+                class="body-1 mt-2 font-weight-light"
+              >The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.</div>
+            </v-card-text>
+
+            <v-card-actions class="pl-3">
+              <span class="text-muted caption">Subha Sundar Das ~ 14th April, 2019</span>
+              <v-spacer></v-spacer>
+              <v-rating value="4" readonly dense color="pink accent-3" class="pa-0"></v-rating>
+            </v-card-actions>
+            <v-divider></v-divider>
+          </v-card>
+
           <v-card flat v-for="review in reviews" :key="review">
             <v-card-text class="pb-0">
               <div class="body-2">{{ review.title }}</div>
-              <p
-                class="text--primary"
-              >{{ review.description }}</p>
+              <p class="text--primary">{{ review.description }}</p>
             </v-card-text>
 
             <v-card-actions class="pl-3">
@@ -26,26 +40,27 @@
         <v-tab-item>
           <v-form>
             <v-container>
+              <v-catd-text class="text-muted">
+                Product review create a more consistent user experience. They can also help buyers
+                make more informed shopping decisions. Submit your review.
+              </v-catd-text>
+
               <v-layout row wrap v-if="!message">
-                <v-flex xs12 md4>
+                <v-flex xs12 md6>
                   <v-text-field
                     :counter="25"
-                    label="First name"
+                    label="Full name"
                     v-model="review.first_name"
                     required
                   ></v-text-field>
                 </v-flex>
 
-                <v-flex xs12 md4>
-                  <v-text-field :counter="25" label="Last name" v-model="review.last_name" required></v-text-field>
-                </v-flex>
-
-                <v-flex xs12 md4>
+                <v-flex xs12 md6>
                   <v-text-field label="E-mail" v-model="review.email" required></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 md12>
-                  <v-text-field :counter="80" label="Last name" v-model="review.title" required></v-text-field>
+                  <v-text-field :counter="80" label="Title" v-model="review.title" required></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 md12>
@@ -63,13 +78,7 @@
                 </v-flex>
 
                 <v-flex xs12>
-                  <v-btn
-                    @click.stop="post_review()"
-                    class="ma-0"
-                    color="primary"
-                    depressed
-                    large
-                  >Submit</v-btn>
+                  <v-btn @click.stop="post_review()" class="ma-0" color="primary" depressed>Submit</v-btn>
                 </v-flex>
               </v-layout>
 
@@ -83,9 +92,9 @@
 </template>
 
 <script>
-import Form from "vform";
+import Form from 'vform'
 export default {
-  props: ["node_id"],
+  props: ['node_id'],
   data() {
     return {
       message: null,
@@ -99,19 +108,19 @@ export default {
         description: null,
         rating: 1
       })
-    };
+    }
   },
 
   methods: {
     async post_review() {
-      const { data } = await this.$axios.post(`review/submit`, this.review);
-      this.message = data.message;
+      const { data } = await this.$axios.post(`review/submit`, this.review)
+      this.message = data.message
     }
   },
   mounted() {
     this.$axios.get(`reviews/${this.node_id}`).then(res => {
-      this.reviews = res.data;
-    });
+      this.reviews = res.data
+    })
   }
-};
+}
 </script>
