@@ -45,6 +45,7 @@ class SearchController extends PublicController
 
     public function single($name){
 
+
         $node = Node::withName($name)->first();
         $data = [];
         if($node){
@@ -59,6 +60,9 @@ class SearchController extends PublicController
                 $img = '/image-600x400.png';
             }
             $company = $node->parent()->first();
+            $company_data = $company->nodeSourceExtensions()->first();
+
+
 
             $company_logo = $company->getImages()->where('img_type','profile')->first();
             if($company_logo){
@@ -70,15 +74,39 @@ class SearchController extends PublicController
                 $logo = '/avatar_male.png';
             }
 
+
+            $units = config('site.unit');
+            foreach ($units as $key => $value){
+
+                if($key == $node->product_unit){
+
+                    $unit = $value;
+                }
+            }
+
+            /*Payment Accept*/
+            $payment_accept = $company_data->payment_accept;
+
+            $payment = json_decode($payment_accept, true);
+
+
+
             $data = [
 
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
                 'description' => strip_tags($node->description),
+                'meta_description' => strip_tags($node->meta_description),
                 'image' => $img,
                 'company' => $company->getTitle(),
                 'company_location' => getBusinessLocation($company->getKey()),
-                'company_logo' => $logo
+                'company_logo' => $logo,
+                'unit' => $unit,
+                'moq' => $node->product_moq,
+                'show_price' => $node->show_price,
+                'price' => $node->product_price,
+                'international_shipping' => ($node->shipping == 'yes' ? 'Yes' : 'No'),
+                'payment_accept' => $payment
             ];
         }
 

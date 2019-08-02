@@ -38,7 +38,7 @@ return [
         1 => __('Cash'),
         2 => __('Transfer (NEFT)'),
         3 => __('Credit Card'),
-        4 => __('Cheque'),
+        4 => __('Paypal'),
 
     ],
 

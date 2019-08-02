@@ -6,7 +6,9 @@
         dismissible
         color="default"
         class="grey--text mt-5 hidden-xs-only"
-      >List of trusted professionals available to help with plumbing issues. An experienced plumber can help you with garbage disposal unblocking, bathroom repair and drain replacement to keep your project running smoothly.</v-alert>
+      >
+      {{ product.meta_description }}
+      </v-alert>
 
       <v-card flat>
         <v-layout row wrap>
@@ -15,12 +17,12 @@
             <v-card-title primary-title>
               <div class="font-weight-medium title lh1">
                 {{ product.title }}
-                <div class="text-muted caption mt-2">{{ product.description }}</div>
+                <div class="text-muted caption mt-2">{{ product.meta_description }}</div>
               </div>
             </v-card-title>
 
             <v-divider></v-divider>
-            <v-card-actions class="pa-3">
+            <!--<v-card-actions class="pa-3">
               1245 reviews
               <v-spacer></v-spacer>
               <v-icon color="primary">star_border</v-icon>
@@ -28,8 +30,10 @@
               <v-icon color="primary">star_border</v-icon>
               <v-icon>star_border</v-icon>
               <v-icon>star_border</v-icon>
-            </v-card-actions>
-            <v-card-text>We are a reputed manufacturer and supplier of a huge range of Water Softener. Based on the technology of ion exchange, these softeners can be attached with dishwashers, washing machines and geysers for eliminating various water hardening minerals including calcium and magnesium. Our Water Softener is processed using quality compounds and modern techniques at our state of the art machining facility. WE can also offer these softeners at a reasonable price.</v-card-text>
+            </v-card-actions>-->
+            <v-card-text>
+              {{ product.description }}
+            </v-card-text>
           </v-flex>
           <v-flex md5 xs12 class="bg-white">
             <v-sheet class="pa-2 pb-0">
@@ -74,38 +78,36 @@
             <v-sheet class="pa-2">
               <v-list>
                 <template>
-                  <v-list-tile class="height-30">
-                    <v-list-tile-content>
-                      <v-list-tile-title class="body-2 font-weight-regular">Unit</v-list-tile-title>
-                    </v-list-tile-content>
-                    <strong>12350</strong>/Box
-                  </v-list-tile>
-                  <v-list-tile class="height-30">
+                  <v-list-tile class="height-30" v-if="product.show_price == 'true'">
                     <v-list-tile-content>
                       <v-list-tile-title class="body-2 font-weight-regular">Price</v-list-tile-title>
                     </v-list-tile-content>
-                    <strong>12350</strong>/Box
+                    <strong>{{ product.price }}/-</strong>
                   </v-list-tile>
 
                   <v-list-tile class="height-30">
                     <v-list-tile-content>
                       <v-list-tile-title class="body-2 font-weight-regular">Minimum Order Quantity</v-list-tile-title>
                     </v-list-tile-content>
-                    <strong>12350</strong>/Box
+                    <strong>{{ product.moq }}</strong>/{{ product.unit }}
                   </v-list-tile>
 
                   <v-list-tile class="height-30">
                     <v-list-tile-content>
                       <v-list-tile-title class="body-2 font-weight-regular">International Shipping</v-list-tile-title>
                     </v-list-tile-content>
-                    <strong>12350</strong>/Box
+                    <strong>{{ product.international_shipping }}</strong>
                   </v-list-tile>
+                  
+                  <!--
                   <v-list-tile class="height-30">
                     <v-list-tile-content>
                       <v-list-tile-title class="body-2 font-weight-regular">Cash on Delivery</v-list-tile-title>
                     </v-list-tile-content>
                     <strong>12350</strong>/Box
                   </v-list-tile>
+                  -->
+
                 </template>
               </v-list>
             </v-sheet>
@@ -118,20 +120,22 @@
                   <v-list-tile-content>
                     <v-list-tile-sub-title>
                       <v-layout row wrap>
-                        <v-avatar tile size="45" class="mr-4">
-                          <img src="/icons/cash.svg" alt="Facebbok" />
+
+                        
+                        <v-avatar tile size="45" class="mr-4" v-if="product.payment_accept[0] == '1'">
+                          <img src="/icons/cash.svg" alt="Cash On Delivery" />
                         </v-avatar>
 
-                        <v-avatar tile size="45" class="mr-4">
-                          <img src="/icons/banktransfer.svg" alt="Facebbok" />
+                        <v-avatar tile size="45" class="mr-4" v-if="product.payment_accept[1] == '2'">
+                          <img src="/icons/banktransfer.svg" alt="Bank Transfer (NEFT)" />
                         </v-avatar>
 
-                        <v-avatar tile size="45" class="mr-4">
-                          <img src="/icons/creditcard.svg" alt="Facebbok" />
+                        <v-avatar tile size="45" class="mr-4" v-if="product.payment_accept[2] == '3'">
+                          <img src="/icons/creditcard.svg" alt="Credit Card" />
                         </v-avatar>
 
-                        <v-avatar tile size="45" class="mr-4">
-                          <img src="/icons/paypal.svg" alt="Facebbok" />
+                        <v-avatar tile size="45" class="mr-4" v-if="product.payment_accept[3] == '4'">
+                          <img src="/icons/paypal.svg" alt="Paypal" />
                         </v-avatar>
                       </v-layout>
                     </v-list-tile-sub-title>
@@ -295,7 +299,6 @@ export default {
          this.$axios
             .post(`post-quote`, formData)
             .then(response => {
-              console.log(response.data);
             setTimeout(() => (
             this[l] = false,
             swal.fire({
