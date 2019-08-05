@@ -76,13 +76,21 @@ class SearchController extends PublicController
 
 
             $units = config('site.unit');
-            foreach ($units as $key => $value){
+            if($node->product_unit) {
+                foreach ($units as $key => $value) {
 
-                if($key == $node->product_unit){
+                    if ($key == $node->product_unit) {
 
-                    $unit = $value;
+                        $unit = $value;
+                    }
                 }
+            }else{
+
+                $unit = null;
             }
+
+
+
 
             /*Payment Accept*/
             $payment_accept = $company_data->payment_accept;

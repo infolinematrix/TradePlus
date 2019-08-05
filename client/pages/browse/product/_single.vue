@@ -80,7 +80,7 @@
                     <strong>{{ product.price }}/-</strong>
                   </v-list-tile>
 
-                  <v-list-tile class="height-30">
+                  <v-list-tile class="height-30" v-if="product.unit != null">
                     <v-list-tile-content>
                       <v-list-tile-title class="body-2 font-weight-regular">Minimum Order Quantity</v-list-tile-title>
                     </v-list-tile-content>
