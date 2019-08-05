@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex md8 xs12>
         <v-card flat>
-          <v-img src="/cover.jpg" height="250px">
+          <v-img src="/cover.jpg" alt="Company Cover Photo">
             <v-layout column fill-height>
               <v-card-title>
                 <v-btn dark icon>
@@ -19,11 +19,11 @@
 
         <v-toolbar flat extended dense>
           <v-avatar size="125" tile="false">
-            <v-img src="logo.png" alt="avatar"></v-img>
+            <v-img src="logo.png" alt="Company Logo"></v-img>
           </v-avatar>
 
           <v-sheet class="mt-5 ml-3">
-            <h1 class="title">Matrix Infoline Private Limited</h1>
+            <h1 class="title font-weight-bold">Matrix Infoline Private Limited</h1>
             <v-card-actions class="px-0">
               <v-icon color="red">star</v-icon>
               <v-icon color="red">star</v-icon>
@@ -61,20 +61,22 @@
           </v-sheet>
         </v-toolbar>
 
-        <v-card-text>
+        <v-card-text style="height: 200px;">
           <template>
-            <h2>About</h2>
+            <h2 class="font-weight-regular">About</h2>
             <div>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum maiores modi quidem veniam, expedita quis laboriosam, ullam facere adipisci, iusto, voluptate sapiente corrupti asperiores rem nemo numquam fuga ab at.</p>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum maiores modi quidem veniam, expedita quis laboriosam, ullam facere adipisci, iusto, voluptate sapiente corrupti asperiores rem nemo numquam fuga ab at.</p>
             </div>
           </template>
         </v-card-text>
-      </v-flex>
-    </v-layout>
-  </v-container>
-</template>
-          </v-card-text>
+
+        <v-card-text class="bordered">
+          <v-sheet>
+            One line message text string with two actions on tablet / Desktop
+
+          </v-sheet>
+        </v-card-text>
       </v-flex>
       <v-flex md4 xs12>Right Panel</v-flex>
     </v-layout>
