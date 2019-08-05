@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex md8 xs12>
         <v-card flat>
-          <v-img src="/cover.jpg" height="250px">
+          <v-img src="/cover.jpg" alt="Company Cover Photo">
             <v-layout column fill-height>
               <v-card-title>
                 <v-btn dark icon>
@@ -19,31 +19,64 @@
 
         <v-toolbar flat extended dense>
           <v-avatar size="125" tile="false">
-            <v-img src="logo.png" alt="avatar"></v-img>
+            <v-img src="logo.png" alt="Company Logo"></v-img>
           </v-avatar>
 
           <v-sheet class="mt-5 ml-3">
-            <h1 class="title mb-1">Matrix Infoline Private Limited</h1>
-            <div>HDLD</div>
+            <h1 class="title font-weight-bold">Matrix Infoline Private Limited</h1>
+            <v-card-actions class="px-0">
+              <v-icon color="red">star</v-icon>
+              <v-icon color="red">star</v-icon>
+              <v-icon color="red">star</v-icon>
+              <v-icon>star_border</v-icon>
+              <v-icon>star_border</v-icon>
+              <span class="ml-2">136 reviews</span>
+              <v-spacer></v-spacer>
+            </v-card-actions>
           </v-sheet>
 
           <v-spacer></v-spacer>
           <v-sheet class="mt-5 ml-3">
-            <template>
-              <v-btn icon>
-                <v-icon>home</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>person</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>persons</v-icon>
-              </v-btn>
-            </template>
+            <v-avatar tile size="30" class="ml-2">
+              <img src="icons/premium.svg" alt="Verified Business" />
+            </v-avatar>
+
+            <v-avatar tile size="30" class="ml-2">
+              <img src="icons/verified.svg" alt="Verified Business" />
+            </v-avatar>
+
+            <v-menu bottom left>
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on">
+                  <v-icon>menu</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item>
+                  <v-list-item-title>Report Incorrect</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-sheet>
         </v-toolbar>
 
-        <v-card-text style="height: 200px;">sdfdsf</v-card-text>
+        <v-card-text style="height: 200px;">
+          <template>
+            <h2 class="font-weight-regular">About</h2>
+            <div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum maiores modi quidem veniam, expedita quis laboriosam, ullam facere adipisci, iusto, voluptate sapiente corrupti asperiores rem nemo numquam fuga ab at.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum maiores modi quidem veniam, expedita quis laboriosam, ullam facere adipisci, iusto, voluptate sapiente corrupti asperiores rem nemo numquam fuga ab at.</p>
+            </div>
+          </template>
+        </v-card-text>
+
+        <v-card-text class="bordered">
+          <v-sheet>
+            One line message text string with two actions on tablet / Desktop
+
+          </v-sheet>
+        </v-card-text>
       </v-flex>
       <v-flex md4 xs12>Right Panel</v-flex>
     </v-layout>
