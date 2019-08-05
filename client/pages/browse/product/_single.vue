@@ -36,12 +36,18 @@
                 <v-subheader>Supplier information</v-subheader>
                 <template>
                   <v-list-tile avatar>
+                   <nuxt-link :to="'/browse/company/'+ product.company_slug">
                     <v-list-tile-avatar>
                       <v-img :src="product.company_logo"></v-img>
                     </v-list-tile-avatar>
-
+                    </nuxt-link>
+                   
                     <v-list-tile-content>
-                      <v-list-tile-title class>{{ product.company }}</v-list-tile-title>
+                      <v-list-tile-title class>
+                        <nuxt-link :to="'/browse/company/'+ product.company_slug" class="black--text"> 
+                        {{ product.company }}
+                        </nuxt-link>
+                        </v-list-tile-title>
                       <v-list-tile-sub-title>{{ product.company_location }}</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>

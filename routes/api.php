@@ -98,6 +98,7 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::post('post-quote','BusinessController@postquote');
 
     //--Browse
+    Route::get('company/single/{slug}','BusinessController@single');
     Route::get('browse/single/{slug}','SearchController@single');
     Route::get('browse/{all?}','SearchController@browse')->where(['all' => '.*']);
 

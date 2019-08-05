@@ -89,18 +89,12 @@ class SearchController extends PublicController
                 $unit = null;
             }
 
-
-
-
             /*Payment Accept*/
             $payment_accept = $company_data->payment_accept;
 
             $payment = json_decode($payment_accept, true);
 
-
-
             $data = [
-
                 'id' => $node->getKey(),
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
@@ -108,6 +102,7 @@ class SearchController extends PublicController
                 'meta_description' => strip_tags($node->meta_description),
                 'image' => $img,
                 'company' => $company->getTitle(),
+                'company_slug' => $company->getName(),
                 'company_location' => getBusinessLocation($company->getKey()),
                 'company_logo' => $logo,
                 'unit' => $unit,
@@ -124,6 +119,8 @@ class SearchController extends PublicController
 
 
     }
+    
+    
     public function browse($params = null)
     {
 

@@ -32,65 +32,6 @@ class BusinessController extends PublicController
     use UsesNodeHelpers, UsesNodeForms, UsesTranslations;
     use UseAppHelper;
 
-    public function getProfile(NodeRepository $nodeRepository, $name)
-    {
-        # code...
-        $node = $nodeRepository->getNodeAndSetLocale($name, true, false);
-
-        # image
-        $img = $node->getImages()->where('img_type', 'profile')->first();
-
-        $path = 'https://dummyimage.com/300x200/f0f0f0/fff.png&text=Profile';
-        if ($img) {
-            $path = asset('uploads/' . $img->path);
-        }
-
-        #Cover Image
-        $coverimage = $node->getImages()->where('img_type', 'cover')->first();
-        $coverimg = '/cover.jpg';
-        if ($coverimage) {
-            $coverimg = asset('uploads/' . $coverimage->path);
-        }
-
-        #keywords
-        $keywords = null;
-        $tags = $node->tags()->get();
-        if (count($tags) > 0) {
-            foreach ($tags as $tag) {
-                $keywords[] = [
-                    'title' => $tag->title,
-                    'slug' => $tag->tag_name,
-                ];
-            }
-        }
-
-        #working hourss
-        $modelName = source_model_name('workinghours', true);
-        $hours = $modelName::where('id', $node->translate(locale())->getKey())
-            ->where('node_id', $node->getKey())->first();
-
-        $data['id'] = $node->getKey();
-        $data['title'] = $node->getTitle();
-        $data['address'] = $node->business_address;
-        $data['location'] = getBusinessLocation($node->getKey());
-        $data['tags'] = $keywords;
-        $data['zipcode'] = $node->business_zipcode;
-        $data['phone'] = $node->business_phone;
-        $data['email'] = $node->business_email;
-        $data['website'] = $node->business_website;
-        $data['logo'] = $path;
-        $data['review_rate'] = $node->getRating();
-        $data['review_count'] = $node->getReviews()->count();
-        $data['working_hours'] = ($hours ? json_decode($hours->hours) : null);
-        $data['coverimage'] = $coverimg;
-        $data['about'] = $node->business_description;
-        $data['business_employee'] = $node->business_employee;
-        $data['business_scale'] = Lang::get('application.scale.' . $node->business_scale);
-        $data['business_entity'] = Lang::get('application.entity.' . $node->business_entity);
-        $data['business_established'] = $node->business_established;
-
-        return $data;
-    }
 
     public function addBusiness()
     {
@@ -353,6 +294,19 @@ class BusinessController extends PublicController
 
             /*Payment Accept*/
 
+            /*Working Hours*/
+            $modelName = source_model_name('workinghours', true);
+            $hours = $modelName::where('id', $node->translate('en')->getKey())
+                ->where('node_id', $node->getKey())->first();
+
+            if ($hours) {
+
+                $data['working_hours'] = json_decode($hours->hours);
+            } else {
+
+                $data['working_hours'] = null;
+            }
+
             return $data;
         } else {
 
@@ -474,6 +428,62 @@ class BusinessController extends PublicController
             $media->user_id = Auth::user()->id;
             $media->save();
         }
+
+
+        /*Working Hours*/
+        $input = $request->all();
+        $array = [];
+
+        for ($i = 0; $i < 7; $i++) {
+            if ($input['hourstatus'][$i] == 'false') {
+
+                $ar[] = 'false';
+
+            }
+            $array[$i] = [
+                'day' => $input['day'][$i],
+                'status' => $input['hourstatus'][$i],
+                'open' => $input['open'][$i],
+                'close' => $input['close'][$i],
+            ];
+        }
+
+        $json_data = json_encode($array);
+
+
+
+        /*Insert or Update Working Hours*/
+        $modelName = source_model_name('workinghours', true);
+
+        $custom_table_class = new $modelName;
+        $cModel = $modelName::where('id', $node->translate($locale)->getKey())
+            ->where('node_id', $node->getKey())->first();
+
+
+
+        if ($cModel) {
+            $request->request->set('id', $node->translate($locale)->getKey());
+            $request->request->set('node_id', $node->getKey());
+            $request->request->set('hours', $json_data);
+            $data = array_except($request->all(), ['business_employee','business_established','business_facebook',
+                'business_google','business_linkedin',
+                'business_scale','business_twitter',
+                'business_youtube','hourstatus', 'open', 'close', 'day']);
+            $custom_table_class->where('id', $node->translate($locale)->getKey())->update($data);
+
+        } else {
+
+            $request->request->set('id', $node->translate($locale)->getKey());
+            $request->request->set('node_id', $node->getKey());
+            $request->request->set('hours', $json_data);
+            $data = array_except($request->all(), ['business_employee','business_established','business_facebook',
+                'business_google','business_linkedin',
+                'business_scale','business_twitter',
+                'business_youtube','hourstatus', 'open', 'close', 'day']);
+            $custom_table_class->insert($data);
+
+        }
+        /*Working Hours*/
 
         $data = [
             'node_id' => $node->getKey(),
@@ -1301,5 +1311,108 @@ class BusinessController extends PublicController
 
     }
 
-    
+    public function single($name){
+
+
+        $node = Node::withName($name)->first();
+        $data = [];
+        if($node){
+
+            $coverimage = $node->getImages()->where('img_type','cover')->first();
+            if($coverimage){
+
+                $img = asset('uploads/'.$coverimage->path);
+
+            }else{
+
+                $img = '/cover.jpg';
+            }
+
+
+
+            $profileimage = $node->getImages()->where('img_type','profile')->first();
+            if($profileimage){
+
+                $logo = asset('/uploads/'.$profileimage->path);
+
+            }else{
+
+                $logo = '/avatar_male.png';
+            }
+
+            /*Type*/
+            $entities = config('site.entity');
+            foreach ($entities as $key => $value){
+
+                if($key == $node->business_entity) {
+                    $business_type = $value;
+                    }
+            }
+
+            /*Size*/
+
+            $scales = config('site.scale');
+            if($node->business_scale){
+
+                foreach ($scales as $key => $value){
+
+
+                    if($node->business_scale == $key){
+
+                        $scale = $value;
+                    }
+                }
+            }else{
+
+                $scale = null;
+            }
+
+            /*Payment Accept*/
+            $payment_accept = $node->payment_accept;
+            $payment = json_decode($payment_accept, true);
+
+            /*Working Hours*/
+            $modelName = source_model_name('workinghours', true);
+            $hours = $modelName::where('id', $node->translate('en')->getKey())
+                ->where('node_id', $node->getKey())->first();
+
+            if ($hours) {
+
+                $working_hours = json_decode($hours->hours);
+            } else {
+
+                $working_hours = null;
+            }
+
+
+
+
+
+            $data = [
+
+                'id' => $node->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'description' => strip_tags($node->description),
+                'meta_description' => strip_tags($node->meta_description),
+                'profileimage' => $logo,
+                'coverimage' => $img,
+                'address' => $node->business_address,
+                'zipcode' => $node->business_zipcode,
+                'location' => getBusinessLocation($node->getKey()),
+                'type' => $business_type,
+                'size' => $scale,
+                'no_of_employee' => $node->business_employee,
+                'established' => $node->business_established,
+                'payment_accept' => $payment,
+                'working_hours' => $working_hours
+
+            ];
+        }
+
+        return $data;
+
+
+
+    }
 }

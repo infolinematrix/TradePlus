@@ -79,6 +79,7 @@
         <v-tab ripple class="text-capitalize">Profile <v-icon color="primary">work_outline</v-icon> </v-tab>
         <v-tab ripple class="text-capitalize">About <v-icon color="green">filter_frames</v-icon></v-tab>
         <v-tab ripple class="text-capitalize">Others <v-icon color="grey">toggle_off</v-icon></v-tab>
+        
         <v-tab ripple class="text-capitalize">Settings  <v-icon color="megenta">toggle_off</v-icon></v-tab>
 
 
@@ -380,6 +381,350 @@
                       </v-flex>
                     </v-layout>
 
+<v-subheader class="pl-0">Working Hours</v-subheader>
+
+                     <v-card-text>
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.monday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Monday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.monday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.monday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.monday.open.time"
+                    :disabled="!form3.monday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.monday.open.time" format="24hr" autosave ></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.monday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.monday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.monday.close.time"
+                    :disabled="!form3.monday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.monday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.tuesday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Tuesday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.tuesday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.tuesday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.tuesday.open.time"
+                    :disabled="!form3.tuesday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.tuesday.open.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.tuesday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.tuesday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.tuesday.close.time"
+                    :disabled="!form3.tuesday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.tuesday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.wednesday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Wednesday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.wednesday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.wednesday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.wednesday.open.time"
+                    :disabled="!form3.wednesday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.wednesday.open.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.wednesday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.wednesday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.wednesday.close.time"
+                    :disabled="!form3.wednesday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.wednesday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.thursday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Thursday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.thursday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.thursday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.thursday.open.time"
+                    :disabled="!form3.thursday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.thursday.open.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.thursday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.thursday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.thursday.close.time"
+                    :disabled="!form3.thursday.status"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.thursday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.friday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Friday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.friday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.friday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.friday.open.time"
+                    :disabled="!form3.friday.status"
+                    prepend-icon="access_time"
+                    
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.friday.open.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.friday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.friday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.friday.close.time"
+                    :disabled="!form3.friday.status"
+                    prepend-icon="access_time"
+                    
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.friday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+            
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.saturday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Saturday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.saturday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.saturday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.saturday.open.time"
+                    :disabled="!form3.saturday.status"
+                    prepend-icon="access_time"
+                    
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.saturday.open.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.saturday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.saturday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.saturday.close.time"
+                    :disabled="!form3.saturday.status"
+                    prepend-icon="access_time"
+                    
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.saturday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+            
+            <v-layout row wrap align-center>
+              <v-flex>
+                <v-switch class="pt-0" v-model="form3.sunday.status" color="primary"></v-switch>
+              </v-flex>
+              <v-flex text-md-left>Sunday</v-flex>
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.sunday.open.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.sunday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Open at"
+                    v-model="form3.sunday.open.time"
+                    :disabled="!form3.sunday.status"
+                    prepend-icon="access_time"
+                    
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.sunday.open.time" 
+                  format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+
+              <v-flex md3>
+                <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="form3.sunday.close.menu"
+                  transition="scale-transition"
+                  offset-y
+                  :disabled="!form3.sunday.status"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Close at"
+                    v-model="form3.sunday.close.time"
+                    :disabled="!form3.sunday.status"
+                    prepend-icon="access_time"
+                    
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="form3.sunday.close.time" format="24hr" autosave></v-time-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+         
+
                     <v-card-actions class="pa-0">
                       <v-btn type="submit" large depressed color="orange">Update</v-btn>
                     </v-card-actions>
@@ -470,7 +815,7 @@
                 </v-layout>
               </v-flex>
 
- <div class="text-xs-center">
+              <div class="text-xs-center">
                       <v-dialog v-model="dialog" hide-overlay persistent width="300">
                         <v-card color="primary">
                           <v-card-text>
@@ -582,6 +927,91 @@ export default {
       linkedin: '',
       youtube: '',
       google: '',
+      
+       monday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      },
+
+      tuesday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      },
+
+      wednesday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      },
+
+      thursday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      },
+
+      friday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      },
+
+      saturday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      },
+
+      sunday: {
+        open: {
+          menu: false,
+          time: null
+        },
+        close: {
+          menu: false,
+          time: null
+        },
+        status: false
+      }
+
      }),
 
       text:
@@ -747,7 +1177,7 @@ export default {
 
     async others(scope) {
       //this.dialog = true;
-
+    
       let formData = new FormData()
       formData.append('business_employee', this.form3.employee)
       formData.append('business_scale', this.form3.scale)
@@ -757,6 +1187,41 @@ export default {
       formData.append('business_linkedin', this.form3.linkedin)
       formData.append('business_youtube', this.form3.youtube)
       formData.append('business_google', this.form3.google)
+
+     formData.append("day[]", 'monday');
+     formData.append("hourstatus[]", this.form3.monday.status);
+     formData.append("open[]", this.form3.monday.open.time);
+     formData.append("close[]", this.form3.monday.close.time);
+     
+     formData.append("day[]", 'tuesday');
+     formData.append("hourstatus[]", this.form3.tuesday.status);
+     formData.append("open[]", this.form3.tuesday.open.time);
+     formData.append("close[]", this.form3.tuesday.close.time);
+     
+     formData.append("day[]", 'wednesday');
+     formData.append("hourstatus[]", this.form3.wednesday.status);
+     formData.append("open[]", this.form3.wednesday.open.time);
+     formData.append("close[]", this.form3.wednesday.close.time);
+     
+     formData.append("day[]", 'thursday');
+     formData.append("hourstatus[]", this.form3.thursday.status);
+     formData.append("open[]", this.form3.thursday.open.time);
+     formData.append("close[]", this.form3.thursday.close.time);
+     
+     formData.append("day[]", 'friday');
+     formData.append("hourstatus[]", this.form3.friday.status);
+     formData.append("open[]", this.form3.friday.open.time);
+     formData.append("close[]", this.form3.friday.close.time);
+     
+     formData.append("day[]", 'saturday');
+     formData.append("hourstatus[]", this.form3.saturday.status);
+     formData.append("open[]", this.form3.saturday.open.time);
+     formData.append("close[]", this.form3.saturday.close.time);
+     
+     formData.append("day[]", 'sunday');
+     formData.append("hourstatus[]", this.form3.sunday.status);
+     formData.append("open[]", this.form3.sunday.open.time);
+     formData.append("close[]", this.form3.sunday.close.time);
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -894,6 +1359,49 @@ export default {
       if (response.data.node.google != null) {
         this.form3.google = response.data.node.google
       }
+
+       /*Monday*/
+        if(response.data.working_hours[0].status == 'true'){
+        this.form3.monday.status = response.data.working_hours[0].status;
+        this.form3.monday.open.time = response.data.working_hours[0].open;
+        this.form3.monday.close.time = response.data.working_hours[0].close;
+        }
+        /*Tuesday*/
+        if(response.data.working_hours[1].status == 'true'){
+        this.form3.tuesday.status = response.data.working_hours[1].status;
+        this.form3.tuesday.open.time = response.data.working_hours[1].open;
+        this.form3.tuesday.close.time = response.data.working_hours[1].close;
+        }
+        /*Wednesday*/
+        if(response.data.working_hours[2].status == 'true'){
+        this.form3.wednesday.status = response.data.working_hours[2].status;
+        this.form3.wednesday.open.time = response.data.working_hours[2].open;
+        this.form3.wednesday.close.time = response.data.working_hours[2].close;
+        }
+        /*Thursday*/
+        if(response.data.working_hours[3].status == 'true'){
+        this.form3.thursday.status = response.data.working_hours[3].status;
+        this.form3.thursday.open.time = response.data.working_hours[3].open;
+        this.form3.thursday.close.time = response.data.working_hours[3].close;
+        }
+        /*Friday*/
+        if(response.data.working_hours[4].status == 'true'){
+        this.form3.friday.status = response.data.working_hours[4].status;
+        this.form3.friday.open.time = response.data.working_hours[4].open;
+        this.form3.friday.close.time = response.data.working_hours[4].close;
+        }
+        /*Saturday*/
+        if(response.data.working_hours[5].status == 'true'){
+        this.form3.saturday.status = response.data.working_hours[5].status;
+        this.form3.saturday.open.time = response.data.working_hours[5].open;
+        this.form3.saturday.close.time = response.data.working_hours[5].close;
+        }
+        /*Sunday*/
+        if(response.data.working_hours[6].status == 'true'){
+        this.form3.sunday.status = response.data.working_hours[6].status;
+        this.form3.sunday.open.time = response.data.working_hours[6].open;
+        this.form3.sunday.close.time = response.data.working_hours[6].close;
+        }
 
       /*Settings*/
 

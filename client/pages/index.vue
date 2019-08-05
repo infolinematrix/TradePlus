@@ -111,19 +111,27 @@
         <v-layout row wrap>
           <v-flex xs12 md4 v-for="business in businesses" :key="business">
             <v-card>
+              <nuxt-link :to="'/browse/company/'+ business.slug"> 
               <v-img
                 :src="business.coverimage" height=200
               ></v-img>
+              </nuxt-link>
 
               <v-list two-line>
                 <template>
                   <v-list-tile avatar>
+                    <nuxt-link :to="'/browse/company/'+ business.slug"> 
                     <v-list-tile-avatar>
                       <img :src="business.profileimage">
                     </v-list-tile-avatar>
+                    </nuxt-link>
 
                     <v-list-tile-content>
-                      <v-list-tile-title class="font-weight-medium">{{ business.title }}</v-list-tile-title>
+                      <v-list-tile-title class="font-weight-medium">
+                       <nuxt-link :to="'/browse/company/'+ business.slug" class="black--text"> 
+                        {{ business.title }}
+                       </nuxt-link>
+                        </v-list-tile-title>
                       <v-list-tile-sub-title>{{ business.location }}</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>
