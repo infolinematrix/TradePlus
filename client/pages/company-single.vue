@@ -71,12 +71,68 @@
           </template>
         </v-card-text>
 
-        <v-card-text class="bordered">
-          <v-sheet>
-            One line message text string with two actions on tablet / Desktop
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex md6 xs12>
+              <v-sheet class="bordered pa-3 mb-3 bg-white">
+                <h4>Location</h4>
+                One line message text string with two actions on tablet / Desktop
+                </v-sheet>
 
-          </v-sheet>
+              <v-sheet class="bordered pa-3 mb-3 bg-white">
+                <h4>Credentials</h4>
+                One line message text string with two actions on tablet / Desktop
+                </v-sheet>
+
+                <v-sheet class="bordered pa-3 bg-white">
+                <h4>Payment methods</h4>
+                One line message text string with two actions on tablet / Desktop
+                </v-sheet>
+
+            </v-flex>
+            <v-flex md6 xs12>
+              <v-sheet class="pa-3 mb-3 bg-white bordered " >
+                <h4><v-icon>home</v-icon> Working hours</h4>
+                <v-layout>
+                  <v-flex class="pb-0">Monday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Tuesday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Wednesday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Thursday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Friday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Saturday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Sunday</v-flex>
+                  <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
+                  <v-flex class="blue--text pb-0 text-right">Open</v-flex>
+                </v-layout>
+              </v-sheet>
+            </v-flex>
+          </v-layout>
         </v-card-text>
+
       </v-flex>
       <v-flex md4 xs12>Right Panel</v-flex>
     </v-layout>
