@@ -100,6 +100,11 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
     Route::post('post-quote', 'BusinessController@postquote');
 
+    //Promotions
+    Route::get('get-promotions','BusinessController@getPromotions');
+    Route::post('delete-promotion/{id}','BusinessController@deletePromotion');
+
+
     //--Browse
     Route::get('company/single/{slug}', 'BusinessController@single');
     Route::get('browse/single/{slug}', 'SearchController@single');
@@ -132,7 +137,5 @@ Route::group(['middleware' => ['api', 'track'], 'namespace' => 'Extension\Site\H
 
     //Route::post('checkout','RoomTypeController@checkOut');
 
-    Route::post('checkout/{provider}', 'PaymentController@handleProviderCallback');
-    Route::get('checkout/redirect/{provider}', 'PaymentController@handleProviderRedirect')->name('checkout.redirect');
-    Route::get('checkout/transaction/{txn}', 'PaymentController@getTransaction')->name('checkout.transaction');
+
 });

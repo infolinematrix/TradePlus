@@ -382,8 +382,7 @@
                     </v-layout>
 
 <v-subheader class="pl-0">Working Hours</v-subheader>
-
-                     <v-card-text>
+        <v-card-text>
             <v-layout row wrap align-center>
               <v-flex>
                 <v-switch class="pt-0" v-model="form3.monday.status" color="primary"></v-switch>
@@ -398,15 +397,20 @@
                   offset-y
                   :disabled="!form3.monday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.monday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.monday.open.time"
                     :disabled="!form3.monday.status"
+                    v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Monday Open')"
+                    data-vv-name="Monday Open"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
                   <v-time-picker v-model="form3.monday.open.time" format="24hr" autosave ></v-time-picker>
+                  
                 </v-menu>
               </v-flex>
 
@@ -419,11 +423,15 @@
                   offset-y
                   :disabled="!form3.monday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.monday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.monday.close.time"
                     :disabled="!form3.monday.status"
+                     v-validate="'required'"
+                     :error-messages="errors.collect('form-3.Monday Close')"
+                    data-vv-name="Monday Close"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -445,11 +453,15 @@
                   offset-y
                   :disabled="!form3.tuesday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.tuesday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.tuesday.open.time"
                     :disabled="!form3.tuesday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Tuesday Open')"
+                    data-vv-name="Tuesday Open"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -466,11 +478,15 @@
                   offset-y
                   :disabled="!form3.tuesday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.tuesday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.tuesday.close.time"
                     :disabled="!form3.tuesday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Tuesday Close')"
+                    data-vv-name="Tuesday Close"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -492,11 +508,15 @@
                   offset-y
                   :disabled="!form3.wednesday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.wednesday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.wednesday.open.time"
                     :disabled="!form3.wednesday.status"
+                     v-validate="'required'"
+                     :error-messages="errors.collect('form-3.Wednesday Open')"
+                    data-vv-name="Wednesday Open"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -513,11 +533,15 @@
                   offset-y
                   :disabled="!form3.wednesday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.wednesday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.wednesday.close.time"
                     :disabled="!form3.wednesday.status"
+                     v-validate="'required'"
+                     :error-messages="errors.collect('form-3.Wednesday Close')"
+                    data-vv-name="Wednesday Close"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -539,11 +563,15 @@
                   offset-y
                   :disabled="!form3.thursday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.thursday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.thursday.open.time"
                     :disabled="!form3.thursday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Thursday Open')"
+                    data-vv-name="Thursday Open"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -560,11 +588,15 @@
                   offset-y
                   :disabled="!form3.thursday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.thursday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.thursday.close.time"
                     :disabled="!form3.thursday.status"
+                     v-validate="'required'"
+                     :error-messages="errors.collect('form-3.Thursday Close')"
+                    data-vv-name="Thursday Close"
+                    required
                     prepend-icon="access_time"
                     readonly
                   ></v-text-field>
@@ -586,11 +618,15 @@
                   offset-y
                   :disabled="!form3.friday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.friday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.friday.open.time"
                     :disabled="!form3.friday.status"
+                     v-validate="'required'"
+                     :error-messages="errors.collect('form-3.Friday Open')"
+                    data-vv-name="Friday Open"
+                    required
                     prepend-icon="access_time"
                     
                     readonly
@@ -608,11 +644,15 @@
                   offset-y
                   :disabled="!form3.friday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.friday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.friday.close.time"
                     :disabled="!form3.friday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Friday Close')"
+                    data-vv-name="Friday Close"
+                    required
                     prepend-icon="access_time"
                     
                     readonly
@@ -636,11 +676,15 @@
                   offset-y
                   :disabled="!form3.saturday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.saturday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.saturday.open.time"
                     :disabled="!form3.saturday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Saturday Open')"
+                    data-vv-name="Saturday Open"
+                    required
                     prepend-icon="access_time"
                     
                     readonly
@@ -658,11 +702,15 @@
                   offset-y
                   :disabled="!form3.saturday.status"
                 >
-                  <v-text-field
+                  <v-text-field  v-if="form3.saturday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.saturday.close.time"
                     :disabled="!form3.saturday.status"
+                     v-validate="'required'"
+                     :error-messages="errors.collect('form-3.Saturday Close')"
+                    data-vv-name="Saturday Close"
+                    required
                     prepend-icon="access_time"
                     
                     readonly
@@ -686,11 +734,15 @@
                   offset-y
                   :disabled="!form3.sunday.status"
                 >
-                  <v-text-field
+                  <v-text-field  v-if="form3.sunday.status"
                     slot="activator"
                     label="Open at"
                     v-model="form3.sunday.open.time"
                     :disabled="!form3.sunday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Sunday Open')"
+                    data-vv-name="Sunday Open"
+                    required
                     prepend-icon="access_time"
                     
                     readonly
@@ -709,11 +761,15 @@
                   offset-y
                   :disabled="!form3.sunday.status"
                 >
-                  <v-text-field
+                  <v-text-field v-if="form3.sunday.status"
                     slot="activator"
                     label="Close at"
                     v-model="form3.sunday.close.time"
                     :disabled="!form3.sunday.status"
+                     v-validate="'required'"
+                    :error-messages="errors.collect('form-3.Sunday Close')"
+                    data-vv-name="Sunday Close"
+                    required
                     prepend-icon="access_time"
                     
                     readonly
@@ -918,6 +974,7 @@ export default {
       description: null,
       }),
 
+     
      form3: new Form({
       employee: 0,
       scale: null,
@@ -1223,8 +1280,9 @@ export default {
      formData.append("open[]", this.form3.sunday.open.time);
      formData.append("close[]", this.form3.sunday.close.time);
 
-      this.$validator.validateAll(scope).then(result => {
+  this.$validator.validateAll(scope).then(result => {
         if (result) {
+          this.snackbar = true
           this.$axios.post(`business/update`, formData).then(response => {
             this.dialog = false
             swal.fire({
@@ -1237,7 +1295,7 @@ export default {
         } else {
           this.dialog = false
         }
-      })
+  })
     },
 
     /*Settings*/
@@ -1310,6 +1368,7 @@ export default {
   },
 
   mounted() {
+    
     this.$axios.get('edit-business').then(response => {
       this.form.business_title = response.data.node.title
       this.form.address = response.data.node.address
@@ -1361,6 +1420,7 @@ export default {
       }
 
        /*Monday*/
+       if(response.data.working_hours != null){
         if(response.data.working_hours[0].status == 'true'){
         this.form3.monday.status = response.data.working_hours[0].status;
         this.form3.monday.open.time = response.data.working_hours[0].open;
@@ -1402,6 +1462,7 @@ export default {
         this.form3.sunday.open.time = response.data.working_hours[6].open;
         this.form3.sunday.close.time = response.data.working_hours[6].close;
         }
+       }
 
       /*Settings*/
 

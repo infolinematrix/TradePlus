@@ -3,7 +3,7 @@
     <v-card flat v-for="item in this.products" :key="item" class="mb-3">
       <v-layout row wrap>
         <v-flex xs5>
-          <v-img src="https://picsum.photos/400/300?random" contain></v-img>
+          <v-img :src="item.image" contain></v-img>
         </v-flex>
         <v-flex xs7>
           <v-card-actions class="text-muted caption">Before 3 min ago</v-card-actions>
@@ -36,7 +36,6 @@ export default {
   mounted() {
     this.$axios.get('get-recent-products/' + this.$props.limit).then(response => {
       this.products = response.data
-      console.log(this.products)
     })
   }
 }

@@ -71,6 +71,7 @@ export default {
     '~plugins/helpers',
     //{ src: '~/plugins/helpers.js', mode: 'client' },
     { src: '~/plugins/swiper.js', ssr: false },
+    { src: '~/plugins/paypal.js', ssr: false },
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/moment'
