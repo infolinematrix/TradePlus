@@ -62,7 +62,7 @@ export default {
 
    mounted() {
         //category
-        this.$store.dispatch("app/SET_CATEGORIES");
+        //this.$store.dispatch("app/SET_CATEGORIES");
   }
 
 }

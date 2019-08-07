@@ -9,16 +9,10 @@
             <v-card-text class="pa-2">
               <v-layout row wrap>
                 <v-flex>
-                  <nuxt-link to="/about-us" class="mr-3 black--text">About us</nuxt-link>
+                  <nuxt-link to="/page/about-us" class="mr-3 black--text">About us</nuxt-link>
                 </v-flex>
                 <v-flex>
-                  <nuxt-link to="/help-support" class="mr-3 black--text">Help & Support</nuxt-link>
-                </v-flex>
-                <v-flex>
-                  <nuxt-link to="/privacy-policy" class="mr-3 black--text">Privacy policy</nuxt-link>
-                </v-flex>
-                <v-flex>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Cookie policy</nuxt-link>
+                  <nuxt-link to="/page/help-support" class="mr-3 black--text">Help & Support</nuxt-link>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -31,16 +25,16 @@
             <v-card-text class="pa-2">
               <v-layout row wrap>
                 <v-flex lg12>
-                  <nuxt-link to="/privacy-policy" class="mr-3 black--text">Privacy policy</nuxt-link>
+                  <nuxt-link to="/page/privacy-policy" class="mr-3 black--text">Privacy policy</nuxt-link>
                 </v-flex>
                 <v-flex lg12>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Cookie policy</nuxt-link>
+                  <nuxt-link to="/page/cookie-policy" class="mr-3 black--text">Cookie policy</nuxt-link>
                 </v-flex>
                 <v-flex lg12>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Terms &amp; Conditions</nuxt-link>
+                  <nuxt-link to="/page/cookie-policy" class="mr-3 black--text">Terms &amp; Conditions</nuxt-link>
                 </v-flex>
                 <v-flex lg12>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Review Policy</nuxt-link>
+                  <nuxt-link to="/page/reviews-policy" class="mr-3 black--text">Review Policy</nuxt-link>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -54,16 +48,7 @@
             <v-card-text class="pa-2">
               <v-layout row wrap>
                 <v-flex lg12>
-                  <nuxt-link to="/privacy-policy" class="mr-3 black--text">Advertise</nuxt-link>
-                </v-flex>
-                <v-flex lg12>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Promotions</nuxt-link>
-                </v-flex>
-                <v-flex lg12>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Banner</nuxt-link>
-                </v-flex>
-                <v-flex lg12>
-                  <nuxt-link to="/cookie-policy" class="mr-3 black--text">Pricing</nuxt-link>
+                  <nuxt-link to="/page/advertise-with-us" class="mr-3 black--text">Advertise with us</nuxt-link>
                 </v-flex>
               </v-layout>
             </v-card-text>

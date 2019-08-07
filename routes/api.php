@@ -18,8 +18,12 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
         die("Welcome, REST API");
     });
 
+     // Contact
     Route::get('settings', 'ApiController@getSettings');
+    Route::post('contact', 'ApiController@contact');
 
+    //Settings
+    Route::get('settings', 'ApiController@getSettings');
 });
 
 Route::group(['namespace' => 'ReactorCMS\Http\Controllers'], function () {
@@ -55,47 +59,46 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('checkout/{provider}', 'PaymentController@checkout');
     Route::get('checkout/authorised/{provider}', 'PaymentController@handleProviderCallback');
 
+    Route::get('categories/{parent?}', 'BusinessController@getCategories');
 
-    Route::get('categories/{parent?}','BusinessController@getCategories');
+    /*Location*/
+    Route::get('locations/{parent?}/{limit?}', 'BusinessController@getLocations');
+    Route::get('location/{id}', 'BusinessController@getLocation');
 
 
-    /*contact*/
-    Route::post('post-contact','SiteController@postContact');
 
     /*Business*/
-    Route::get('get-business','BusinessController@getBusiness');
+    Route::get('get-business', 'BusinessController@getBusiness');
 
-    Route::get('locations/{parent?}/{limit?}','BusinessController@getLocations');
-    Route::get('add-business','BusinessController@addBusiness');
-    Route::post('post-business','BusinessController@postBusiness');
-    Route::get('edit-business','BusinessController@editBusiness');
-    Route::post('business/update','BusinessController@updateBusiness');
 
-    Route::post('delete-business','BusinessController@destroy');
-    Route::post('delete-post/{id}','BusinessController@deletePost');
+    Route::get('add-business', 'BusinessController@addBusiness');
+    Route::post('post-business', 'BusinessController@postBusiness');
+    Route::get('edit-business', 'BusinessController@editBusiness');
+    Route::post('business/update', 'BusinessController@updateBusiness');
 
+    Route::post('delete-business', 'BusinessController@destroy');
+    Route::post('delete-post/{id}', 'BusinessController@deletePost');
 
     /*Services*/
-    Route::post('post-services','BusinessController@postServices');
-    Route::get('service/{node_id}/edit/{source_id}','BusinessController@editPost');
-    Route::post('service/{node_id}/udpate/{source_id}','BusinessController@updatePost');
-
+    Route::post('post-services', 'BusinessController@postServices');
+    Route::get('service/{node_id}/edit/{source_id}', 'BusinessController@editPost');
+    Route::post('service/{node_id}/udpate/{source_id}', 'BusinessController@updatePost');
 
     /*Product*/
-    Route::post('post-product','BusinessController@postProduct');
-    Route::get('product/{node_id}/edit/{source_id}','BusinessController@editProduct');
-    Route::post('product/{node_id}/udpate/{source_id}','BusinessController@updatePost');
+    Route::post('post-product', 'BusinessController@postProduct');
+    Route::get('product/{node_id}/edit/{source_id}', 'BusinessController@editProduct');
+    Route::post('product/{node_id}/udpate/{source_id}', 'BusinessController@updatePost');
 
-    Route::get('all-posts','BusinessController@All');
+    Route::get('all-posts', 'BusinessController@All');
 
     //--Products
-    Route::get('get-products','BusinessController@getProducts');
-    Route::get('get-recent-products/{limit?}','BusinessController@recent_products');
+    Route::get('get-products', 'BusinessController@getProducts');
+    Route::get('get-recent-products/{limit?}', 'BusinessController@recent_products');
 
     //--Services
-    Route::get('get-services','BusinessController@getServices');
+    Route::get('get-services', 'BusinessController@getServices');
 
-    Route::post('post-quote','BusinessController@postquote');
+    Route::post('post-quote', 'BusinessController@postquote');
 
     //Promotions
     Route::get('get-promotions','BusinessController@getPromotions');
@@ -103,13 +106,13 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
 
     //--Browse
-    Route::get('company/single/{slug}','BusinessController@single');
-    Route::get('browse/single/{slug}','SearchController@single');
-    Route::get('browse/{all?}','SearchController@browse')->where(['all' => '.*']);
+    Route::get('company/single/{slug}', 'BusinessController@single');
+    Route::get('browse/single/{slug}', 'SearchController@single');
+    Route::get('browse/{all?}', 'SearchController@browse')->where(['all' => '.*']);
 
     //--Reviews
-    Route::get('reviews/{node_id}','ReviewController@reviews');
-    Route::post('review/submit','ReviewController@store');
+    Route::get('reviews/{node_id}', 'ReviewController@reviews');
+    Route::post('review/submit', 'ReviewController@store');
 
 });
 
@@ -126,14 +129,6 @@ Route::group(['middleware' => ['api', 'track'], 'namespace' => 'Extension\Site\H
 
     Route::get('blogs', 'ApiController@getBlogs');
     Route::get('blog/{slug}', 'ApiController@getBlog');
-
-    Route::get('packages', 'ApiController@getPackages');
-
-    // Contact
-    Route::post('contact', 'ApiController@contact');
-
-    //Settings
-    Route::get('settings','ApiController@getSettings');
 
     //Room type
     Route::get('roomtypes', 'RoomTypeController@getRoomtype');

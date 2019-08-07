@@ -740,7 +740,7 @@ class BusinessController extends PublicController
             ];
         }
         $data['units'] = $s;
-        
+
         $source = NodeSource::find($source_id);
         $product = Node::withType('producttype')->find($id);
 
@@ -932,6 +932,7 @@ class BusinessController extends PublicController
         }
     }
 
+    /**Location */
     public function getLocations($parent = 0, $limit = 12)
     {
 
@@ -999,6 +1000,19 @@ class BusinessController extends PublicController
 
             return 'not_found';
         }
+    }
+
+    public function getLocation(NodeRepository $nodeRepository, $id){
+
+      $node = $nodeRepository->getNodeById($id,false);
+
+        $data = [
+            'id' => $node->getKey(),
+            'title' => $node->getTitle(),
+            'slug' => $node->getName(),
+        ];
+      return $data;
+
     }
 
     public function All()
@@ -1106,7 +1120,7 @@ class BusinessController extends PublicController
                 'description' => strip_tags(str_limit($node->description, 50)),
             ];
 
-            
+
         }
 
         return $data;

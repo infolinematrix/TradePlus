@@ -21,13 +21,14 @@
     </v-toolbar>
 
     <v-sheet class="hidden-xs-only">
-      <v-img class="white--text" height="500px" src="hero1.png">
+      <v-img class="white--text" height="650px" src="hero/hero2.jpg">
         <v-container grid-list-lg fill-height class="grey--text">
           <v-layout column justify-center align-center mt-5>
-            <div class="display-2 font-weight-thin mb-4 hidden-xs-only">Discover business in your area</div>
+            <div
+              class="display-2 font-weight-thin mb-4 hidden-xs-only black--text"
+            >Discover Business in your Area</div>
             <v-toolbar floating dense extense class="py-2">
               <v-layout row wrap>
-
                 <v-text-field
                   hide-details
                   prepend-icon="search"
@@ -35,75 +36,70 @@
                   placeholder="What are you looking for?"
                   single-line
                   full-width
-          style="width:450px"
+                  style="width:450px"
                 ></v-text-field>
 
                 <v-toolbar-items class="hidden-sm-and-down">
-                  <v-btn icon>
+                  <v-btn icon @click.stop="location_dialog = true">
                     <v-icon color="primary">my_location</v-icon>
                   </v-btn>
                 </v-toolbar-items>
               </v-layout>
             </v-toolbar>
 
-            <div class="black--text font-weight-bold">Siliguri</div>
+            <div class="black--text">Supplier location <span class=" font-weight-bold red--text" @click.stop="location_dialog = true" >{{ location.title }}</span> </div>
           </v-layout>
         </v-container>
       </v-img>
+
+      <!-- Location Popup -->
+      <location-popup-2 :isActive="location_dialog" @location="update_location"></location-popup-2>
+      <!-- End of Location Popup -->
     </v-sheet>
 
-    <v-content>
+    <v-content style="min-height:250px">
       <v-container grid-list-lg>
         <nuxt />
       </v-container>
     </v-content>
 
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-tile @click.native="right = !right">
-          <v-list-tile-action>
-            <v-icon light>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <footer-nav></footer-nav>
+    <footer-nav class="footer"></footer-nav>
   </v-app>
 </template>
 
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
 import FooterNav from '~/components/Footer.vue'
+import LocationPopup2 from '~/components/LocationPopup2.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ToolbarMenu,
-    FooterNav
+    FooterNav,
+    'location-popup-2': LocationPopup2
   },
   data() {
     return {
       drawer: false,
       fixed: true,
-      r: '',
-      items: [
-        {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      right: true,
-      rightDrawer: false,
+      location_dialog: false,
+
       title: 'Vuetify.js',
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
+  },
+
+  methods: {
+    update_location() {
+      this.location_dialog = false
+    }
+  },
+  computed: {
+    ...mapGetters({
+      location: 'app/location'
+    })
   }
 }
 </script>
