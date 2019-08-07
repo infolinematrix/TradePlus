@@ -75,24 +75,22 @@
           <v-layout row wrap>
             <v-flex md6 xs12>
               <v-sheet class="bordered pa-3 mb-3 bg-white">
-                <h4>Location</h4>
-                One line message text string with two actions on tablet / Desktop
-                </v-sheet>
+                <h4>Location</h4>One line message text string with two actions on tablet / Desktop
+              </v-sheet>
 
               <v-sheet class="bordered pa-3 mb-3 bg-white">
-                <h4>Credentials</h4>
-                One line message text string with two actions on tablet / Desktop
-                </v-sheet>
+                <h4>Credentials</h4>One line message text string with two actions on tablet / Desktop
+              </v-sheet>
 
-                <v-sheet class="bordered pa-3 bg-white">
-                <h4>Payment methods</h4>
-                One line message text string with two actions on tablet / Desktop
-                </v-sheet>
-
+              <v-sheet class="bordered pa-3 bg-white">
+                <h4>Payment methods</h4>One line message text string with two actions on tablet / Desktop
+              </v-sheet>
             </v-flex>
             <v-flex md6 xs12>
-              <v-sheet class="pa-3 mb-3 bg-white bordered " >
-                <h4><v-icon>home</v-icon> Working hours</h4>
+              <v-sheet class="pa-3 mb-3 bg-white bordered">
+                <h4>
+                  <v-icon>home</v-icon>Working hours
+                </h4>
                 <v-layout>
                   <v-flex class="pb-0">Monday</v-flex>
                   <v-flex class="pb-0 text-right">8.00am to 8.00pm</v-flex>
@@ -133,11 +131,159 @@
           </v-layout>
         </v-card-text>
 
+        <v-card-text>
+          <v-sheet class="bordered">
+            <v-form @submit.prevent="quotation" ref="form">
+              <v-container grid-list-lg class="bg-light-blue">
+                <v-subheader class="black--text title-2 pl-0">Contact us</v-subheader>
+
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-text-field
+                      :counter="25"
+                      v-model="form.first_name"
+                      label="First Name"
+                      :rules="firstnameRules"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-text-field
+                      :counter="25"
+                      v-model="form.last_name"
+                      label="Last Name"
+                      :rules="lastnameRules"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-text-field
+                      label="Contact no"
+                      v-model="form.contact"
+                      :rules="contactRules"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+
+                  <v-flex md6>
+                    <v-text-field label="Email" v-model="form.email" :rules="emailRules" required></v-text-field>
+                  </v-flex>
+
+                  <v-flex md12>
+                    <v-textarea
+                      outlined
+                      label="Message"
+                      v-model="form.message"
+                      :rules="messageRules"
+                    ></v-textarea>
+                  </v-flex>
+
+                  <v-btn
+                    depressed
+                    color="primary"
+                    @click="loader = 'loading'"
+                    :loading="loading"
+                    :disabled="loading"
+                    type="submit"
+                  >Send</v-btn>
+                </v-layout>
+              </v-container>
+            </v-form>
+          </v-sheet>
+        </v-card-text>
       </v-flex>
-      <v-flex md4 xs12>Right Panel</v-flex>
+      <v-flex md4 xs12>
+        <v-sheet class="bordered">
+          <v-form @submit.prevent="quotation" ref="form">
+            <v-container grid-list-lg class="bg-light-blue">
+              <v-subheader class="black--text title-2 pl-0">Contact Supplier</v-subheader>
+
+              <v-layout row wrap>
+                <v-flex md6>
+                  <v-text-field
+                    :counter="25"
+                    v-model="form.first_name"
+                    label="First Name"
+                    :rules="firstnameRules"
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-flex md6>
+                  <v-text-field
+                    :counter="25"
+                    v-model="form.last_name"
+                    label="Last Name"
+                    :rules="lastnameRules"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-text-field label="Email" v-model="form.email" :rules="emailRules" required></v-text-field>
+
+              <v-layout row wrap>
+                <v-flex md12>
+                  <v-text-field
+                    label="Contact no"
+                    v-model="form.contact"
+                    :rules="contactRules"
+                    required
+                  ></v-text-field>
+                </v-flex>
+
+
+
+                <v-flex md12>
+                  <v-textarea outlined label="Message" v-model="form.message" :rules="messageRules"></v-textarea>
+                </v-flex>
+
+                <v-btn
+                  depressed
+                  color="primary"
+                  @click="loader = 'loading'"
+                  :loading="loading"
+                  :disabled="loading"
+                  type="submit"
+                >Send</v-btn>
+              </v-layout>
+            </v-container>
+          </v-form>
+        </v-sheet>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
-export default {}
+import Form from 'vform'
+export default {
+  data() {
+    return {
+      infobox: true,
+      /*Rules*/
+      firstnameRules: [v => !!v || 'First Name is required'],
+      lastnameRules: [v => !!v || 'Last Name is required'],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      ],
+      contactRules: [v => !!v || 'Contact is required'],
+      quantityRules: [v => !!v || 'Quantity is required'],
+      messageRules: [v => !!v || 'Message is required'],
+      loader: null,
+      loading: false,
+      node_name: this.$route.params.single,
+      form: new Form({
+        first_name: null,
+        last_name: null,
+        email: null,
+        contact_no: null,
+        quantity: null,
+        message: null
+      })
+    }
+  }
+}
 </script>

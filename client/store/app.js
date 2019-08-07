@@ -1,50 +1,60 @@
 // state
 const state = () => ({
-  filter: {
-    category: {"id":100,"parent_id":null,"source_id":200,"title":"Services","slug":"services"},
-    location: {"id":101,"parent_id":null,"source_id":201,"title":"Siliguri","slug":"siliguri"},
+
+  location: {
+    "id": 101,
+    "title": "India",
+    "slug": "india"
   },
-    settings: [],
+  settings: [],
 })
 
 // getters
 const getters = {
-    settings: state => state.settings,
-    filter: state => state.filter,
+  settings: state => state.settings,
+  location: state => state.location,
 }
 
 // mutation
 const mutations = {
-    set_settings (state, payload) {
-        state.settings = payload
-    },
+  set_settings(state, payload) {
+    state.settings = payload
+  },
+
+  SET_LOCATION (state, payload) {
+    state.location = payload
+  },
 }
 
 // actions
 const actions = {
-    updateSettings(context) {
+  updateSettings(context) {
+    this.$axios.get("settings").then(response => {
+      console.log(response.data)
+      context.commit('set_settings', response.data)
+    });
 
-        this.$axios.get("settings").then(response => {
-            console.log(response.data)
-            context.commit('set_settings', response.data)
-        });
+  },
 
-    },
-    addToCart(context, params) {
-        context.commit('append', params)
-    },
+  set_location (context, params) {
 
-    deleteFromCart(context, params) {
-        context.commit('delete', params)
-    }
+    this.$axios.get("location/"+params).then(response => {
+      context.commit('SET_LOCATION', response.data)
+    });
+  },
+
+  addToCart(context, params) {
+    context.commit('append', params)
+  },
+
 }
 
 
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    mutations,
-    actions
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
 }

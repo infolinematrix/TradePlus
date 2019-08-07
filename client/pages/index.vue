@@ -1,15 +1,17 @@
 <template>
   <section>
     <v-layout row wrap justify-center align-center mt-5>
-      <v-flex xs12 sm8 md10>
+      <v-flex xs12 sm8 md9>
         <v-layout row wrap>
           <v-flex xs6 md3>
             <v-sheet class="transparent">
               <div class="text-xs-center">
-                <v-icon size="60" color="primary">verified_user</v-icon>
+                <v-avatar size="75"  tile>
+                  <img src="/icons/trust.svg"  alt="avatar" />
+                </v-avatar>
               </div>
               <div class="text-xs-center pa-2">
-                <div class="title font-weight-thin">12541</div>
+                <div class="display-1">12541</div>
                 <div class="text-muted pt-1">Truested business</div>
               </div>
             </v-sheet>
@@ -17,10 +19,12 @@
           <v-flex xs6 md3>
             <v-sheet class="transparent">
               <div class="text-xs-center">
-                <v-icon size="60" color="primary">ballot</v-icon>
+                <v-avatar size="75" tile>
+                  <img src="/icons/product.svg"  alt="avatar" />
+                </v-avatar>
               </div>
               <div class="text-xs-center pa-2">
-                <div class="title font-weight-thin">12541</div>
+                <div class="display-1">12541</div>
                 <div class="text-muted pt-1">Products & Services</div>
               </div>
             </v-sheet>
@@ -28,21 +32,25 @@
           <v-flex xs6 md3>
             <v-sheet class="transparent">
               <div class="text-xs-center">
-                <v-icon size="60" color="primary">perm_phone_msg</v-icon>
+                <v-avatar size="75"  tile>
+                  <img src="/icons/service.svg"  alt="avatar" />
+                </v-avatar>
               </div>
               <div class="text-xs-center pa-2">
-                <div class="title font-weight-thin">12541</div>
-                <div class="text-muted pt-1">Lead Generated</div>
+                <div class="display-1">24x7 Help</div>
+                <div class="text-muted pt-1">Call us now</div>
               </div>
             </v-sheet>
           </v-flex>
           <v-flex xs6 md3>
             <v-sheet class="transparent">
               <div class="text-xs-center">
-                <v-icon size="60" color="primary">timeline</v-icon>
+                <v-avatar size="75"  tile>
+                  <img src="/icons/graph.svg"  alt="avatar" />
+                </v-avatar>
               </div>
               <div class="text-xs-center pa-2">
-                <div class="title font-weight-thin">12541</div>
+                <div class="display-1">125K +</div>
                 <div class="text-muted pt-1">Monthly Search</div>
               </div>
             </v-sheet>
@@ -67,10 +75,12 @@
       <v-flex
         @mouseenter="$refs.mySwiper.swiper.autoplay.stop()"
         @mouseleave="$refs.mySwiper.swiper.autoplay.start()"
-        >
+      >
         <swiper :options="swiperOption" ref="mySwiper" class="my-swiper">
           <!-- slides -->
           <swiper-slide v-for="category in categories" :key="category" class="swiper-slide">
+
+            <nuxt-link :to="'/browse/'+ category.slug" class="black--text" :title="category.title">
             <v-card flat>
               <v-card-actions class="pa-3">
                 <v-layout column justify-center align-center>
@@ -80,10 +90,11 @@
 
               <v-card-actions>
                 <v-layout column justify-center align-center>
-                  <nuxt-link :to="'/browse/'+ category.slug" class="black--text">{{ category.title}}</nuxt-link>
+                  {{ category.title}}
                 </v-layout>
               </v-card-actions>
             </v-card>
+            </nuxt-link>
           </swiper-slide>
 
           <!-- Optional controls -->
@@ -111,27 +122,26 @@
         <v-layout row wrap>
           <v-flex xs12 md4 v-for="business in businesses" :key="business">
             <v-card>
-              <nuxt-link :to="'/browse/company/'+ business.slug"> 
-              <v-img
-                :src="business.coverimage" height=200
-              ></v-img>
+              <nuxt-link :to="'/browse/company/'+ business.slug">
+                <v-img :src="business.coverimage" height="200"></v-img>
               </nuxt-link>
 
               <v-list two-line>
                 <template>
                   <v-list-tile avatar>
-                    <nuxt-link :to="'/browse/company/'+ business.slug"> 
-                    <v-list-tile-avatar>
-                      <img :src="business.profileimage">
-                    </v-list-tile-avatar>
+                    <nuxt-link :to="'/browse/company/'+ business.slug">
+                      <v-list-tile-avatar>
+                        <img :src="business.profileimage" />
+                      </v-list-tile-avatar>
                     </nuxt-link>
 
                     <v-list-tile-content>
                       <v-list-tile-title class="font-weight-medium">
-                       <nuxt-link :to="'/browse/company/'+ business.slug" class="black--text"> 
-                        {{ business.title }}
-                       </nuxt-link>
-                        </v-list-tile-title>
+                        <nuxt-link
+                          :to="'/browse/company/'+ business.slug"
+                          class="black--text"
+                        >{{ business.title }}</nuxt-link>
+                      </v-list-tile-title>
                       <v-list-tile-sub-title>{{ business.location }}</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>
@@ -139,7 +149,6 @@
               </v-list>
               <v-divider></v-divider>
               <v-card-title primary-title>
-                 
                 <div>
                   <div class="font-weight-light">{{ business.description }}</div>
                 </div>
@@ -184,7 +193,9 @@
             <nuxt-link
               :to="'/browse/'+ location.slug"
               class="black--text font-weight-bold"
-            >{{location.title}}</nuxt-link>
+              :title="location.title"
+            >{{location.title}}
+            </nuxt-link>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -294,9 +305,6 @@ export default {
     }
   },
 
-  async mounted() {
-
-    
-  }
+  async mounted() {}
 }
 </script>

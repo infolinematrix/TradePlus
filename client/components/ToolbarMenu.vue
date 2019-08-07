@@ -1,9 +1,14 @@
 <template>
   <v-layout row wrap>
     <v-spacer></v-spacer>
-    <v-btn icon to="/">
-      <v-icon>home</v-icon>
-    </v-btn>
+
+
+    <v-toolbar-items>
+        <v-btn flat text class="text-capitalize" nuxt to="/">Home</v-btn>
+        <v-btn flat text class="text-capitalize">Post Requirement</v-btn>
+        <v-btn flat text class="text-capitalize" nuxt to="/business/create">Add Business</v-btn>
+      </v-toolbar-items>
+
     <v-menu bottom left open-on-hover>
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on">
