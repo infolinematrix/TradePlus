@@ -11,6 +11,7 @@ namespace Extension\Site\Http;
 
 use Illuminate\Http\Request;
 use Instamojo\Instamojo;
+use Reactor\Hierarchy\Node;
 use ReactorCMS\Http\Controllers\PublicController;
 use Omnipay\Omnipay;
 use Illuminate\Support\Facades\DB;
@@ -23,9 +24,11 @@ class PaymentController extends PublicController
     
     public function AuthPayment(Request $request){
 
+        $node = Node::withName($request->node_name)->first();
+        
         $txn = new Transactions();
         $txn->provider = 'paypal';
-        $txn->node_id = $request->node_id;
+        $txn->node_id = $node->getKey();
         $txn->txn_id = $request->txn_id;
         $txn->amount = $request->total;
 
@@ -33,7 +36,7 @@ class PaymentController extends PublicController
         
 
         $promo = new Promotions();
-        $promo->node_id = $request->node_id;
+        $promo->node_id = $node->getKey();
         $promo->txn_id = $request->txn_id;
         $promo->cpc = $request->cpc;
         $promo->max_clicks = $request->clicks;

@@ -8,6 +8,7 @@
 
 namespace extension\Site\Http;
 
+use Extension\Site\Entities\Promotions;
 use extension\Site\Helpers\UseAppHelper;
 use function GuzzleHttp\json_encode;
 use Illuminate\Http\Request;
@@ -459,6 +460,13 @@ class BusinessController extends PublicController
         $cModel = $modelName::where('id', $node->translate($locale)->getKey())
             ->where('node_id', $node->getKey())->first();
 
+        if (count($ar) == 7) {
+            if ($cModel) {
+                $modelName::where('id', $node->translate($locale)->getKey())
+                    ->where('node_id',  $node->getKey())->delete();
+            }
+            return 'Updated Successfully';
+        }
 
 
         if ($cModel) {
@@ -835,7 +843,7 @@ class BusinessController extends PublicController
 
             $destinationPath = public_path('/uploads');
             $coverimage->move($destinationPath, $name . '.' . $ext);
-            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(850, 300)->save();
+            ImageFacade::make(sprintf('uploads/%s', $name . '.' . $ext))->resize(600, 400)->save();
 
             $cover = $node->getImages()->where('img_type', 'cover')->first();
 
@@ -996,12 +1004,46 @@ class BusinessController extends PublicController
     public function All()
     {
 
-        $user = Auth::user();
-        $nodes = Node::where('user_id', $user->id)->paginate(20);
 
-        $data = [];
+        $productdata = [];
+        $servicedata = [];
+        $user = Auth::user();
+        $nodes = Node::where('user_id', $user->id)->withType('producttype')->paginate(20);
+
+        $services = Node::where('user_id', $user->id)->withType('servicetype')->paginate(20);
+
 
         foreach ($nodes as $node) {
+
+            $nodeType = $node->nodeType()->first()->name;
+
+            if ($node->getNodeTypeName() == 'business') {
+                $img = $node->getImages()->where('img_type', 'profile')->first();
+
+            } else {
+                $img = $node->getImages()->first();
+            }
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
+
+                $img = '/image-600x400.png';
+            }
+
+            $productdata[] = [
+
+                'type' => $nodeType,
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img,
+
+            ];
+        }
+
+
+        foreach ($services as $node) {
 
             $nodeType = $node->nodeType()->first()->name;
 
@@ -1018,7 +1060,7 @@ class BusinessController extends PublicController
                 $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
             }
 
-            $data[] = [
+            $servicedata[] = [
 
                 'type' => $nodeType,
                 'id' => $node->getKey(),
@@ -1030,6 +1072,7 @@ class BusinessController extends PublicController
             ];
         }
 
+        $data = array_merge($productdata, $servicedata);
         return $data;
 
     }
@@ -1050,7 +1093,7 @@ class BusinessController extends PublicController
                 $img = asset('/uploads/' . $img->path);
             } else {
 
-                $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
+                $img = '/image-600x400.png';
             }
             $data[] = [
 
@@ -1087,7 +1130,7 @@ class BusinessController extends PublicController
                 $img = asset('/uploads/' . $img->path);
             } else {
 
-                $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
+                $img = '/image-600x400.png';
             }
             $data[] = [
 
@@ -1105,6 +1148,92 @@ class BusinessController extends PublicController
 
     }
 
+    public function getPromotions(){
+
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+
+        $promotions = $node->children()->withType('producttype')
+            ->Join('promotions as P','nodes.id','=','P.node_id')
+            ->orderBy('P.id','DESC')
+            ->get();
+
+
+        $data = [];
+
+        foreach ($promotions as $promotion){
+                $node = Node::find($promotion->node_id);
+                $img = $node->getImages()->first();
+
+                if($img){
+
+                    $img = asset('uploads/'.$img->path);
+                }else{
+
+                    $img = '/image-600x400.png';
+                }
+
+            $data[] = [
+
+                'id' => $promotion->id,
+                'title' => $node->getTitle(),
+                'image' => $img,
+                'cpc' => $promotion->cpc,
+                'max_click' => $promotion->max_clicks,
+                'clicked' => $promotion->clicked,
+                'expire' => date('d-M-Y',strtotime($promotion->created_at))
+
+            ];
+        }
+
+        return $data;
+
+    }
+
+    public function deletePromotion($id){
+
+
+        Promotions::where('id',$id)->delete();
+
+        $user = Auth::user();
+        $node = Node::withType('business')->where('user_id', $user->id)->first();
+
+        $promotions = $node->children()->withType('producttype')
+            ->Join('promotions as P','nodes.id','=','P.node_id')
+            ->orderBy('P.id','DESC')
+            ->get();
+
+
+        $data = [];
+
+        foreach ($promotions as $promotion){
+            $node = Node::find($promotion->node_id);
+            $img = $node->getImages()->first();
+
+            if($img){
+
+                $img = asset('uploads/'.$img->path);
+            }else{
+
+                $img = '/image-600x400.png';
+            }
+
+            $data[] = [
+
+                'id' => $node->getKey(),
+                'title' => $node->getTitle(),
+                'image' => $img,
+                'cpc' => $promotion->cpc,
+                'max_click' => $promotion->max_clicks,
+                'clicked' => $promotion->clicked,
+                'expire' => date('d-M-Y',strtotime($promotion->created_at))
+
+            ];
+        }
+
+        return $data;
+
+    }
     public function deletePost($node_id)
     {
 
@@ -1127,12 +1256,45 @@ class BusinessController extends PublicController
 
         $this->notify('nodes.destroyed');
 
-        $data = [];
-
+        $productdata = [];
+        $servicedata = [];
         $user = Auth::user();
-        $nodes = Node::where('user_id', $user->id)->get();
+        $nodes = Node::where('user_id', $user->id)->withType('producttype')->paginate(20);
+
+        $services = Node::where('user_id', $user->id)->withType('servicetype')->paginate(20);
+
 
         foreach ($nodes as $node) {
+
+            $nodeType = $node->nodeType()->first()->name;
+
+            if ($node->getNodeTypeName() == 'business') {
+                $img = $node->getImages()->where('img_type', 'profile')->first();
+
+            } else {
+                $img = $node->getImages()->first();
+            }
+            if ($img) {
+                $img = asset('/uploads/' . $img->path);
+            } else {
+
+                $img = '/image-600x400.png';
+            }
+
+            $productdata[] = [
+
+                'type' => $nodeType,
+                'id' => $node->getKey(),
+                'source_id' => $node->translate('en')->getKey(),
+                'title' => $node->getTitle(),
+                'slug' => $node->getName(),
+                'image' => $img,
+
+            ];
+        }
+
+
+        foreach ($services as $node) {
 
             $nodeType = $node->nodeType()->first()->name;
 
@@ -1149,7 +1311,8 @@ class BusinessController extends PublicController
                 $img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
             }
 
-            $data[] = [
+            $servicedata[] = [
+
                 'type' => $nodeType,
                 'id' => $node->getKey(),
                 'source_id' => $node->translate('en')->getKey(),
@@ -1160,6 +1323,7 @@ class BusinessController extends PublicController
             ];
         }
 
+        $data = array_merge($productdata, $servicedata);
         return $data;
     }
 
@@ -1253,10 +1417,7 @@ class BusinessController extends PublicController
             $img = $node->getImages()->first();
             if ($img) {
                 $img = asset('/uploads/' . $img->path);
-            } else {
 
-                $img = 'http://lorempixel.com/400/300/abstract/';
-            }
             $data[] = [
 
                 'type' => $node->getNodeTypeName(),
@@ -1267,6 +1428,7 @@ class BusinessController extends PublicController
                 'image' => $img,
                 'description' => strip_tags(str_limit($node->description, 100))
             ];
+            }
         }
 
         return $data;
