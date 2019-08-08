@@ -1,13 +1,11 @@
 <template>
   <v-layout row wrap>
-    <v-spacer></v-spacer>
-
-
+     <v-spacer></v-spacer>
     <v-toolbar-items>
-        <v-btn flat text class="text-capitalize" nuxt to="/">Home</v-btn>
-        <v-btn flat text class="text-capitalize">Post Requirement</v-btn>
-        <v-btn flat text class="text-capitalize" nuxt to="/business/create">Add Business</v-btn>
-      </v-toolbar-items>
+      <v-btn flat text class="text-capitalize" nuxt to="/">Home</v-btn>
+      <requirement-popup ></requirement-popup>
+      <v-btn flat text class="text-capitalize" nuxt to="/business/create">Add Business</v-btn>
+    </v-toolbar-items>
 
     <v-menu bottom left open-on-hover>
       <template v-slot:activator="{ on }">
@@ -54,42 +52,22 @@
 
 
 
-<v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-top-transition">
 
 
-        <v-toolbar flat color="white" class="pl-0">
-
-
-           <v-text-field
-          append-icon="mic"
-          flat
-          solo
-          prepend-inner-icon="search"
-          class="mx-3 ml-0 mr-0 toolbar-search"
-          readonly
-          v-model="search_text"
-        ></v-text-field>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-             <v-btn icon  @click="dialog = false">
-            <v-icon>close</v-icon>
-          </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-
-
-
-    </v-dialog>
   </v-layout>
 </template>
 
 
 <script>
+import RequirementPopup from '~/components/RequirementPopup.vue'
+
 export default {
-  data(){
+  components: {
+    'requirement-popup': RequirementPopup,
+  },
+  data() {
     return {
-      dialog: false,
-      search_text: 'Air Conditioner maintanence'
+      requirement_dialog: false,
     }
   }
 }

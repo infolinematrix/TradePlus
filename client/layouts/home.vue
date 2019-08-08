@@ -21,11 +21,25 @@
     </v-toolbar>
 
     <v-sheet class="hidden-xs-only">
-      <v-img class="white--text" height="650px" src="hero/hero2.jpg">
+      <v-img class="white--text" height="600px" src="hero/hero7.jpg" cover>
         <v-container grid-list-lg fill-height class="grey--text">
-          <v-layout column justify-center align-center mt-5>
+          <v-layout column justify-center align-center>
+            <div class="mb-2">
+              <v-layout row wrap>
+                <v-flex xs6 md4>
+                  <v-sheet class="transparent">
+                    <div class="text-xs-center">
+                      <v-avatar size="75" tile>
+                        <img src="/icons/finder.svg" alt="avatar" />
+                      </v-avatar>
+                    </div>
+                  </v-sheet>
+                </v-flex>
+              </v-layout>
+            </div>
+
             <div
-              class="display-2 font-weight-thin mb-4 hidden-xs-only black--text"
+              class="display-2 1font-weight-bold mb-4 hidden-xs-only black--text"
             >Discover Business in your Area</div>
             <v-toolbar floating dense extense class="py-2">
               <v-layout row wrap>
@@ -47,7 +61,13 @@
               </v-layout>
             </v-toolbar>
 
-            <div class="black--text">Supplier location <span class=" font-weight-bold red--text" @click.stop="location_dialog = true" >{{ location.title }}</span> </div>
+            <div class="black--text">
+              Supplier location
+              <span
+                class="font-weight-bold red--text"
+                @click.stop="location_dialog = true"
+              >{{ location.title }}</span>
+            </div>
           </v-layout>
         </v-container>
       </v-img>
@@ -71,13 +91,14 @@
 import ToolbarMenu from '~/components/ToolbarMenu'
 import FooterNav from '~/components/Footer.vue'
 import LocationPopup2 from '~/components/LocationPopup2.vue'
+
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ToolbarMenu,
     FooterNav,
-    'location-popup-2': LocationPopup2
+    'location-popup-2': LocationPopup2,
   },
   data() {
     return {
