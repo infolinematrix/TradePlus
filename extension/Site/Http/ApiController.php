@@ -10,6 +10,9 @@ use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
 use ReactorCMS\Http\Controllers\Traits\UsesTranslations;
 use Reactor\Hierarchy\NodeRepository;
 use ReactorCMS\Entities\Settings;
+use Mail;
+use Illuminate\Support\Facades\Config;
+
 class ApiController extends PublicController
 {
 
@@ -116,4 +119,25 @@ class ApiController extends PublicController
 
     }
 
+
+    public function postSubscribe(Request $request){
+
+
+        $data = [
+            'email' => $request->email,
+            'site_name' => getSettings('site_title'),
+        ];
+
+        /*Get Mail Configuration*/
+        Config::set('mail', getMailconfig());
+
+        Mail::send('Site::email.subscribe', $data, function ($message) use ($data) {
+            $message->from(getSettings('email_from_email'), getSettings('site_title'));
+            $message->subject('Subscriber');
+            $message->to('help.matrixinfoline@gmail.com');
+        });
+
+        return "SUCCESS";
+
+    }
 }

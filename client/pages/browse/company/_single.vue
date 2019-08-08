@@ -15,12 +15,11 @@
           <v-sheet class="mt-5 ml-3">
             <h1 class="title font-weight-bold">{{ company.title }}</h1>
             <v-card-actions class="px-0">
-              <v-icon color="red">star</v-icon>
-              <v-icon color="red">star</v-icon>
-              <v-icon color="red">star</v-icon>
-              <v-icon>star_border</v-icon>
-              <v-icon>star_border</v-icon>
-              <span class="ml-2">136 reviews</span>
+              <v-rating :value="company.rating" 
+                      readonly dense color="red accent-3" 
+                      class="pa-0">
+                      </v-rating>
+              <span class="ml-2">{{ company.reviews }} reviews</span>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-sheet>
@@ -69,6 +68,24 @@
               <v-sheet class="bordered pa-3 mb-3 bg-white">
                 <h4>Location</h4>
                 {{ company.address }}, {{ company.location }} - {{ company.zipcode }}
+                </v-sheet>
+
+
+                <v-sheet class="bordered pa-3 mb-3 bg-white">
+                <h4>Contact Us</h4>
+                <v-layout>
+                  <v-flex class="pb-0">Phone  :</v-flex>
+                  <v-flex class="pb-0 text-right">{{ company.phone }}</v-flex>
+                </v-layout>
+                <v-layout>
+                  <v-flex class="pb-0">Website  :</v-flex>
+                  <v-flex class="pb-0 text-right">
+                    <a :href="company.website">
+                    {{ company.website }}
+                    </a>
+
+                    </v-flex>
+                </v-layout>
                 </v-sheet>
 
               <v-sheet class="bordered pa-3 mb-3 bg-white">
@@ -175,6 +192,7 @@
 
                 </v-layout>
               </v-sheet>
+             
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -184,7 +202,79 @@
                </v-card-text>
 
       </v-flex>
-      <v-flex md4 xs12>Right Panel</v-flex>
+      <v-flex md4 xs12>
+          <v-sheet class="pl-3">
+              <v-form @submit.prevent="enquiry" ref="form">
+              <v-container grid-list-lg class="bg-light-blue">
+                <v-subheader class="black--text title-2 pl-0">Send Enquiry</v-subheader>
+
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-text-field 
+                    :counter="25"
+                    v-model="form.first_name" 
+                    label="First Name" 
+                    :rules="firstnameRules"
+                    required>
+                    </v-text-field>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-text-field 
+                    :counter="25" 
+                    v-model="form.last_name"
+                    label="Last Name" 
+                    :rules="lastnameRules"
+                    required
+                    >
+                    </v-text-field>
+                  </v-flex>
+                </v-layout>
+
+               
+
+                <v-layout row wrap>
+                   <v-flex md8>
+                   <v-text-field  
+                label="Email" 
+                v-model="form.email"
+                :rules="emailRules"
+                required
+                >
+                </v-text-field>
+                   </v-flex>
+                  <v-flex md4>
+                    <v-text-field 
+                    label="Contact no" 
+                    v-model="form.contact_no"
+                    :rules="contactRules"
+                    required>
+                    </v-text-field>
+                  </v-flex>
+
+                <v-flex md12>
+               <v-textarea
+                outlined
+                label="Message"
+                v-model="form.message"
+                :rules="messageRules"
+               ></v-textarea>
+               </v-flex>
+
+
+              <v-btn 
+              depressed 
+              color="primary"
+              @click="loader = 'loading'"
+              :loading="loading"
+              :disabled="loading" 
+              type="submit" >Send
+              </v-btn>
+
+                </v-layout>
+              </v-container>
+              </v-form>
+            </v-sheet>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -203,6 +293,94 @@ export default {
       company: business.data
     }
   },
+
+   data() {
+    return {
+      infobox: true,
+       /*Rules*/
+       firstnameRules: [
+        v => !!v || 'First Name is required',
+      ],
+      lastnameRules: [
+        v => !!v || 'Last Name is required',
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      contactRules: [
+        v => !!v || 'Contact is required',
+      ],
+      messageRules: [
+        v => !!v || 'Message is required',
+      ],
+    loader: null,
+    loading: false,
+    node_name: this.$route.params.single,
+     form: new Form({
+      first_name: null,
+      last_name: null,
+      email: null,
+      contact_no: null,
+      message: null
+     }),
+    }
+  },
+
+   methods: {
+
+    async enquiry() {
+      
+      const l = this.loader
+      this[l] = !this[l]
+      
+      this.dialog = true;
+      let formData = new FormData();
+      formData.append('node_name', this.node_name)
+      formData.append('first_name', this.form.first_name)
+      formData.append('last_name', this.form.last_name)
+      formData.append('email', this.form.email)
+      formData.append('contact_no', this.form.contact_no)
+      formData.append('message', this.form.message)
+        
+        if (this.$refs.form.validate()) {
+          this.snackbar = true
+         this.$axios
+            .post(`post-enquiry`, formData)
+            .then(response => {
+            setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Successfully Send....",
+            type: "info",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 1500),
+        this.reset();
+          })
+         }else{
+
+      setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Invalid Input!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 500)
+      }
+     // });
+      
+      },
+
+      reset () {
+        this.$refs.form.reset()
+      },
+
+  }
+
 
 }
 </script>

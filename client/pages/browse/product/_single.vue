@@ -53,13 +53,11 @@
                   </v-list-tile>
 
                   <v-card-text class="pt-0">
-                    <v-card-actions class="pa-0">
-                      <v-icon color="red">stars</v-icon>
-                      <v-icon color="red">stars</v-icon>
-                      <v-icon color="red">stars</v-icon>
-                      <v-icon>star_border</v-icon>
-                      <v-icon>star_border</v-icon>
-                      <span ml-3>136 reviews</span>
+                   <v-rating :value="product.company_rating" 
+                      readonly dense color="red accent-3" 
+                      class="pa-0">
+                      </v-rating>
+                      <span ml-3>{{ product.company_reviews }} reviews</span>
                       <v-spacer></v-spacer>
 
                       <v-avatar tile size="40" class="ml-2">
@@ -176,7 +174,7 @@
                   <v-flex md6>
                     <v-text-field 
                     label="Contact no" 
-                    v-model="form.contact"
+                    v-model="form.contact_no"
                     :rules="contactRules"
                     required>
                     </v-text-field>

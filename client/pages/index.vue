@@ -155,13 +155,12 @@
               </v-card-title>
 
               <v-card-actions class="pa-3">
-                1245 reviews
+                {{ business.reviews }} reviews
                 <v-spacer></v-spacer>
-                <v-icon color="primary">star_border</v-icon>
-                <v-icon color="primary">star_border</v-icon>
-                <v-icon color="primary">star_border</v-icon>
-                <v-icon>star_border</v-icon>
-                <v-icon>star_border</v-icon>
+                <v-rating :value="business.rating" 
+                      readonly dense color="red accent-3" 
+                      class="pa-0">
+                      </v-rating>
               </v-card-actions>
             </v-card>
           </v-flex>

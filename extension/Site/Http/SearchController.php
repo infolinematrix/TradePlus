@@ -16,11 +16,13 @@ use Reactor\Hierarchy\NodeRepository;
 use ReactorCMS\Http\Controllers\PublicController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
+use Reactor\Hierarchy\Reviewable\HasReviews;
 
 class SearchController extends PublicController
 {
 
     use UsesNodeHelpers, UsesNodeForms;
+    use HasReviews;
 
 
     public function index(Request $request)
@@ -94,6 +96,9 @@ class SearchController extends PublicController
 
             $payment = json_decode($payment_accept, true);
 
+            $rating = $company->reviews()->avg('rating');
+            $total_rev = $company->reviews()->count();
+
             $data = [
                 'id' => $node->getKey(),
                 'title' => $node->getTitle(),
@@ -105,6 +110,8 @@ class SearchController extends PublicController
                 'company_slug' => $company->getName(),
                 'company_location' => getBusinessLocation($company->getKey()),
                 'company_logo' => $logo,
+                'company_rating' => $rating,
+                'company_reviews' => $total_rev,
                 'unit' => $unit,
                 'moq' => $node->product_moq,
                 'show_price' => $node->show_price,
@@ -268,24 +275,7 @@ class SearchController extends PublicController
         return $data;
     }
 
-    public function browse1($slug = null, NodeRepository $nodeRepository)
-    {
 
-
-        //--get Node type
-        $node = $nodeRepository->getNode($slug);
-
-        //Assume categories
-        $nodes = Node::withType('producttype')
-            ->take(10)
-            ->findMetaValue($node->getKey())
-            ->Published()
-            ->get();
-
-        $data = $this->create_data($nodes);
-
-        return $data;
-    }
 
 
     private function create_data($nodes = null)
@@ -295,6 +285,8 @@ class SearchController extends PublicController
         foreach ($nodes as $node) {
 
 
+            $rating = $node->reviews()->avg('rating');
+            $total_rev = $node->reviews()->count();
 
             $coverimage = $node->getImages()->first();
             if($coverimage){
@@ -324,8 +316,11 @@ class SearchController extends PublicController
                 'title' => $node->getTitle(),
                 'slug' => $node->getName(),
                 'description' => strip_tags($node->description),
+                'rating' => $rating,
+                'reviews' => $total_rev,
                 'image' => $img,
                 'company' => $company->getTitle(),
+                'company_slug' => $company->getName(),
                 'company_location' => getBusinessLocation($company->getKey()),
                 'company_logo' => $logo
             ];

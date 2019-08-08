@@ -99,6 +99,7 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('get-services', 'BusinessController@getServices');
 
     Route::post('post-quote', 'BusinessController@postquote');
+    Route::post('post-enquiry', 'BusinessController@postEnquiry');
 
     //Promotions
     Route::get('get-promotions','BusinessController@getPromotions');
@@ -114,6 +115,8 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('reviews/{node_id}', 'ReviewController@reviews');
     Route::post('review/submit', 'ReviewController@store');
 
+
+    Route::post('post-subscribe', 'ApiController@postSubscribe');
 });
 
 /**

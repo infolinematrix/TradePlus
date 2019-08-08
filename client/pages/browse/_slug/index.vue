@@ -107,7 +107,9 @@
               <v-card class="elevation-1 mb-3">
                 <v-layout row wrap>
                   <v-flex xs12 md4>
+                     <nuxt-link :to="'/browse/product/'+ product.slug">
                     <v-img :src="product.image"></v-img>
+                     </nuxt-link>
                   </v-flex>
                   <v-flex xs12 md8>
                     <v-card-text class="pb-0">
@@ -121,12 +123,14 @@
                         class="mt-2 grey--text"
                       >{{ $helpers.text_truncate(product.description,125) }}</div>
 
+
+                      
                       <v-card-actions class="px-0">
-                        <v-icon color="red">stars</v-icon>
-                        <v-icon color="red">stars</v-icon>
-                        <v-icon color="red">stars</v-icon>
-                        <v-icon>star_border</v-icon>
-                        <v-icon>star_border</v-icon>136 reviews
+                        <v-rating :value="product.rating" 
+                      readonly dense color="red accent-3" 
+                      class="pa-0">
+                      </v-rating>
+                       {{ product.reviews }} reviews
                         <v-spacer></v-spacer>
 
                         <v-tooltip bottom>
@@ -142,13 +146,15 @@
                 <v-card-actions class="px-0">
                   <v-list-tile class="grow">
                     <v-list-tile-avatar color="grey lighten-1">
+                      <nuxt-link :to="'/browse/company/'+ product.company_slug">
                       <v-img :src="product.logo"></v-img>
+                      </nuxt-link>
                     </v-list-tile-avatar>
 
                     <v-list-tile-content class="hidden-xs text-truncate">
                       <v-list-tile-title class="text-muted caption">
                         <nuxt-link
-                          to="company-profile#"
+                         :to="{path: '/browse/company/'+product.company_slug}"
                         >{{ $helpers.text_truncate(product.company,25) }}</nuxt-link>
                       </v-list-tile-title>
                       <div
@@ -158,10 +164,10 @@
                   </v-list-tile>
 
                   <v-spacer></v-spacer>
-                  <v-btn icon>
+                  <v-btn icon nuxt :to="{path: '/browse/product/'+product.slug}">
                     <v-icon>phone</v-icon>
                   </v-btn>
-                  <v-btn icon>
+                  <v-btn icon nuxt :to="{path: '/browse/product/'+product.slug}">
                     <v-icon>mail_outline</v-icon>
                   </v-btn>
                 </v-card-actions>
