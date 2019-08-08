@@ -37,6 +37,9 @@ class BusinessController extends PublicController
     public function addBusiness()
     {
 
+
+
+
         $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
 
@@ -1403,6 +1406,11 @@ class BusinessController extends PublicController
 
                 $profileimg = '/avatar_male.png';
             }
+
+            $rating = $node->reviews()->avg('rating');
+            $total_rev = $node->reviews()->count();
+
+
             $data[] = [
 
                 'id' => $node->getKey(),
@@ -1411,7 +1419,8 @@ class BusinessController extends PublicController
                 'description' => strip_tags(str_limit($node->description,130)),
                 'coverimage' => $coverimg,
                 'profileimage' => $profileimg,
-
+                'rating' => $rating,
+                'reviews' => $total_rev,
                 'location' => getBusinessLocation($node->getKey())
             ];
         }
@@ -1561,6 +1570,8 @@ class BusinessController extends PublicController
             }
 
 
+            $rating = $node->reviews()->avg('rating');
+            $total_rev = $node->reviews()->count();
 
 
 
@@ -1575,11 +1586,15 @@ class BusinessController extends PublicController
                 'coverimage' => $img,
                 'address' => $node->business_address,
                 'zipcode' => $node->business_zipcode,
+                'phone' => $node->business_phone,
+                'website' => $node->business_website,
                 'location' => getBusinessLocation($node->getKey()),
                 'type' => $business_type,
                 'size' => $scale,
                 'no_of_employee' => $node->business_employee,
                 'established' => $node->business_established,
+                'rating' => $rating,
+                'reviews' => $total_rev,
                 'payment_accept' => $payment,
                 'working_hours' => $working_hours
 
@@ -1589,6 +1604,32 @@ class BusinessController extends PublicController
         return $data;
 
 
+
+    }
+
+    public function postEnquiry(Request $request)
+    {
+        $company = Node::withName($request->node_name)->first();
+
+        $data = [
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->contact_no,
+            'content' => $request->message,
+            'business_email' => $company->business_email,
+            'site_name' => getSettings('site_title'),
+        ];
+
+        /*Get Mail Configuration*/
+        Config::set('mail', getMailconfig());
+
+        Mail::send('Site::email.enquiry', $data, function ($message) use ($data) {
+            $message->from(getSettings('email_from_email'), getSettings('site_title'));
+            $message->subject('Enquiry');
+            $message->to($data['business_email']);
+        });
+
+        return "SUCCESS";
 
     }
 }

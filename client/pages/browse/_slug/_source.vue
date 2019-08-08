@@ -119,11 +119,10 @@
                       </div>
 
                       <v-card-actions class="px-0">
-                        <v-icon color="red">stars</v-icon>
-                        <v-icon color="red">stars</v-icon>
-                        <v-icon color="red">stars</v-icon>
-                        <v-icon>star_border</v-icon>
-                        <v-icon>star_border</v-icon>136 reviews
+                        <v-rating :value="product.rating" 
+                      readonly dense color="red accent-3" 
+                      class="pa-0">
+                      </v-rating>{{ product.reviews }} reviews
                         <v-spacer></v-spacer>
 
                         <v-icon>star_border</v-icon>
@@ -141,8 +140,8 @@
 
                     <v-list-tile-content class="hidden-xs text-truncate">
                       <v-list-tile-title class="text-muted caption">
-                        <nuxt-link
-                          to="company-profile#"
+                       <nuxt-link
+                         :to="{path: '/browse/company/'+product.slug}"
                         >{{ $helpers.text_truncate(product.company,25) }}</nuxt-link>
                       </v-list-tile-title>
                       <div
@@ -152,10 +151,10 @@
                   </v-list-tile>
 
                   <v-spacer></v-spacer>
-                  <v-btn icon>
+                  <v-btn icon nuxt :to="{path: '/browse/product/'+product.slug}">
                     <v-icon>phone</v-icon>
                   </v-btn>
-                  <v-btn icon>
+                  <v-btn icon nuxt :to="{path: '/browse/product/'+product.slug}">
                     <v-icon>mail_outline</v-icon>
                   </v-btn>
                 </v-card-actions>

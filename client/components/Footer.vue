@@ -100,12 +100,27 @@
             </v-card-text>
 
             <v-subheader class="title black--text pl-2">Subscribe</v-subheader>
+            <v-form @submit.prevent="subscribs" ref="form">
             <v-text-field
               append-icon="send"
+              @click:append="subscribe"
               class="ml-2 mr-3"
-              value="mail@you.com"
               label="Your email"
+              v-model="email"
+              :rules="emailRules"
+              required
+              @click="loader = 'loading'"
+              :loading="loading"
+              :disabled="loading" 
             ></v-text-field>
+            <v-card-text class="pa-2">
+              <v-layout row wrap>
+                <v-flex class="pb-1" md12>
+                  <div :class="text">{{ message }}</div>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+            </v-form>
           </v-card>
         </v-flex>
 
@@ -150,6 +165,7 @@
 
 
 <script>
+import Form from "vform";
 import { mapGetters } from "vuex";
 export default {
 
@@ -158,12 +174,73 @@ export default {
       settings: "app/settings"
     })
   },
+
+  data() {
+    return {
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      loader: null,
+      loading: false,
+      email: null,
+      text: null,
+      message: null
+    }
+  },
    methods: {
     getSetting(varible) {
       let filtered = this.settings.filter(m => m.variable === varible);
 
       if (filtered.length > 0) return filtered[0].value;
-    }
+    },
+
+    subscribe(){
+      if (this.$refs.form.validate()) {
+       this.subscribs();
+
+      }
+    },
+
+
+    async subscribs() {
+      
+      
+      const l = this.loader
+      this[l] = !this[l]
+      
+      this.dialog = true;
+      let formData = new FormData();
+      formData.append('email', this.email)
+     
+     if (this.$refs.form.validate()) {
+          this.snackbar = true
+         this.$axios
+            .post(`post-subscribe`, formData)
+            .then(response => {
+            setTimeout(() => (
+            this[l] = false,
+            this.text = "blue--text",
+            this.message = 'Thank You'
+        ), 1500),
+        this.reset();
+          })
+         }else{
+
+
+      setTimeout(() => (
+           this[l] = false,
+           this.text = "red--text",
+           this.message = 'Invalid'
+        ), 500)
+      }
+     // });
+      
+      },
+
+      reset () {
+        this.$refs.form.reset()
+      },
   },
   mounted() {
     this.$store.dispatch("app/updateSettings");

@@ -44,12 +44,6 @@
             <v-flex class="mb-2">
               <nuxt-link to="/business/post/product/create">Product</nuxt-link>
             </v-flex>
-            <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Location</nuxt-link>
-            </v-flex>
-            <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Working Hours</nuxt-link>
-            </v-flex>
           </v-container>
           <v-divider></v-divider>
         </v-flex>
@@ -58,7 +52,7 @@
           <v-subheader>Promotions</v-subheader>
           <v-container class="pt-0">
             <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Create</nuxt-link>
+              <nuxt-link to="/business/post">Create</nuxt-link>
             </v-flex>
             <v-flex class="mb-2">
               <nuxt-link to="business-profile#">My Promotions</nuxt-link>
