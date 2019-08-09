@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-btn flat text class="text-capitalize" @click.stop="dialog = true">Post Requirement</v-btn>
+    <v-btn depressed color="primary" class="text-capitalize" @click.stop="dialog = true">Post Requirement</v-btn>
 
     <v-dialog v-model="dialog" persistent max-width="550" >
 
