@@ -61,13 +61,7 @@
               </v-layout>
             </v-toolbar>
 
-            <div class="black--text">
-              Supplier location
-              <span
-                class="font-weight-bold red--text"
-                @click.stop="location_dialog = true"
-              >{{ location.title }}</span>
-            </div>
+            
           </v-layout>
         </v-container>
       </v-img>

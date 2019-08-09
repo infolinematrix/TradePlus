@@ -59,8 +59,8 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::get('checkout/{provider}', 'PaymentController@checkout');
     Route::get('checkout/authorised/{provider}', 'PaymentController@handleProviderCallback');
 
-    Route::get('categories/{parent?}', 'BusinessController@getCategories');
-
+    Route::get('categories/{parent?}/{limit?}', 'BusinessController@getCategories');
+    Route::get('category/{id}', 'BusinessController@getCategory');
     /*Location*/
     Route::get('locations/{parent?}/{limit?}', 'BusinessController@getLocations');
     Route::get('location/{id}', 'BusinessController@getLocation');
@@ -117,6 +117,7 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
 
 
     Route::post('post-subscribe', 'ApiController@postSubscribe');
+    Route::post('post-requirement', 'ApiController@postRequirement');
 });
 
 /**

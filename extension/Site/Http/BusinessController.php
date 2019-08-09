@@ -871,7 +871,7 @@ class BusinessController extends PublicController
 
     }
 
-    public function getCategories($parent = 0)
+    public function getCategories($parent = 0, $limit = 12)
     {
 
         $data = [];
@@ -933,6 +933,19 @@ class BusinessController extends PublicController
 
             return 'not_found';
         }
+    }
+
+    public function getCategory(NodeRepository $nodeRepository, $id){
+
+        $node = $nodeRepository->getNodeById($id,false);
+
+        $data = [
+            'id' => $node->getKey(),
+            'title' => $node->getTitle(),
+            'slug' => $node->getName(),
+        ];
+        return $data;
+
     }
 
     /**Location */

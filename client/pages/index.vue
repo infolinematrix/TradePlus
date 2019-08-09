@@ -20,7 +20,7 @@
             <v-sheet class="transparent">
               <div class="text-xs-center">
                 <v-avatar size="75" tile>
-                  <img src="/icons/product.svg"  alt="avatar" />
+                  <img src="/icons/product.svg" alt="avatar" />
                 </v-avatar>
               </div>
               <div class="text-xs-center pa-2">
@@ -67,9 +67,16 @@
         <div class="text-xs-center">
           <div class="display-1 font-weight-bold">Popular Categories</div>
           <div
-            class="text-muted pt-1"
-          >Post your requirement for FREE! Get matching a products/services in your mail box</div>
+            class="text-muted pt-1">
+            <span
+                class="font-weight-bold red--text"
+                @click.stop="category_dialog = true"
+              >
+          View All Category 
+            </span>
+          </div>
         </div>
+       
       </v-sheet>
 
       <v-flex
@@ -102,6 +109,9 @@
         </swiper>
       </v-flex>
     </v-layout>
+      <!-- Category Popup -->
+      <category-popup-2 :isActive="category_dialog" @category="update_category"></category-popup-2>
+      <!-- End of Category Popup -->
 
     <v-layout column justify-center align-center class="mt-5">
       <v-flex xs12 sm8 md6>
@@ -245,12 +255,15 @@
 
 <script>
 import RecentProducts from '~/components/RecentProducts.vue'
+import CategoryPopup2 from '~/components/CategoryPopup2.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   layout: 'home',
 
   components: {
-    RecentProducts
+    RecentProducts,
+     'category-popup-2': CategoryPopup2,
   },
 
   async asyncData({ $axios }) {
@@ -267,6 +280,7 @@ export default {
   data() {
     return {
       r: '',
+      category_dialog: false,
 
       swiperOption: {
         auto: true,
@@ -277,7 +291,6 @@ export default {
           delay: 1500,
           disableOnInteraction: false
         },
-
         breakpoints: {
           1024: {
             slidesPerView: 4,
@@ -304,6 +317,15 @@ export default {
     }
   },
 
-  async mounted() {}
+   methods: {
+    update_category() {
+      this.category_dialog = false
+    }
+  },
+  computed: {
+    ...mapGetters({
+      category: 'app/category'
+    })
+  }
 }
 </script>

@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar dense flat>
           <v-toolbar-title class="title-2">
-            Select Location:
+            Select Category:
             <span class="text-muted caption">{{ this.node_title }}</span>
           </v-toolbar-title>
           <v-spacer></v-spacer>
@@ -23,7 +23,7 @@
 
                 <template v-slot:item="props">
                   <a
-                    @click="selectLocation(props.item.id, props.item.title)"
+                    @click="selectCategory(props.item.id, props.item.title)"
                     href="#"
                     :class="[props.item.disabled && 'disabled']"
                   >{{ props.item.title }}</a>
@@ -33,8 +33,8 @@
           </v-layout>
 
           <v-layout row wrap>
-            <v-flex xs4 sm3 md3 v-for="location in this.locations" :key="location">
-              <a href="#" @click="getLocations(location.id, location.title)">{{ location.title}}</a>
+            <v-flex xs4 sm3 md3 v-for="category in this.categories" :key="category">
+              <a href="#" @click="getCategories(category.id, category.title)">{{ category.title}}</a>
             </v-flex>
           </v-layout>
         </v-container>
@@ -44,7 +44,7 @@
 
           <v-btn depressed color="grey lighten-2" text @click="hide">Cancel</v-btn>
 
-          <v-btn depressed color="green lighten-1" text @click="setLocation">Set</v-btn>
+          <v-btn depressed color="green lighten-1" text @click="setCategory">Go</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -62,7 +62,7 @@ export default {
   },
   data() {
     return {
-      locations: null,
+      categories: null,
       parent: null,
       node_title: null,
       node_id: null,
@@ -70,37 +70,37 @@ export default {
     }
   },
   methods: {
-    setLocation() {
+    setCategory() {
 
-      this.$store.dispatch('app/set_location',this.node_id)
-      this.$emit('location', false)
+      this.$store.dispatch('app/set_category',this.node_id)
+      this.$emit('category', false)
       this.isActive = false
-      let loc_slug = this.node_title
+      let cat_slug = this.node_title
       var slug = /\s+/g;
-      loc_slug = loc_slug.toLowerCase().replace(slug,'-');
-      this.$root.$router.push({path: '/browse/'+loc_slug})
+      cat_slug = cat_slug.toLowerCase().replace(slug,'-');
+      this.$root.$router.push({path: '/browse/'+cat_slug})
     },
     hide() {
-      this.$emit('location', false)
+      this.$emit('category', false)
       this.isActive = false
     },
-    getLocations(parent, ctitle) {
+    getCategories(parent, ctitle) {
       this.parent = parent
 
       this.node_title = ctitle
       this.node_id = this.parent
 
       this.$axios
-        .get('locations/' + this.parent + '/' + this.limit)
+        .get('categories/' + this.parent + '/' + this.limit)
         .then(response => {
-          this.locations = response.data
-          this.breadcrumb = this.locations[0].breadcrumb
+          this.categories = response.data
+          this.breadcrumb = this.categories[0].breadcrumb
         })
       this.$emit('eTitle', this.title)
     }
   },
   mounted() {
-    this.getLocations()
+    this.getCategories()
   }
 }
 </script>
