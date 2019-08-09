@@ -155,6 +155,7 @@ class SearchController extends PublicController
                     ->published()->whereHas('metas')->sortable('created_at', 'desc')->get();
 
 
+                $nodes = null;
                 if (count($business) > 0) {
 
                     foreach ($business as $parent) {
@@ -166,24 +167,23 @@ class SearchController extends PublicController
 
                                 $nodes[] = $product;
                             }
-                        } else {
-
-                            $nodes = null;
                         }
                     }
 
-                } else {
-                    if (count($products) > 0) {
-                        $nodes = $products;
-                    } else {
-                        $nodes = null;
-                    }
+                }else{
+
+                    $nodes = null;
+                }
+
+                if (count($products) > 0) {
+                    $nodes = $products;
                 }
 
             } else {
 
                 $nodes = null;
             }
+           
 
 
 

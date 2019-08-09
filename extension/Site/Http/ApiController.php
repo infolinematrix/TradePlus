@@ -2,8 +2,11 @@
 
 namespace Extension\Site\Http;
 
+use Extension\Site\Entities\PostRequirement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use ReactorCMS\Entities\Node;
+use ReactorCMS\Entities\Subscriber;
 use ReactorCMS\Http\Controllers\PublicController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeHelpers;
@@ -123,6 +126,14 @@ class ApiController extends PublicController
     public function postSubscribe(Request $request){
 
 
+        
+        $s_data = [
+            
+            'email' => $request->email
+        ];
+        
+        Subscriber::insert($s_data);
+        
         $data = [
             'email' => $request->email,
             'site_name' => getSettings('site_title'),
@@ -136,6 +147,26 @@ class ApiController extends PublicController
             $message->subject('Subscriber');
             $message->to('help.matrixinfoline@gmail.com');
         });
+
+        return "SUCCESS";
+
+    }
+
+    public function postRequirement(Request $request){
+
+
+        $data = [
+            'user_id' => Auth::user()->id,
+            'category' => $request->category,
+            'title' => $request->title,
+            'description' => $request->description,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->contact_no,
+            'email' => $request->email,
+        ];
+
+        PostRequirement::insert($data);
 
         return "SUCCESS";
 
