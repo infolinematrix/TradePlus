@@ -76,20 +76,20 @@
         <v-flex v-for="i in 20" :key="i">
           <v-card class="elevation-0 mb-3">
             <v-card-text class="pb-0">
+              <v-chip disabled outline small label >
+                Trevor Hansen
+              </v-chip>
+
               <h2 class="title-2 font-weight-medium">{{req_title}}</h2>
               <h3 class="body-1 mt-2 font-weight-light">{{ req_description}}</h3>
             </v-card-text>
             <v-card-actions class="px-0">
               <v-list-tile class="grow">
                 <v-list-tile-content class="hidden-xs text-truncate">
-                  <v-list-tile-title class="text-muted caption">
-                    <nuxt-link
-                      to="company-profile#"
-                    >{{ $helpers.text_truncate('Matrix Infoline Private Limited',100) }}</nuxt-link>
+                  <v-list-tile-title class="caption">
+                    <div>{{ $helpers.text_truncate('Matrix Infoline Private Limited',20) }}</div>
                   </v-list-tile-title>
-                  <div
-                    class="text-muted caption"
-                  >{{ $helpers.text_truncate('Siliguri, West Bengal',100) }}</div>
+                  <div class="text-muted caption">3 days ago</div>
                 </v-list-tile-content>
               </v-list-tile>
 
@@ -115,19 +115,19 @@
 
         <v-card-text class="pt-0">
           <v-textarea
-          name="input-7-1"
-          label="Message"
-          value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-          hint="Your message"
-        ></v-textarea>
+            name="input-7-1"
+            label="Message"
+            value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
+            hint="Your message"
+          ></v-textarea>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="green darken-1" flat="flat" @click=close_dialog>Cancel</v-btn>
+          <v-btn color="green darken-1" flat="flat" @click="close_dialog">Cancel</v-btn>
 
-          <v-btn color="green darken-1" flat="flat" @click=close_dialog>Post</v-btn>
+          <v-btn color="green darken-1" flat="flat" @click="close_dialog">Post</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -139,7 +139,7 @@ export default {
   layout: 'explore',
 
   components: {
-    'requirement-popup': RequirementPopup,
+    'requirement-popup': RequirementPopup
   },
 
   data: () => ({
