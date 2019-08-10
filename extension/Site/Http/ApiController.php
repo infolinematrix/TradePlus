@@ -5,7 +5,6 @@ namespace Extension\Site\Http;
 use Extension\Site\Entities\PostRequirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use ReactorCMS\Entities\Node;
 use ReactorCMS\Entities\Subscriber;
 use ReactorCMS\Http\Controllers\PublicController;
 use ReactorCMS\Http\Controllers\Traits\UsesNodeForms;
@@ -15,7 +14,7 @@ use Reactor\Hierarchy\NodeRepository;
 use ReactorCMS\Entities\Settings;
 use Mail;
 use Illuminate\Support\Facades\Config;
-
+use Reactor\Hierarchy\Node;
 class ApiController extends PublicController
 {
 
@@ -167,6 +166,64 @@ class ApiController extends PublicController
         ];
 
         PostRequirement::insert($data);
+
+        return "SUCCESS";
+
+    }
+
+    public function requirements(){
+
+        $data = [];
+
+        $requirements = PostRequirement::where('approved',1)->orderBy('id','DESC')->get();
+
+        foreach ($requirements as $requirement){
+
+
+            $data[] = [
+
+                'id' => $requirement->id,
+                'title' => $requirement->title,
+                'description' => strip_tags($requirement->description),
+                'category' => Node::find($requirement->category)->getTitle(),
+                'name' => $requirement->first_name.' '.$requirement->last_name,
+                'posted_on' => time_elapsed_string($requirement->created_at)
+            ];
+        }
+
+        return $data;
+
+    }
+
+    public function sendQuote(Request $request){
+
+        $requirement = PostRequirement::where('id',$request->req_id)->first();
+
+
+        //$user = Auth::user();
+
+        $node = Node::where('user_id',1)->withType('business')->first();
+
+
+        $data = [
+
+            'quotation' => $requirement->description,
+            'description' => $request->description,
+            'business' => $node->getTitle(),
+            'slug' => $node->getName(),
+            'site_name' => getSettings('site_title'),
+
+        ];
+
+
+        /*Get Mail Configuration*/
+        Config::set('mail', getMailconfig());
+
+        Mail::send('Site::email.quotation', $data, function ($message) use ($data) {
+            $message->from(getSettings('email_from_email'), getSettings('site_title'));
+            $message->subject('Quotation for your Requirement');
+            $message->to('help.matrixinfoline@gmail.com');
+        });
 
         return "SUCCESS";
 

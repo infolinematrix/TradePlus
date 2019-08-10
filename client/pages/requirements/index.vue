@@ -73,29 +73,29 @@
       </v-container>
 
       <v-container fluid class="pa-2">
-        <v-flex v-for="i in 20" :key="i">
+        <v-flex v-for="requirement in requirements" :key="requirement">
           <v-card class="elevation-0 mb-3">
             <v-card-text class="pb-0">
 
               <v-chip disabled outline small label >
-                Trevor Hansen
+                {{ requirement.category }}
               </v-chip>
 
-              <h2 class="title-2 font-weight-medium">{{req_title}}</h2>
-              <h3 class="body-1 mt-2 font-weight-light">{{ req_description}}</h3>
+              <h2 class="title-2 font-weight-medium">{{ requirement.title }}</h2>
+              <h3 class="body-1 mt-2 font-weight-light">{{ requirement.description }}</h3>
 
             </v-card-text>
             <v-card-actions class="px-0">
               <v-list-tile class="grow">
                 <v-list-tile-content class="hidden-xs text-truncate">
                   <v-list-tile-title class="caption">
-                    <div>{{ $helpers.text_truncate('Matrix Infoline Private Limited',20) }}</div>
+                    <div>{{ requirement.name  }}</div>
                   </v-list-tile-title>
-                  <div class="text-muted caption">3 days ago</div>
+                  <div class="text-muted caption">{{ requirement.posted_on }}</div>
                 </v-list-tile-content>
               </v-list-tile>
 
-              <v-btn depressed @click.stop="show_dialog(req_id,req_title,req_description)">
+              <v-btn depressed @click.stop="show_dialog(requirement.id,requirement.title,requirement.description)">
                 <v-icon class="mr-3">phone</v-icon>Send Quote
               </v-btn>
             </v-card-actions>
@@ -107,31 +107,44 @@
 
     <!-- DIALOG -->
     <v-dialog v-model="quote_dialog" persistent max-width="490">
+       <v-form @submit.prevent="send_quote" ref="form">
+
       <v-card>
         <v-card-title class="headline">Send Quote</v-card-title>
 
         <v-card-text class="pt-0">
           <div class="body-1 font-weight-medium">{{ req_title }}</div>
-          <div class="grey--text">{{ req_description }}</div>
+          <div class="grey--text">{{ req_desc }}</div>
         </v-card-text>
 
         <v-card-text class="pt-0">
           <v-textarea
             name="input-7-1"
             label="Message"
-            value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
             hint="Your message"
+            v-model="form.description"
+            :rules="messageRules"
+            required
           ></v-textarea>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-alert v-model="alert" dismissible type="info">{{ message }}</v-alert>
 
           <v-btn color="green darken-1" flat="flat" @click="close_dialog">Cancel</v-btn>
 
-          <v-btn color="green darken-1" flat="flat" @click="close_dialog">Post</v-btn>
+          <v-btn
+              depressed 
+              color="primary"
+              @click="loader = 'loading'"
+              :loading="loading"
+              :disabled="loading" 
+              type="submit" >Send
+              </v-btn>
         </v-card-actions>
       </v-card>
+       </v-form>
     </v-dialog>
   </v-layout>
 </template>
@@ -144,14 +157,19 @@ export default {
     'requirement-popup': RequirementPopup
   },
 
+ async asyncData({ $axios, params }) {
+    let post = await $axios.get('requirements')
+    return {
+      requirements: post.data,
+    }
+  },
+  
   data: () => ({
     quote_dialog: false,
 
-    req_id: 54,
-    req_title: 'Plastic Bottle, Best price gurentee',
-    req_description:
-      'If for some reason you are unable to use the activator slot, be sure to add the .stop modifier to the event that triggers the dialog.',
-
+    req_id: 0,
+    req_title: null,
+    req_desc: null,
     breadcrumbs: [
       {
         text: 'Home',
@@ -168,16 +186,83 @@ export default {
         disabled: true,
         href: 'breadcrumbs_link_2'
       }
-    ]
+    ],
+
+    /*Rules*/
+      messageRules: [
+        v => !!v || 'Required',
+      ],
+
+      loader: null,
+      loading: false,
+      alert: false,
+      message: null,
+      form: {
+        description: null,
+      },
+
   }),
 
   methods: {
     show_dialog(id, title, description) {
+
+      this.req_id = id,
+      this.req_title = title,
+      this.req_desc = description,  
       this.quote_dialog = true
+      this.alert = false
     },
     close_dialog() {
       this.quote_dialog = false
-    }
+    },
+
+    async send_quote() {
+      
+      
+      const l = this.loader
+      this[l] = !this[l]
+      
+      this.dialog = true;
+      let formData = new FormData();
+      formData.append('req_id', this.req_id)
+      formData.append('description', this.form.description)
+       
+        if (this.$refs.form.validate()) {
+             
+          this.snackbar = true
+         this.$axios
+            .post(`sendquotation`, formData)
+            .then(response => {
+         
+            setTimeout(() => (
+            this[l] = false,
+            this.alert = true,
+            this.message = 'Successfully Send....'
+        ), 3500),
+            this.reset();
+       })
+
+         }else{
+
+      setTimeout(() => (
+            this[l] = false,
+            swal.fire({
+            title: "Invalid Input!",
+            type: "warning",
+            animation: true,
+            showCloseButton: true
+            })
+        ), 500)
+      }
+     // });
+      
+      },
+
+      reset () {
+        this.$refs.form.reset()
+      },
   }
+
+
 }
 </script>
