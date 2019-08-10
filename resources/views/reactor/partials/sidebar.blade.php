@@ -54,6 +54,13 @@
                     <i class="fa fa-briefcase"></i> <span>Business</span>
                 </a>
             </li>
+
+            <li class="">
+                <a href="{!! route("reactor.requirement.index") !!}">
+                    <i class="fa fa-briefcase"></i> <span>Post Requirements</span>
+                </a>
+            </li>
+
         </ul>
 
         <hr class="divider">
