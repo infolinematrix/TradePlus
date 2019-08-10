@@ -76,12 +76,14 @@
         <v-flex v-for="i in 20" :key="i">
           <v-card class="elevation-0 mb-3">
             <v-card-text class="pb-0">
+
               <v-chip disabled outline small label >
                 Trevor Hansen
               </v-chip>
 
               <h2 class="title-2 font-weight-medium">{{req_title}}</h2>
               <h3 class="body-1 mt-2 font-weight-light">{{ req_description}}</h3>
+
             </v-card-text>
             <v-card-actions class="px-0">
               <v-list-tile class="grow">
@@ -136,7 +138,7 @@
 <script>
 import RequirementPopup from '~/components/RequirementPopup.vue'
 export default {
-  layout: 'explore',
+  layout: 'requirement',
 
   components: {
     'requirement-popup': RequirementPopup
