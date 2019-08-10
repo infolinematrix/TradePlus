@@ -1,14 +1,16 @@
 <template>
   <v-layout>
     <v-spacer></v-spacer>
-    <v-btn flat text class="text-capitalize" nuxt to="/">Home</v-btn>
 
+    <v-btn icon nuxt to="/">
+          <v-icon>home</v-icon>
+        </v-btn>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat text class="text-capitalize" nuxt to="/requirements">Requirement</v-btn>
       <v-btn flat text class="text-capitalize" nuxt to="/business/create">Add Business</v-btn>
     </v-toolbar-items>
 
-    <v-menu class="hidden-md-and-up">
+    <v-menu class="hidden-md-and-up" bottom left open-on-hover>
       <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
       <v-list>
         <v-list-tile nuxt to="/requirements">
