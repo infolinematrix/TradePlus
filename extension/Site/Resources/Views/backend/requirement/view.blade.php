@@ -19,7 +19,7 @@
                     <!-- Tabs within a box -->
                     <ul class="nav nav-tabs pull-right ui-sortable-handle">
 
-                        <li class="pull-left header"><i class="fa fa-inbox"></i> {!! uppercase(__('Edit')) !!}</li>
+                        <li class="pull-left header"><i class="fa fa-inbox"></i> {!! uppercase(__('View')) !!}</li>
                     </ul>
 
 
