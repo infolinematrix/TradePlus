@@ -899,6 +899,7 @@ import Form from 'vform'
 import swal from 'sweetalert2'
 import VeeValidate from 'vee-validate'
 import LocationPopup from '~/components/LocationPopup.vue'
+
 export default {
 
   async asyncData({ redirect, $axios }) {
@@ -1177,7 +1178,8 @@ export default {
       formData.append('business_phone', this.form.phone)
       formData.append('business_website', this.form.website)
       formData.append('business_entity', this.form.business_type)
-      
+      formData.append('day', 'none')
+
       this.$validator.validateAll().then(result => {
         if (result) {
 
@@ -1192,7 +1194,7 @@ export default {
 
          }else{
           this.$axios.post(`business/update`, formData).then(response => {
-
+            
             this.dialog = false
             swal.fire({
               title: 'Business Updated Successfully',
@@ -1212,6 +1214,7 @@ export default {
     async about(scope) {
       let formData = new FormData()
       formData.append('description', this.form2.description)
+      formData.append('day', 'none')
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -1280,10 +1283,11 @@ export default {
      formData.append("open[]", this.form3.sunday.open.time);
      formData.append("close[]", this.form3.sunday.close.time);
 
-  this.$validator.validateAll(scope).then(result => {
+     this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.snackbar = true
           this.$axios.post(`business/update`, formData).then(response => {
+            
             this.dialog = false
             swal.fire({
               title: 'Business Updated Successfully',
@@ -1312,6 +1316,7 @@ export default {
 
        formData.append("emailenquiry", this.enquiry);
        formData.append("phonemessage", this.message);
+       formData.append('day', 'none')
 
        formData.append("accept_payment", true);
         if(this.cash == true){

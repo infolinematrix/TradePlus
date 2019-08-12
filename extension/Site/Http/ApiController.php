@@ -200,9 +200,9 @@ class ApiController extends PublicController
         $requirement = PostRequirement::where('id',$request->req_id)->first();
 
 
-        //$user = Auth::user();
+        $user = Auth::user();
 
-        $node = Node::where('user_id',1)->withType('business')->first();
+        $node = Node::where('user_id', $user->id)->withType('business')->first();
 
 
         $data = [

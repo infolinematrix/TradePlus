@@ -42,9 +42,10 @@
               </template>
 
               <v-list>
-                <v-list-item>
-                  <v-list-item-title>Report Incorrect</v-list-item-title>
-                </v-list-item>
+                 <v-list-tile>
+                  <v-list-tile-title>Report Incorrect</v-list-tile-title>
+              </v-list-tile>
+                
               </v-list>
             </v-menu>
           </v-sheet>

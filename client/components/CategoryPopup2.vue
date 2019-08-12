@@ -65,11 +65,17 @@ export default {
       categories: null,
       parent: null,
       node_title: null,
+      node_name: null,
       node_id: null,
       breadcrumb: []
     }
   },
   methods: {
+
+     selectCategory(cid, ctitle) {
+      this.getCategories(cid)
+    },
+
     setCategory() {
 
       this.$store.dispatch('app/set_category',this.node_id)
@@ -77,7 +83,7 @@ export default {
       this.isActive = false
       let cat_slug = this.node_title
       var slug = /\s+/g;
-      cat_slug = cat_slug.toLowerCase().replace(slug,'-');
+      cat_slug = cat_slug.toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
       this.$root.$router.push({path: '/browse/'+cat_slug})
     },
     hide() {

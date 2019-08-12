@@ -16,3 +16,5 @@ export default async ({ store, req }) => {
     await store.dispatch('auth/fetchUser')
   }
 }
+
+

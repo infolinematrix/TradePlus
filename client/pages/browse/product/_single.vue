@@ -17,7 +17,7 @@
             <v-card-title primary-title>
               <div class="font-weight-medium title lh1">
                 {{ product.title }}
-                <div class="text-muted caption mt-2">{{ product.meta_description }}</div>
+                <div class="text-muted caption mt-2"  v-html="product.meta_description"></div>
               </div>
             </v-card-title>
 
@@ -53,6 +53,8 @@
                   </v-list-tile>
 
                   <v-card-text class="pt-0">
+                    <v-card-actions class="px-0">
+
                    <v-rating :value="product.company_rating" 
                       readonly dense color="red accent-3" 
                       class="pa-0">

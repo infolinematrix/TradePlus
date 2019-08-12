@@ -44,6 +44,10 @@ export default {
     ]
   },
 
+  router: {
+    middleware: ['check-auth']
+  },
+
   /*
    ** Customize the progress-bar color
 */
