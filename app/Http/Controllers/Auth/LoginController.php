@@ -35,6 +35,7 @@ class LoginController extends Controller
             $data['role'] = $user->roles()->first();
         }
 
+
         return $data;
     }
 
@@ -70,6 +71,7 @@ class LoginController extends Controller
         $token = (string) $this->guard()->getToken();
         $expiration = $this->guard()->getPayload()->get('exp');
 
+        
         return [
             'token' => $token,
             'token_type' => 'bearer',

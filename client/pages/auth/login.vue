@@ -111,6 +111,8 @@ export default {
         this.message = data.error
         return
       }
+
+     // console.log(data);
       // Save the token.
       this.$store.dispatch('auth/saveToken', {
         token: data.token,
@@ -120,7 +122,8 @@ export default {
       // Fetch the user.
       await this.$store.dispatch('auth/fetchUser')
 
-      if (this.user.user.status != 51) {
+
+      if (this.user.status != 51) {
         this.alert = true
         this.message = 'Sorry! you are not authorised.'
         await this.$store.dispatch('auth/logout')

@@ -5,8 +5,6 @@ export default function ({
 
   if (!store.getters['auth/check']) {
     return redirect('/auth/login')
-  } else {
-    store.dispatch('auth/fetchUser')
-  }
+  } 
 
 }

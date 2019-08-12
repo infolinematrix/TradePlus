@@ -3,8 +3,10 @@
     <v-card flat>
       <v-card-title>
         <div>
-          <h3 class="title-1">My Business</h3>
-          <div class="text-muted mb-1">A well-written company profile is an effective way to introduce the business to the potential customers and other stakeholders.</div>
+          <h3 class="title-2">My Business</h3>
+          <div
+            class="text-muted mb-1"
+          >The business profile is designed to be an overview of your business and the business plan. It should provide readers with a quick overview of your business, including your values and objectives, so they can get an immediate feel for what you’re doing and where you’re going.</div>
         </div>
 
         <div class="text-xs-center">
@@ -857,8 +859,8 @@
 
             <v-tab-item class="pl-0 pr-0">
               <v-form @submit.prevent="settings('form-4')" data-vv-scope="form-4">
-                <v-list two-line subheader>
-                  <v-subheader>General</v-subheader>
+                <v-list subheader>
+                  <v-subheader class>General Settings</v-subheader>
 
                   <v-list-tile avatar>
                     <v-list-tile-content>
@@ -895,28 +897,20 @@
 
                 <v-divider></v-divider>
 
-                <v-subheader>Accept Payment</v-subheader>
-                <v-flex class="pl-3 mt-2">
+                <v-subheader class>Accept Payment</v-subheader>
+                <v-flex class="pl-3">
                   <v-layout row wrap>
-                    <v-flex xs12 sm4 md4>
-                      <v-checkbox v-model="cash" label="Cash" color="red" hide-details></v-checkbox>
-                      <v-checkbox
-                        v-model="transfer"
-                        label="Transfer (NEFT)"
-                        color="indigo darken-3"
-                        hide-details
-                      ></v-checkbox>
+                    <v-flex xs12 sm4 md2>
+                      <v-checkbox v-model="cash" label="Cash" hide-details></v-checkbox>
                     </v-flex>
                     <v-flex xs12 sm4 md4>
-                      <v-checkbox
-                        v-model="credit_card"
-                        label="Credit Card"
-                        color="indigo"
-                        hide-details
-                      ></v-checkbox>
+                      <v-checkbox v-model="transfer" label="Transfer (NEFT/RTGS)" hide-details></v-checkbox>
                     </v-flex>
-                    <v-flex xs12 sm4 md4>
-                      <v-checkbox v-model="cheque" label="Cheque" color="red darken-3" hide-details></v-checkbox>
+                    <v-flex xs12 sm4 md3>
+                      <v-checkbox v-model="credit_card" label="Credit/Debit Card" hide-details></v-checkbox>
+                    </v-flex>
+                    <v-flex xs12 sm4 md3>
+                      <v-checkbox v-model="cheque" label="Cheque" hide-details></v-checkbox>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -948,6 +942,7 @@ import Form from 'vform'
 import swal from 'sweetalert2'
 import VeeValidate from 'vee-validate'
 import LocationPopup from '~/components/LocationPopup.vue'
+
 export default {
   async asyncData({ redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
@@ -1210,6 +1205,7 @@ export default {
       formData.append('business_phone', this.form.phone)
       formData.append('business_website', this.form.website)
       formData.append('business_entity', this.form.business_type)
+      formData.append('day', 'none')
 
       this.$validator.validateAll().then(result => {
         if (result) {
@@ -1242,6 +1238,7 @@ export default {
     async about(scope) {
       let formData = new FormData()
       formData.append('description', this.form2.description)
+      formData.append('day', 'none')
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -1342,6 +1339,7 @@ export default {
 
       formData.append('emailenquiry', this.enquiry)
       formData.append('phonemessage', this.message)
+      formData.append('day', 'none')
 
       formData.append('accept_payment', true)
       if (this.cash == true) {

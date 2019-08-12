@@ -435,64 +435,66 @@ class BusinessController extends PublicController
 
 
         /*Working Hours*/
-        $input = $request->all();
-        $array = [];
+        if($request->day != 'none') {
+            $input = $request->all();
 
-        for ($i = 0; $i < 7; $i++) {
-            if ($input['hourstatus'][$i] == 'false') {
+            $array = [];
 
-                $ar[] = 'false';
+            for ($i = 0; $i < 7; $i++) {
+                if ($input['hourstatus'][$i] == 'false') {
 
+                    $ar[] = 'false';
+
+                }
+                $array[$i] = [
+                    'day' => $input['day'][$i],
+                    'status' => $input['hourstatus'][$i],
+                    'open' => $input['open'][$i],
+                    'close' => $input['close'][$i],
+                ];
             }
-            $array[$i] = [
-                'day' => $input['day'][$i],
-                'status' => $input['hourstatus'][$i],
-                'open' => $input['open'][$i],
-                'close' => $input['close'][$i],
-            ];
-        }
 
-        $json_data = json_encode($array);
+            $json_data = json_encode($array);
 
 
+            /*Insert or Update Working Hours*/
+            $modelName = source_model_name('workinghours', true);
 
-        /*Insert or Update Working Hours*/
-        $modelName = source_model_name('workinghours', true);
+            $custom_table_class = new $modelName;
+            $cModel = $modelName::where('id', $node->translate($locale)->getKey())
+                ->where('node_id', $node->getKey())->first();
 
-        $custom_table_class = new $modelName;
-        $cModel = $modelName::where('id', $node->translate($locale)->getKey())
-            ->where('node_id', $node->getKey())->first();
+            if (count($ar) == 7) {
+                if ($cModel) {
+                    $modelName::where('id', $node->translate($locale)->getKey())
+                        ->where('node_id', $node->getKey())->delete();
+                }
+                return 'Updated Successfully';
+            }
 
-        if (count($ar) == 7) {
+
             if ($cModel) {
-                $modelName::where('id', $node->translate($locale)->getKey())
-                    ->where('node_id',  $node->getKey())->delete();
+                $request->request->set('id', $node->translate($locale)->getKey());
+                $request->request->set('node_id', $node->getKey());
+                $request->request->set('hours', $json_data);
+                $data = array_except($request->all(), ['business_employee', 'business_established', 'business_facebook',
+                    'business_google', 'business_linkedin',
+                    'business_scale', 'business_twitter',
+                    'business_youtube', 'hourstatus', 'open', 'close', 'day']);
+                $custom_table_class->where('id', $node->translate($locale)->getKey())->update($data);
+
+            } else {
+
+                $request->request->set('id', $node->translate($locale)->getKey());
+                $request->request->set('node_id', $node->getKey());
+                $request->request->set('hours', $json_data);
+                $data = array_except($request->all(), ['business_employee', 'business_established', 'business_facebook',
+                    'business_google', 'business_linkedin',
+                    'business_scale', 'business_twitter',
+                    'business_youtube', 'hourstatus', 'open', 'close', 'day']);
+                $custom_table_class->insert($data);
+
             }
-            return 'Updated Successfully';
-        }
-
-
-        if ($cModel) {
-            $request->request->set('id', $node->translate($locale)->getKey());
-            $request->request->set('node_id', $node->getKey());
-            $request->request->set('hours', $json_data);
-            $data = array_except($request->all(), ['business_employee','business_established','business_facebook',
-                'business_google','business_linkedin',
-                'business_scale','business_twitter',
-                'business_youtube','hourstatus', 'open', 'close', 'day']);
-            $custom_table_class->where('id', $node->translate($locale)->getKey())->update($data);
-
-        } else {
-
-            $request->request->set('id', $node->translate($locale)->getKey());
-            $request->request->set('node_id', $node->getKey());
-            $request->request->set('hours', $json_data);
-            $data = array_except($request->all(), ['business_employee','business_established','business_facebook',
-                'business_google','business_linkedin',
-                'business_scale','business_twitter',
-                'business_youtube','hourstatus', 'open', 'close', 'day']);
-            $custom_table_class->insert($data);
-
         }
         /*Working Hours*/
 

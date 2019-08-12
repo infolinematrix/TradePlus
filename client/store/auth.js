@@ -3,7 +3,8 @@ import Cookies from 'js-cookie'
 
 // state
 export const state = () => ({
-  loggedIn: false,
+  loggedin: false,
+  role: null,
   user: null,
   token: null
 })
@@ -11,6 +12,8 @@ export const state = () => ({
 // getters
 export const getters = {
   user: state => state.user,
+  loggedin: state => state.loggedin,
+  user_role: state => state.role,
   token: state => state.token,
   check: state => state.user !== null
 }
@@ -21,8 +24,12 @@ export const mutations = {
     state.token = token
   },
 
+
+
   FETCH_USER_SUCCESS (state, user) {
-    state.user = user,
+    state.user = user.user
+    state.role = user.role
+    state.loggedin = true
   },
 
   FETCH_USER_FAILURE (state) {
@@ -30,8 +37,8 @@ export const mutations = {
   },
 
   LOGOUT (state) {
-    state.user = null,
-    state.token = null,
+    state.user = null
+    state.token = null
   },
 
   UPDATE_USER (state, { user }) {
@@ -46,6 +53,7 @@ export const actions = {
     Cookies.set('token', token, { expires: remember ? 365 : null })
   },
 
+
   async fetchUser ({ commit }) {
     try {
       const { data } = await this.$axios.get('auth/user')
@@ -55,6 +63,8 @@ export const actions = {
       commit('FETCH_USER_FAILURE')
     }
   },
+
+
 
   updateUser ({ commit }, payload) {
     commit('UPDATE_USER', payload)

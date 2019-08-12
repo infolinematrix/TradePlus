@@ -70,6 +70,11 @@ export default {
     }
   },
   methods: {
+
+     selectLocation(cid, ctitle) {
+      this.getLocations(cid)
+    },
+
     setLocation() {
 
       this.$store.dispatch('app/set_location',this.node_id)

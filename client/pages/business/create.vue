@@ -229,6 +229,7 @@ import Form from "vform";
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
 import LocationPopup from "~/components/LocationPopup.vue";
+
 export default {
   async asyncData({redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
@@ -279,6 +280,8 @@ layout: 'user',
         'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.'
     }
   },
+
+   
 
   methods: {
 
