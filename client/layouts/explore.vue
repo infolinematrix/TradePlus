@@ -49,7 +49,7 @@
             <v-list-tile-content>
               <v-list-tile-title>
                 <a v-on:click="getFilterresult(category.slug)">{{ category.title }}</a>
-                
+
               </v-list-tile-title>
               <v-list-tile-sub-title
                 class="font-weight-thin caption"
@@ -68,50 +68,11 @@
         flat
         class="border-bottom"
       >
-        <v-toolbar-title class="mr-4 pl-0">
-          <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-          <span class="hidden-sm-and-down">Trade Plus</span>
-        </v-toolbar-title>
-        <v-text-field
-          append-icon="mic"
-          flat
-          solo
-          prepend-inner-icon="search"
-          class="mx-3 toolbar-search"
-          readonly
-          v-model="search_text"
-          @click.stop="dialog = true"
-        ></v-text-field>
-
-        <v-spacer></v-spacer>
-        <v-menu bottom left open-on-hover>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>apps</v-icon>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-tile nuxt to="/auth/register">
-              <v-list-tile-title>Register</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile nuxt to="/auth/login">
-              <v-list-tile-title>Login</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile nuxt to="/business/create">
-              <v-list-tile-title>Business</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-        <v-btn icon @click.stop="dialog = true">
-          <v-icon>search</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-avatar size="20px" tile>
-            <img src="/avatar.png" alt="Vuetify" />
-          </v-avatar>
-        </v-btn>
-      </v-toolbar>
+       <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-toolbar-title>Trading Plus</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <toolbar-menu></toolbar-menu>
+    </v-toolbar>
 
       <v-content>
         <div id="application" class="application">
@@ -164,25 +125,7 @@
       </v-navigation-drawer>
     </v-app>
 
-    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-top-transition">
-      <v-toolbar flat color="primary" class="pl-0">
-        <v-text-field
-          append-icon="mic"
-          flat
-          solo
-          prepend-inner-icon="search"
-          class="toolbar-search"
-          readonly
-          v-model="search_text"
-        ></v-text-field>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn icon @click="dialog = false">
-            <v-icon>close</v-icon>
-          </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-    </v-dialog>
+
   </div>
 </template>
 
@@ -195,7 +138,6 @@ export default {
   },
   data() {
     return {
-      dialog: false,
       drawer: true,
       notifications: null,
       search_text: 'Lather Mobile Cover',

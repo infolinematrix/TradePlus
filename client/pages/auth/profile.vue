@@ -22,10 +22,7 @@
               <v-text-field label="Last Name" outline></v-text-field>
             </v-flex>
           </v-layout>
-
         </v-flex>
-
-
 
         <v-subheader class="pl-0">Email & Contact No</v-subheader>
 
@@ -44,24 +41,16 @@
           </v-layout>
 
           <v-flex>
-           <v-checkbox
-          v-model="allowSpaces"
-          label="Allow receive News Letter"
-          class="pa-0"
-        ></v-checkbox>
+            <v-checkbox v-model="allowSpaces" label="Allow receive News Letter" class="pa-0"></v-checkbox>
+          </v-flex>
 
+          <v-flex>
+            <v-btn color="error" class="align-right" dark depressed large>
+              Update
+              <v-icon right dark>cloud_upload</v-icon>
+            </v-btn>
+          </v-flex>
         </v-flex>
-
-        <v-flex>
-
-<v-btn color="error"  class="align-right" dark depressed="" large>Update <v-icon right dark>cloud_upload</v-icon></v-btn>
-        </v-flex>
-
-
-        </v-flex>
-
-
-
       </v-sheet>
     </v-container>
   </v-layout>

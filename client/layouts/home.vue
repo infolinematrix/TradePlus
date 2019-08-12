@@ -13,10 +13,11 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar dense fixed flat color="white">
-      <v-toolbar-side-icon></v-toolbar-side-icon>
+    <v-toolbar app fixed flat>
       <v-toolbar-title>Trading Plus</v-toolbar-title>
-      <v-spacer></v-spacer>
+
+
+
       <toolbar-menu></toolbar-menu>
     </v-toolbar>
 
@@ -60,8 +61,6 @@
                 </v-toolbar-items>
               </v-layout>
             </v-toolbar>
-
-            
           </v-layout>
         </v-container>
       </v-img>
@@ -92,7 +91,7 @@ export default {
   components: {
     ToolbarMenu,
     FooterNav,
-    'location-popup-2': LocationPopup2,
+    'location-popup-2': LocationPopup2
   },
   data() {
     return {

@@ -6,21 +6,11 @@
  * Time: 12:42 PM
  */
 
-
-
-use ReactorCMS\Entities\NodeMeta;
-use Reactor\Documents\Media\Media;
-
-use ReactorCMS\Entities\Node;
 use ReactorCMS\Entities\Settings;
 //use App\Support\Database\CacheQueryBuilder;
 
 
-
-
 /*Get Mail Confriguration*/
-
-
 
 /*Get Settings*/
 
@@ -43,7 +33,6 @@ if (!function_exists('getSettings')) {
 
     }
 }
-
 //Time ellaps
 
 if (!function_exists('time_elapsed_string')) {

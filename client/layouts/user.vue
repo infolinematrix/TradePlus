@@ -9,18 +9,20 @@
         v-model="drawer"
         class="inner-border pa-2"
       >
-        <v-flex class="font-weight-medium">
-          <v-subheader>Quick Navigation</v-subheader>
-          <v-container class="pt-0">
-            <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Dashboard</nuxt-link>
-            </v-flex>
-            <v-flex class="mb-2">
-              <nuxt-link to="business-profile#">Inbox</nuxt-link>
-            </v-flex>
-          </v-container>
-          <v-divider></v-divider>
-        </v-flex>
+        <v-list class="mb-3">
+          <div class="pl-3 font-weight-medium grey--text">Quick Navigation</div>
+          <v-list-tile router exact class="height-30" nuxt to="/auth">
+            <v-list-tile-content>
+              <v-list-tile-title> Dashboard</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile router exact  class="height-30" nuxt to="/business/post">
+            <v-list-tile-content>
+              <v-list-tile-title> My Posts</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+
 
         <v-flex class="font-weight-medium">
           <v-subheader>Business</v-subheader>
@@ -97,33 +99,33 @@
             <nuxt></nuxt>
           </v-flex>
           <v-flex xs12 md4 sm4>
-             <v-card flat>
-        <v-toolbar flat>
-          <v-toolbar-title class="title">Message</v-toolbar-title>
+            <v-card flat>
+              <v-toolbar flat>
+                <v-toolbar-title class="title">Message</v-toolbar-title>
 
-          <v-spacer></v-spacer>
-        </v-toolbar>
+                <v-spacer></v-spacer>
+              </v-toolbar>
 
-        <div>
-          <v-list two-line>
-            <div v-for="i in 10" :key="i" class="mb-3">
-              <v-list-tile avatar ripple>
-                <v-list-tile-content>
-                  <v-list-tile-sub-title class="caption">23 days ago, Administrator</v-list-tile-sub-title>
-                  <v-list-tile-title class="body-2">
-                    <nuxt-link to="#">{{text_short }}</nuxt-link>
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title class="text--muted">{{text_short }}</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon size="40" color="grey lighten-3">question_answer</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-              <v-divider></v-divider>
-            </div>
-          </v-list>
-        </div>
-      </v-card>
+              <div>
+                <v-list two-line>
+                  <div v-for="i in 10" :key="i" class="mb-3">
+                    <v-list-tile avatar ripple>
+                      <v-list-tile-content>
+                        <v-list-tile-sub-title class="caption">23 days ago, Administrator</v-list-tile-sub-title>
+                        <v-list-tile-title class="body-2">
+                          <nuxt-link to="#">{{text_short }}</nuxt-link>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title class="text--muted">{{text_short }}</v-list-tile-sub-title>
+                      </v-list-tile-content>
+                      <v-list-tile-action>
+                        <v-icon size="40" color="grey lighten-3">question_answer</v-icon>
+                      </v-list-tile-action>
+                    </v-list-tile>
+                    <v-divider></v-divider>
+                  </div>
+                </v-list>
+              </div>
+            </v-card>
           </v-flex>
         </v-layout>
       </v-content>
@@ -134,7 +136,7 @@
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
 export default {
-  middleware: "auth",
+  middleware: 'auth',
 
   components: {
     ToolbarMenu
@@ -154,7 +156,5 @@ export default {
       title: 'Vuetify.js'
     }
   }
-
-  
 }
 </script>
