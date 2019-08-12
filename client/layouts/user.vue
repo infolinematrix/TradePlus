@@ -13,16 +13,15 @@
           <div class="pl-3 font-weight-medium grey--text">Quick Navigation</div>
           <v-list-tile router exact class="height-30" nuxt to="/auth">
             <v-list-tile-content>
-              <v-list-tile-title> Dashboard</v-list-tile-title>
+              <v-list-tile-title>Dashboard</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile router exact  class="height-30" nuxt to="/business/post">
+          <v-list-tile router exact class="height-30" nuxt to="/business/post">
             <v-list-tile-content>
-              <v-list-tile-title> My Posts</v-list-tile-title>
+              <v-list-tile-title>My Posts</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-
 
         <v-flex class="font-weight-medium">
           <v-subheader>Business</v-subheader>
@@ -135,6 +134,8 @@
 
 <script>
 import ToolbarMenu from '~/components/ToolbarMenu'
+import { mapGetters } from 'vuex'
+
 export default {
   middleware: 'auth',
 
@@ -145,16 +146,22 @@ export default {
     return {
       drawer: true,
       notifications: null,
-      search_text: 'Lather Mobile Cover',
-      text:
-        'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.',
-      text_short:
-        'Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea.',
-
       right: true,
-      rightDrawer: true,
-      title: 'Vuetify.js'
+      rightDrawer: true
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      user: 'auth/user'
+    })
+  },
+
+
+
+  mounted() {
+    // Fetch the user.
+    this.$store.dispatch('auth/fetchUser')
   }
 }
 </script>

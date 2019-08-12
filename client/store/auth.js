@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 
 // state
 export const state = () => ({
+  loggedIn: false,
   user: null,
   token: null
 })
@@ -21,7 +22,7 @@ export const mutations = {
   },
 
   FETCH_USER_SUCCESS (state, user) {
-    state.user = user
+    state.user = user,
   },
 
   FETCH_USER_FAILURE (state) {
@@ -29,8 +30,8 @@ export const mutations = {
   },
 
   LOGOUT (state) {
-    state.user = null
-    state.token = null
+    state.user = null,
+    state.token = null,
   },
 
   UPDATE_USER (state, { user }) {

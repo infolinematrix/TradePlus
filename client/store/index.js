@@ -9,7 +9,6 @@ export const getters = {
   settings: state => state.settings,
 
   setting: (state) => (str_variable) => {
-    console.log(state.settings)
     const s = state.settings.find(s => s.variable === str_variable)
     return s.value
   }

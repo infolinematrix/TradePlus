@@ -72,11 +72,11 @@
                 class="font-weight-bold red--text"
                 @click.stop="category_dialog = true"
               >
-          View All Category 
+          View All Category
             </span>
           </div>
         </div>
-       
+
       </v-sheet>
 
       <v-flex
@@ -167,8 +167,8 @@
               <v-card-actions class="pa-3">
                 {{ business.reviews }} reviews
                 <v-spacer></v-spacer>
-                <v-rating :value="business.rating" 
-                      readonly dense color="red accent-3" 
+                <v-rating :value="business.rating"
+                      readonly dense color="red accent-3"
                       class="pa-0">
                       </v-rating>
               </v-card-actions>

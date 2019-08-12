@@ -33,6 +33,10 @@
       </template>
 
       <v-list>
+        <v-list-tile nuxt to="/auth">
+          <v-list-tile-title>Dashboard</v-list-tile-title>
+        </v-list-tile>
+
         <v-list-tile nuxt to="/auth/register">
           <v-list-tile-title>Register</v-list-tile-title>
         </v-list-tile>
