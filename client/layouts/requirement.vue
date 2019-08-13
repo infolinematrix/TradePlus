@@ -179,12 +179,7 @@ export default {
   },
   methods: {
     getFilterresult(e) {
-     let param = this.$route.params
-      if (param.slug != undefined && param.source != undefined) {
-        this.$root.$router.push('/browse/' + param.slug + '/' + e)
-      } else {
-        this.$root.$router.push('/browse/' + e)
-      }
+        this.$root.$router.push('/requirements/' + e)
     }
   },
 

@@ -62,7 +62,10 @@ export default {
    ** Global CSS
    */
   css: [
-    '~/assets/style/app.styl'
+    '~/assets/style/app.styl',
+    'quill/dist/quill.snow.css',
+    'quill/dist/quill.bubble.css',
+    'quill/dist/quill.core.css'
   ],
 
   /*
@@ -74,6 +77,7 @@ export default {
     //{ src: '~/plugins/helpers.js', mode: 'client' },
     { src: '~/plugins/swiper.js', ssr: false },
     { src: '~/plugins/paypal.js', ssr: false },
+    { src: '~/plugins/nuxt-quill-plugin.js', ssr: false },
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/moment'

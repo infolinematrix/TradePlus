@@ -55,12 +55,19 @@
                 </a>
             </li>
 
-            <li class="">
-                <a href="{!! route("reactor.requirement.index") !!}">
-                    <i class="fa fa-briefcase"></i> <span>Post Requirements</span>
-                </a>
-            </li>
 
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-list"></i> <span>Reports</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu" style="display: none;">
+                    <li><a href="{!! route('reactor.requirement.index') !!}"><i class="fa fa-circle-o"></i> Post Requirements</a></li>
+                    <li class="active"><a href="{!! route('reactor.reviews.index') !!}"><i class="fa fa-circle-o"></i> Reviews</a></li>
+                </ul>
+            </li>
         </ul>
 
         <hr class="divider">

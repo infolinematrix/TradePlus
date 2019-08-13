@@ -234,18 +234,14 @@
                       <v-form @submit.prevent="about('form-2')" data-vv-scope="form-2">
                         <v-layout row wrap>
                           <v-flex xs12>
-                            <v-text-field
-                              textarea
-                              rows="10"
-                              v-model="form2.description"
-                              label="Description"
-                              placeholder="Description"
-                              v-validate="'required'"
-                              :error-messages="errors.collect('form-2.Description')"
-                              data-vv-name="Description"
-                              required
-                              outline
-                            ></v-text-field>
+                             <div>
+                            <div class="quill-editor" 
+                            v-model="form2.description"
+                            v-quill:myQuillEditor="editorOption"
+                            >  
+                            </div>
+                           </div>
+                       
                           </v-flex>
                         </v-layout>
 
@@ -942,7 +938,7 @@ import Form from 'vform'
 import swal from 'sweetalert2'
 import VeeValidate from 'vee-validate'
 import LocationPopup from '~/components/LocationPopup.vue'
-
+import VueQuillEditor from 'vue-quill-editor'
 export default {
   async asyncData({ redirect, $axios }) {
     return await $axios.get(`add-business`).then(res => {
@@ -977,6 +973,16 @@ export default {
   layout: 'user',
   data() {
     return {
+       editorOption: { 
+        modules: {
+       toolbar: [
+              [{ 'size': ['small', false, 'large'] }],
+              ['bold', 'italic'],
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+              ['link', 'image']
+            ],
+        }
+      },
       dialog: true,
       active: true,
       title: 'Choose Location',

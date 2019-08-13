@@ -98,16 +98,12 @@
 
                      <v-layout row wrap>
                       <v-flex xs12>
-                        <v-textarea
-                          v-model="form.description"
-                          outline
-                          name="input-7-4"
-                          label="Description"
-                          v-validate="'required'"
-                          :error-messages="errors.collect('Descritpion')"
-                          data-vv-name="Descritpion"
-                          required
-                        ></v-textarea>
+                        <div>
+                        <div class="quill-editor" 
+                            v-model="form.description"
+                            v-quill:myQuillEditor="editorOption">  
+                            </div>
+                        </div>
                       </v-flex>
                     </v-layout>
 
@@ -278,6 +274,7 @@
 import swal from "sweetalert2";
 import VeeValidate from "vee-validate";
 import CategoryPopup from "~/components/CategoryPopup.vue";
+import VueQuillEditor from 'vue-quill-editor'
 
 export default {
   async asyncData({ params, $axios }) {
@@ -293,6 +290,17 @@ export default {
   },
   data() {
     return {
+      editorOption: { 
+        modules: {
+       toolbar: [
+              [{ 'size': ['small', false, 'large'] }],
+              ['bold', 'italic'],
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+              ['link', 'image']
+            ],
+        }
+      },
+
       dialog: false,
       active: true,
       category_dialog:false,

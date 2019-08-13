@@ -119,6 +119,7 @@ Route::group(['middleware' => 'api', 'namespace' => 'Extension\Site\Http'], func
     Route::post('post-subscribe', 'ApiController@postSubscribe');
     Route::post('post-requirement', 'ApiController@postRequirement');
     Route::get('requirements', 'ApiController@requirements');
+    Route::get('requirements/{slug}','ApiController@getRequirements');
     Route::post('sendquotation', 'ApiController@sendQuote');
 });
 

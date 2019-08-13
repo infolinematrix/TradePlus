@@ -192,6 +192,30 @@ class ApiController extends PublicController
         }
 
         return $data;
+    }
+    
+    public function getRequirements($slug){
+
+        $node = Node::withName($slug)->first();
+
+        $requirements = PostRequirement::where('category',$node->getKey())->where('approved',1)->get();
+
+        $data = [];
+        foreach ($requirements as $requirement){
+
+
+            $data[] = [
+
+                'id' => $requirement->id,
+                'title' => $requirement->title,
+                'description' => strip_tags($requirement->description),
+                'category' => Node::find($requirement->category)->getTitle(),
+                'name' => $requirement->first_name.' '.$requirement->last_name,
+                'posted_on' => time_elapsed_string($requirement->created_at)
+            ];
+        }
+
+        return $data;
 
     }
 

@@ -73,6 +73,7 @@ class BusinessController extends PublicController
             $data['node'] = [
                 'title' => $node->getTitle(),
                 'node_id' => $node->getKey(),
+                'description' => $node->description,
                 'source_id' => $node->translate(locale())->getKey(),
                 'profileImage' => $profileimg,
                 'coverImage' => $coverimg,
@@ -321,8 +322,8 @@ class BusinessController extends PublicController
 
     public function updateBusiness(Request $request)
     {
-        $user = Auth::user();
 
+        $user = Auth::user();
         $node = Node::withType('business')->where('user_id', $user->id)->first();
         $source = $node->translate(locale())->getKey();
 
